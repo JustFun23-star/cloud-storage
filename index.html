@@ -1,317 +1,1270 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cloud Storage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>File Storage</title>
 
-<style>
-.drop-zone {
-    border: 2px dashed #3b82f6;
-    transition: 0.3s;
-}
-.drop-zone.dragover {
-    background: #dbeafe;
-}
-</style>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        .drop-zone {
+            border: 2px dashed #3b82f6;
+            transition: all 0.2s ease;
+        }
+
+        .drop-zone.dragover {
+            background-color: #eff6ff;
+            border-color: #2563eb;
+            transform: scale(1.01);
+        }
+
+        .file-row:hover {
+            background-color: #f8fafc;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
 
-<div class="max-w-5xl mx-auto p-6">
+<body class="bg-gray-100 min-h-screen text-gray-800">
 
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-3xl font-bold text-blue-600">
-            Cloud Storage
-        </h1>
+<div class="max-w-6xl mx-auto px-4 py-6">
+
+    <!-- HEADER -->
+    <header class="mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
+            <div>
+                <h1 class="text-3xl font-bold text-blue-600">
+                    ☁️ File Storage
+                </h1>
+
+                <p class="text-gray-500 mt-1">
+                    Simpan dan download file Anda dengan mudah
+                </p>
+            </div>
+
+            <button
+                id="refreshButton"
+                type="button"
+                class="bg-white border border-gray-300 hover:bg-gray-50 px-4 py-2 rounded-lg">
+                🔄 Refresh
+            </button>
+
+        </div>
+    </header>
+
+
+    <!-- MESSAGE -->
+    <div
+        id="message"
+        class="hidden mb-5 p-4 rounded-lg text-sm">
     </div>
 
-    <div id="dropZone"
-         class="drop-zone bg-white rounded-xl p-10 text-center shadow">
 
-        <p class="text-lg font-semibold">
-            Drag & Drop File
-        </p>
+    <!-- UPLOAD AREA -->
+    <div
+        id="dropZone"
+        class="drop-zone bg-white rounded-2xl shadow-sm p-8 sm:p-12 text-center">
 
-        <p class="text-gray-500 mb-4">
-            atau klik tombol di bawah
+        <div class="text-5xl mb-4">
+            📤
+        </div>
+
+        <h2 class="text-xl font-semibold mb-2">
+            Upload File
+        </h2>
+
+        <p class="text-gray-500 mb-5">
+            Tarik file ke sini atau pilih file dari perangkat Anda
         </p>
 
         <input
             type="file"
             id="fileInput"
-            class="hidden">
+            class="hidden"
+        >
 
         <button
-            onclick="fileInput.click()"
-            class="bg-blue-600 text-white px-5 py-2 rounded-lg">
+            id="chooseButton"
+            type="button"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition">
             Pilih File
         </button>
 
-        <div id="loading"
-             class="hidden mt-4 text-blue-600 font-semibold">
-             Uploading...
+        <p class="text-xs text-gray-400 mt-4">
+            File akan disimpan di Supabase Storage
+        </p>
+
+        <!-- LOADING -->
+        <div
+            id="uploadLoading"
+            class="hidden mt-6">
+
+            <div class="flex items-center justify-center gap-3 text-blue-600">
+
+                <div class="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+
+                <span id="uploadText">
+                    Uploading...
+                </span>
+
+            </div>
+
         </div>
 
     </div>
 
+
+    <!-- SEARCH -->
     <div class="mt-6">
-        <input
-            type="text"
-            id="search"
-            placeholder="Cari file..."
-            class="w-full p-3 rounded-lg border">
-    </div>
 
-    <div class="mt-6 bg-white rounded-xl shadow overflow-hidden">
+        <div class="relative">
 
-        <table class="w-full">
+            <span class="absolute left-4 top-3.5 text-gray-400">
+                🔍
+            </span>
 
-            <thead class="bg-gray-50">
-            <tr>
-                <th class="text-left p-4">Nama</th>
-                <th class="text-left p-4">Ukuran</th>
-                <th class="text-left p-4">Tanggal</th>
-                <th class="text-left p-4">Aksi</th>
-            </tr>
-            </thead>
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Cari nama file..."
+                class="w-full bg-white border border-gray-300 rounded-xl py-3 pl-11 pr-4 outline-none focus:ring-2 focus:ring-blue-500"
+            >
 
-            <tbody id="fileList">
-            </tbody>
-
-        </table>
+        </div>
 
     </div>
+
+
+    <!-- FILE LIST -->
+    <div class="mt-6 bg-white rounded-2xl shadow-sm overflow-hidden">
+
+        <div class="px-5 py-4 border-b flex items-center justify-between">
+
+            <div>
+                <h2 class="font-semibold text-lg">
+                    File Anda
+                </h2>
+
+                <p
+                    id="fileCount"
+                    class="text-sm text-gray-500">
+                    Memuat file...
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- MOBILE / DESKTOP TABLE -->
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full min-w-[700px]">
+
+                <thead class="bg-gray-50">
+
+                    <tr>
+
+                        <th class="text-left px-5 py-4 text-sm font-semibold">
+                            Nama File
+                        </th>
+
+                        <th class="text-left px-5 py-4 text-sm font-semibold">
+                            Ukuran
+                        </th>
+
+                        <th class="text-left px-5 py-4 text-sm font-semibold">
+                            Tanggal
+                        </th>
+
+                        <th class="text-right px-5 py-4 text-sm font-semibold">
+                            Aksi
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="fileList">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- EMPTY -->
+        <div
+            id="emptyState"
+            class="hidden text-center py-14 px-5">
+
+            <div class="text-5xl mb-3">
+                📂
+            </div>
+
+            <h3 class="font-semibold text-lg">
+                Belum ada file
+            </h3>
+
+            <p class="text-gray-500 text-sm mt-1">
+                Upload file pertama Anda menggunakan area upload di atas.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer class="text-center text-xs text-gray-400 py-6">
+        File Storage • Powered by Supabase
+    </footer>
 
 </div>
 
+
 <script>
 
+/* =========================================================
+   SUPABASE CONFIGURATION
+   ========================================================= */
+
 const SUPABASE_URL =
-"https://jbrrlophgrdqniorjkjn.supabase.co/rest/v1/";
+    "https://jbrrlophgrdqniorjkjn.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_VxFQ1sUpf4-wjEpzhg4IMg_c_scLRSQ";
+    "sb_publishable_VxFQ1sUpf4-wjEpzhg4IMg_c_scLRSQ";
 
-const BUCKET = "files-storage";
+const BUCKET =
+    "file-storage";
 
-const supabase =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+
+/* =========================================================
+   SUPABASE CLIENT
+   ========================================================= */
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
 
 const fileInput =
-document.getElementById("fileInput");
+    document.getElementById("fileInput");
 
-const loading =
-document.getElementById("loading");
+const chooseButton =
+    document.getElementById("chooseButton");
 
 const dropZone =
-document.getElementById("dropZone");
+    document.getElementById("dropZone");
+
+const uploadLoading =
+    document.getElementById("uploadLoading");
+
+const uploadText =
+    document.getElementById("uploadText");
+
+const message =
+    document.getElementById("message");
 
 const fileList =
-document.getElementById("fileList");
+    document.getElementById("fileList");
 
-const search =
-document.getElementById("search");
+const emptyState =
+    document.getElementById("emptyState");
 
-let filesCache = [];
+const searchInput =
+    document.getElementById("searchInput");
 
-fileInput.addEventListener(
-"change",
-e => uploadFile(e.target.files[0])
+const fileCount =
+    document.getElementById("fileCount");
+
+const refreshButton =
+    document.getElementById("refreshButton");
+
+
+/* =========================================================
+   DATA
+   ========================================================= */
+
+let allFiles = [];
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+function showMessage(text, type = "info") {
+
+    message.textContent = text;
+
+    message.className =
+        "mb-5 p-4 rounded-lg text-sm";
+
+    if (type === "success") {
+
+        message.classList.add(
+            "bg-green-100",
+            "text-green-700"
+        );
+
+    } else if (type === "error") {
+
+        message.classList.add(
+            "bg-red-100",
+            "text-red-700"
+        );
+
+    } else {
+
+        message.classList.add(
+            "bg-blue-100",
+            "text-blue-700"
+        );
+
+    }
+
+    message.classList.remove("hidden");
+
+}
+
+
+function hideMessage() {
+
+    message.classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+function setUploadLoading(isLoading, text = "Uploading...") {
+
+    if (isLoading) {
+
+        uploadText.textContent = text;
+
+        uploadLoading.classList.remove("hidden");
+
+        chooseButton.disabled = true;
+
+        chooseButton.classList.add(
+            "opacity-50",
+            "cursor-not-allowed"
+        );
+
+    } else {
+
+        uploadLoading.classList.add("hidden");
+
+        chooseButton.disabled = false;
+
+        chooseButton.classList.remove(
+            "opacity-50",
+            "cursor-not-allowed"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CHOOSE FILE
+   ========================================================= */
+
+chooseButton.addEventListener(
+    "click",
+    function () {
+
+        fileInput.click();
+
+    }
 );
 
-dropZone.addEventListener("dragover", e => {
-    e.preventDefault();
-    dropZone.classList.add("dragover");
-});
 
-dropZone.addEventListener("dragleave", () => {
-    dropZone.classList.remove("dragover");
-});
+/* =========================================================
+   FILE INPUT
+   ========================================================= */
 
-dropZone.addEventListener("drop", e => {
-    e.preventDefault();
-    dropZone.classList.remove("dragover");
+fileInput.addEventListener(
+    "change",
+    function (event) {
 
-    const file =
-    e.dataTransfer.files[0];
+        const files =
+            event.target.files;
 
-    if(file) uploadFile(file);
-});
+        if (!files || files.length === 0) {
+            return;
+        }
 
-async function uploadFile(file){
+        uploadFile(files[0]);
 
-    loading.classList.remove("hidden");
+        fileInput.value = "";
 
-    const filename =
-    Date.now() + "_" + file.name;
+    }
+);
 
-    const { error } =
-    await supabase.storage
-    .from(BUCKET)
-    .upload(filename, file);
 
-    loading.classList.add("hidden");
+/* =========================================================
+   DRAG OVER
+   ========================================================= */
 
-    if(error){
-        alert(error.message);
+dropZone.addEventListener(
+    "dragover",
+    function (event) {
+
+        event.preventDefault();
+
+        dropZone.classList.add("dragover");
+
+    }
+);
+
+
+/* =========================================================
+   DRAG LEAVE
+   ========================================================= */
+
+dropZone.addEventListener(
+    "dragleave",
+    function () {
+
+        dropZone.classList.remove("dragover");
+
+    }
+);
+
+
+/* =========================================================
+   DROP
+   ========================================================= */
+
+dropZone.addEventListener(
+    "drop",
+    function (event) {
+
+        event.preventDefault();
+
+        dropZone.classList.remove("dragover");
+
+        const files =
+            event.dataTransfer.files;
+
+        if (!files || files.length === 0) {
+            return;
+        }
+
+        uploadFile(files[0]);
+
+    }
+);
+
+
+/* =========================================================
+   UPLOAD FILE
+   ========================================================= */
+
+async function uploadFile(file) {
+
+    if (!file) {
         return;
     }
 
-    loadFiles();
+    hideMessage();
+
+    setUploadLoading(
+        true,
+        "Uploading " + file.name + "..."
+    );
+
+
+    try {
+
+        /*
+         * Membuat nama unik agar file dengan
+         * nama sama tidak saling menimpa.
+         */
+
+        const safeName =
+            file.name.replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+            );
+
+        const filename =
+            Date.now() +
+            "_" +
+            Math.random()
+                .toString(36)
+                .substring(2, 8) +
+            "_" +
+            safeName;
+
+
+        console.log(
+            "Uploading to bucket:",
+            BUCKET
+        );
+
+        console.log(
+            "Filename:",
+            filename
+        );
+
+
+        const result =
+            await supabaseClient.storage
+                .from(BUCKET)
+                .upload(
+                    filename,
+                    file,
+                    {
+                        cacheControl: "3600",
+                        upsert: false
+                    }
+                );
+
+
+        const error =
+            result.error;
+
+
+        if (error) {
+
+            console.error(
+                "Upload error:",
+                error
+            );
+
+            throw new Error(
+                error.message ||
+                "Upload gagal."
+            );
+
+        }
+
+
+        setUploadLoading(
+            false
+        );
+
+
+        showMessage(
+            "File berhasil diupload: " +
+            file.name,
+            "success"
+        );
+
+
+        await loadFiles();
+
+
+    } catch (error) {
+
+        console.error(
+            "Upload exception:",
+            error
+        );
+
+        setUploadLoading(
+            false
+        );
+
+
+        showMessage(
+            "Upload gagal: " +
+            error.message,
+            "error"
+        );
+
+    }
+
 }
 
-function formatSize(bytes){
 
-    if(bytes < 1024)
-        return bytes + " B";
+/* =========================================================
+   LOAD FILES
+   ========================================================= */
 
-    if(bytes < 1048576)
-        return (bytes/1024).toFixed(1)+" KB";
+async function loadFiles() {
 
-    if(bytes < 1073741824)
-        return (bytes/1048576).toFixed(1)+" MB";
+    fileCount.textContent =
+        "Memuat file...";
 
-    return (bytes/1073741824).toFixed(1)+" GB";
+
+    try {
+
+        const result =
+            await supabaseClient.storage
+                .from(BUCKET)
+                .list(
+                    "",
+                    {
+                        limit: 1000,
+                        offset: 0,
+                        sortBy: {
+                            column: "created_at",
+                            order: "desc"
+                        }
+                    }
+                );
+
+
+        const data =
+            result.data;
+
+        const error =
+            result.error;
+
+
+        if (error) {
+
+            console.error(
+                "List error:",
+                error
+            );
+
+            throw new Error(
+                error.message ||
+                "Tidak dapat mengambil daftar file."
+            );
+
+        }
+
+
+        allFiles =
+            (data || []).filter(
+                file => file.name
+            );
+
+
+        renderFiles(
+            allFiles
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Load files error:",
+            error
+        );
+
+        fileCount.textContent =
+            "Gagal memuat file";
+
+        fileList.innerHTML = "";
+
+        emptyState.classList.add(
+            "hidden"
+        );
+
+        showMessage(
+            "Gagal memuat file: " +
+            error.message,
+            "error"
+        );
+
+    }
+
 }
 
-function getIcon(name){
 
-    const ext =
-    name.split(".").pop().toLowerCase();
+/* =========================================================
+   FORMAT FILE SIZE
+   ========================================================= */
 
-    if(["jpg","jpeg","png","gif","webp"].includes(ext))
+function formatSize(bytes) {
+
+    if (!bytes || bytes === 0) {
+        return "0 B";
+    }
+
+
+    const units = [
+        "B",
+        "KB",
+        "MB",
+        "GB",
+        "TB"
+    ];
+
+
+    const index =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+
+    return (
+        bytes /
+        Math.pow(1024, index)
+    ).toFixed(
+        index === 0 ? 0 : 1
+    ) +
+    " " +
+    units[index];
+
+}
+
+
+/* =========================================================
+   FILE ICON
+   ========================================================= */
+
+function getFileIcon(filename) {
+
+    const extension =
+        filename
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    if (
+        [
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "webp",
+            "bmp",
+            "svg"
+        ].includes(extension)
+    ) {
+
         return "🖼️";
 
-    if(ext==="pdf")
-        return "📕";
-
-    if(["doc","docx"].includes(ext))
-        return "📄";
-
-    if(["zip","rar","7z"].includes(ext))
-        return "🗜️";
-
-    return "📁";
-}
-
-async function loadFiles(){
-
-    const { data, error } =
-    await supabase.storage
-    .from(BUCKET)
-    .list("", {
-        limit: 1000
-    });
-
-    if(error){
-        console.log(error);
-        return;
     }
 
-    filesCache = data;
-    renderFiles(data);
+
+    if (extension === "pdf") {
+        return "📕";
+    }
+
+
+    if (
+        [
+            "doc",
+            "docx"
+        ].includes(extension)
+    ) {
+
+        return "📘";
+
+    }
+
+
+    if (
+        [
+            "xls",
+            "xlsx",
+            "csv"
+        ].includes(extension)
+    ) {
+
+        return "📊";
+
+    }
+
+
+    if (
+        [
+            "ppt",
+            "pptx"
+        ].includes(extension)
+    ) {
+
+        return "📙";
+
+    }
+
+
+    if (
+        [
+            "zip",
+            "rar",
+            "7z",
+            "tar",
+            "gz"
+        ].includes(extension)
+    ) {
+
+        return "🗜️";
+
+    }
+
+
+    if (
+        [
+            "mp3",
+            "wav",
+            "ogg"
+        ].includes(extension)
+    ) {
+
+        return "🎵";
+
+    }
+
+
+    if (
+        [
+            "mp4",
+            "mov",
+            "avi",
+            "mkv",
+            "webm"
+        ].includes(extension)
+    ) {
+
+        return "🎬";
+
+    }
+
+
+    if (
+        [
+            "txt",
+            "md"
+        ].includes(extension)
+    ) {
+
+        return "📝";
+
+    }
+
+
+    return "📄";
+
 }
 
-function renderFiles(files){
+
+/* =========================================================
+   FORMAT DATE
+   ========================================================= */
+
+function formatDate(date) {
+
+    if (!date) {
+        return "-";
+    }
+
+
+    const parsedDate =
+        new Date(date);
+
+
+    if (isNaN(parsedDate)) {
+        return "-";
+    }
+
+
+    return parsedDate.toLocaleString(
+        "id-ID",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   GET PUBLIC URL
+   ========================================================= */
+
+function getPublicUrl(filename) {
+
+    const result =
+        supabaseClient.storage
+            .from(BUCKET)
+            .getPublicUrl(filename);
+
+
+    return result.data.publicUrl;
+
+}
+
+
+/* =========================================================
+   RENDER FILES
+   ========================================================= */
+
+function renderFiles(files) {
 
     fileList.innerHTML = "";
 
-    files.forEach(file => {
 
-        const url =
-        supabase.storage
-        .from(BUCKET)
-        .getPublicUrl(file.name)
-        .data.publicUrl;
+    if (!files || files.length === 0) {
 
-        const tr =
-        document.createElement("tr");
+        emptyState.classList.remove(
+            "hidden"
+        );
 
-        tr.className =
-        "border-t";
+        fileCount.textContent =
+            "0 file";
 
-        tr.innerHTML = `
-        <td class="p-4">
-            ${getIcon(file.name)}
-            ${file.name}
-        </td>
+        return;
 
-        <td class="p-4">
-            ${formatSize(file.metadata?.size || 0)}
-        </td>
+    }
 
-        <td class="p-4">
-            ${new Date(
-            file.created_at
-            ).toLocaleString()}
-        </td>
 
-        <td class="p-4 flex gap-2">
+    emptyState.classList.add(
+        "hidden"
+    );
 
-            <a
-              href="${url}"
-              download
-              target="_blank"
-              class="bg-green-600 text-white px-3 py-1 rounded">
-              Download
-            </a>
 
-            <button
-              onclick="deleteFile('${file.name}')"
-              class="bg-red-600 text-white px-3 py-1 rounded">
-              Hapus
-            </button>
+    fileCount.textContent =
+        files.length +
+        (files.length === 1
+            ? " file"
+            : " file");
 
-        </td>
-        `;
 
-        fileList.appendChild(tr);
+    files.forEach(
+        function (file) {
 
-    });
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.className =
+                "file-row border-t";
+
+
+            const size =
+                file.metadata &&
+                file.metadata.size
+                    ? file.metadata.size
+                    : 0;
+
+
+            const publicUrl =
+                getPublicUrl(
+                    file.name
+                );
+
+
+            row.innerHTML = `
+
+                <td class="px-5 py-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="text-2xl">
+                            ${getFileIcon(file.name)}
+                        </div>
+
+                        <div class="min-w-0">
+
+                            <div
+                                class="font-medium truncate max-w-[350px]"
+                                title="${escapeHtml(file.name)}">
+
+                                ${escapeHtml(file.name)}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <td class="px-5 py-4 text-sm text-gray-500">
+
+                    ${formatSize(size)}
+
+                </td>
+
+
+                <td class="px-5 py-4 text-sm text-gray-500">
+
+                    ${formatDate(file.created_at)}
+
+                </td>
+
+
+                <td class="px-5 py-4">
+
+                    <div class="flex justify-end gap-2">
+
+                        <a
+                            href="${publicUrl}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download
+                            class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm">
+
+                            Download
+
+                        </a>
+
+
+                        <button
+                            type="button"
+                            class="delete-button bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
+                            data-name="${escapeAttribute(file.name)}">
+
+                            Hapus
+
+                        </button>
+
+                    </div>
+
+                </td>
+
+            `;
+
+
+            const deleteButton =
+                row.querySelector(
+                    ".delete-button"
+                );
+
+
+            deleteButton.addEventListener(
+                "click",
+                function () {
+
+                    deleteFile(
+                        file.name
+                    );
+
+                }
+            );
+
+
+            fileList.appendChild(
+                row
+            );
+
+        }
+    );
+
 }
 
-async function deleteFile(name){
 
-    if(!confirm(
-        "Hapus file ini?"
-    )) return;
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
 
-    const { error } =
-    await supabase.storage
-    .from(BUCKET)
-    .remove([name]);
+function escapeHtml(value) {
 
-    if(error){
-        alert(error.message);
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   ESCAPE ATTRIBUTE
+   ========================================================= */
+
+function escapeAttribute(value) {
+
+    return String(value)
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   DELETE FILE
+   ========================================================= */
+
+async function deleteFile(filename) {
+
+    const confirmed =
+        confirm(
+            "Yakin ingin menghapus file:\n\n" +
+            filename +
+            "?"
+        );
+
+
+    if (!confirmed) {
         return;
     }
 
-    loadFiles();
-}
 
-search.addEventListener(
-"input",
-e => {
-
-    const keyword =
-    e.target.value.toLowerCase();
-
-    const filtered =
-    filesCache.filter(file =>
-        file.name
-        .toLowerCase()
-        .includes(keyword)
+    showMessage(
+        "Menghapus file...",
+        "info"
     );
 
-    renderFiles(filtered);
 
-});
+    try {
+
+        const result =
+            await supabaseClient.storage
+                .from(BUCKET)
+                .remove([
+                    filename
+                ]);
+
+
+        const error =
+            result.error;
+
+
+        if (error) {
+
+            console.error(
+                "Delete error:",
+                error
+            );
+
+            throw new Error(
+                error.message ||
+                "Gagal menghapus file."
+            );
+
+        }
+
+
+        showMessage(
+            "File berhasil dihapus.",
+            "success"
+        );
+
+
+        await loadFiles();
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete exception:",
+            error
+        );
+
+
+        showMessage(
+            "Gagal menghapus file: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+searchInput.addEventListener(
+    "input",
+    function () {
+
+        const keyword =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+
+        if (!keyword) {
+
+            renderFiles(
+                allFiles
+            );
+
+            return;
+
+        }
+
+
+        const filtered =
+            allFiles.filter(
+                function (file) {
+
+                    return file.name
+                        .toLowerCase()
+                        .includes(keyword);
+
+                }
+            );
+
+
+        renderFiles(
+            filtered
+        );
+
+    }
+);
+
+
+/* =========================================================
+   REFRESH
+   ========================================================= */
+
+refreshButton.addEventListener(
+    "click",
+    function () {
+
+        hideMessage();
+
+        loadFiles();
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL LOAD
+   ========================================================= */
 
 loadFiles();
 
