@@ -64,7 +64,9 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* AUTH */
+/* =========================================================
+   AUTH
+========================================================= */
 
 .auth-page {
     min-height: 100vh;
@@ -243,13 +245,17 @@ button:disabled {
     color: #15803d;
 }
 
-/* APP */
+/* =========================================================
+   APP
+========================================================= */
 
 .app {
     min-height: 100vh;
 }
 
-/* HEADER */
+/* =========================================================
+   HEADER
+========================================================= */
 
 .header {
     height: 72px;
@@ -337,7 +343,9 @@ button:disabled {
     background: #f8fafc;
 }
 
-/* MAIN */
+/* =========================================================
+   MAIN
+========================================================= */
 
 .main {
     width: min(1180px, calc(100% - 32px));
@@ -345,7 +353,9 @@ button:disabled {
     padding: 30px 0 60px;
 }
 
-/* HERO */
+/* =========================================================
+   HERO
+========================================================= */
 
 .hero {
     display: flex;
@@ -383,7 +393,9 @@ button:disabled {
     font-weight: 750;
 }
 
-/* UPLOAD */
+/* =========================================================
+   UPLOAD
+========================================================= */
 
 .upload-card {
     background: var(--card);
@@ -462,7 +474,9 @@ button:disabled {
     min-height: 17px;
 }
 
-/* TOOLBAR */
+/* =========================================================
+   TOOLBAR
+========================================================= */
 
 .toolbar {
     display: flex;
@@ -529,7 +543,9 @@ button:disabled {
     background: #fafaff;
 }
 
-/* FILE GRID */
+/* =========================================================
+   FILE GRID
+========================================================= */
 
 .file-grid {
     display: grid;
@@ -566,6 +582,10 @@ button:disabled {
         0 14px 30px rgba(25,32,55,.08);
 }
 
+/* =========================================================
+   THUMBNAIL
+========================================================= */
+
 .file-preview {
     height: 145px;
 
@@ -593,7 +613,14 @@ button:disabled {
     display: block;
 
     opacity: 0;
-    transition: opacity .18s;
+
+    transition: opacity .16s ease;
+
+    /*
+       Jangan biarkan gambar mengganggu
+       layout saat belum selesai decode.
+    */
+    will-change: opacity;
 }
 
 .file-preview img.loaded {
@@ -689,7 +716,9 @@ button:disabled {
     border-color: #fecaca;
 }
 
-/* EMPTY */
+/* =========================================================
+   EMPTY
+========================================================= */
 
 .empty {
     grid-column: 1 / -1;
@@ -721,7 +750,9 @@ button:disabled {
     margin-top: 5px;
 }
 
-/* LOADING */
+/* =========================================================
+   LOADING
+========================================================= */
 
 .loading {
     grid-column: 1 / -1;
@@ -755,7 +786,9 @@ button:disabled {
     }
 }
 
-/* TOAST */
+/* =========================================================
+   TOAST
+========================================================= */
 
 .toast {
     position: fixed;
@@ -801,7 +834,9 @@ button:disabled {
     background: #b91c1c;
 }
 
-/* MOBILE */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 650px) {
 
@@ -874,12 +909,19 @@ button:disabled {
 
 <body>
 
+<!-- =======================================================
+     AUTH PAGE
+======================================================= -->
+
 <section id="authPage" class="auth-page">
 
     <div class="auth-card">
 
         <div class="brand">
-            <div class="brand-logo">☁</div>
+
+            <div class="brand-logo">
+                ☁
+            </div>
 
             <div>
                 <div class="brand-title">
@@ -890,6 +932,7 @@ button:disabled {
                     Personal cloud storage
                 </div>
             </div>
+
         </div>
 
         <!-- LOGIN -->
@@ -905,6 +948,7 @@ button:disabled {
             </p>
 
             <div class="field">
+
                 <label>Email</label>
 
                 <input
@@ -913,9 +957,11 @@ button:disabled {
                     autocomplete="email"
                     placeholder="nama@email.com"
                 >
+
             </div>
 
             <div class="field">
+
                 <label>Password</label>
 
                 <input
@@ -924,6 +970,7 @@ button:disabled {
                     autocomplete="current-password"
                     placeholder="Masukkan password"
                 >
+
             </div>
 
             <button
@@ -939,6 +986,7 @@ button:disabled {
             ></div>
 
             <div class="auth-switch">
+
                 Belum punya akun?
 
                 <button
@@ -947,6 +995,7 @@ button:disabled {
                 >
                     Daftar
                 </button>
+
             </div>
 
         </div>
@@ -967,6 +1016,7 @@ button:disabled {
             </p>
 
             <div class="field">
+
                 <label>Email</label>
 
                 <input
@@ -975,9 +1025,11 @@ button:disabled {
                     autocomplete="email"
                     placeholder="nama@email.com"
                 >
+
             </div>
 
             <div class="field">
+
                 <label>Password</label>
 
                 <input
@@ -986,6 +1038,7 @@ button:disabled {
                     autocomplete="new-password"
                     placeholder="Minimal 6 karakter"
                 >
+
             </div>
 
             <button
@@ -1001,6 +1054,7 @@ button:disabled {
             ></div>
 
             <div class="auth-switch">
+
                 Sudah punya akun?
 
                 <button
@@ -1009,6 +1063,7 @@ button:disabled {
                 >
                     Login
                 </button>
+
             </div>
 
         </div>
@@ -1017,6 +1072,10 @@ button:disabled {
 
 </section>
 
+
+<!-- =======================================================
+     STORAGE PAGE
+======================================================= -->
 
 <section
     id="storagePage"
@@ -1086,6 +1145,8 @@ button:disabled {
         </div>
 
 
+        <!-- UPLOAD -->
+
         <div class="upload-card">
 
             <label
@@ -1132,6 +1193,8 @@ button:disabled {
         </div>
 
 
+        <!-- TOOLBAR -->
+
         <div class="toolbar">
 
             <div class="search-box">
@@ -1157,6 +1220,8 @@ button:disabled {
 
         </div>
 
+
+        <!-- FILE GRID -->
 
         <div
             id="fileGrid"
@@ -1199,6 +1264,31 @@ const MAX_CONCURRENT_UPLOADS =
     10;
 
 
+/*
+   =========================================================
+   THUMBNAIL SETTINGS
+   =========================================================
+
+   Supabase akan membuat versi kecil gambar
+   sebelum dikirim ke browser.
+
+   Ini yang membuat thumbnail jauh lebih ringan
+   daripada mengambil file original.
+
+   Image Transformation:
+   420 x 280
+   cover
+   quality 65
+*/
+
+const THUMB_WIDTH = 420;
+const THUMB_HEIGHT = 280;
+const THUMB_QUALITY = 65;
+
+const THUMB_EXPIRES =
+    60 * 60;
+
+
 /* =========================================================
    SUPABASE
 ========================================================= */
@@ -1231,6 +1321,19 @@ let thumbnailObserver = null;
 let thumbnailQueue = [];
 
 let thumbnailLoading = false;
+
+
+/*
+   Map card berdasarkan nama file.
+
+   Sebelumnya pencarian card memakai Array.find()
+   berkali-kali.
+
+   Sekarang langsung:
+       cardMap.get(fileName)
+*/
+
+const cardMap = new Map();
 
 
 /* =========================================================
@@ -1288,16 +1391,22 @@ function escapeHtml(value) {
 
 function formatSize(bytes) {
 
-    bytes = Number(bytes) || 0;
+    bytes =
+        Number(bytes) || 0;
 
     if (bytes < 1024)
         return bytes + " B";
 
     if (bytes < 1024 * 1024)
-        return (bytes / 1024).toFixed(1) + " KB";
+        return (
+            bytes / 1024
+        ).toFixed(1) + " KB";
 
     if (bytes < 1024 * 1024 * 1024)
-        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+        return (
+            bytes /
+            (1024 * 1024)
+        ).toFixed(1) + " MB";
 
     return (
         bytes /
@@ -1621,7 +1730,8 @@ async function register() {
             .getElementById("registerButton");
 
     button.disabled = true;
-    button.textContent = "Membuat akun...";
+    button.textContent =
+        "Membuat akun...";
 
     const {
         data,
@@ -1635,7 +1745,8 @@ async function register() {
             });
 
     button.disabled = false;
-    button.textContent = "Buat Akun";
+    button.textContent =
+        "Buat Akun";
 
     if (error) {
 
@@ -1670,9 +1781,13 @@ document
         "click",
         () => {
 
-            loginForm.classList.add("hidden");
+            loginForm.classList.add(
+                "hidden"
+            );
 
-            registerForm.classList.remove("hidden");
+            registerForm.classList.remove(
+                "hidden"
+            );
 
         }
     );
@@ -1684,9 +1799,13 @@ document
         "click",
         () => {
 
-            registerForm.classList.add("hidden");
+            registerForm.classList.add(
+                "hidden"
+            );
 
-            loginForm.classList.remove("hidden");
+            loginForm.classList.remove(
+                "hidden"
+            );
 
         }
     );
@@ -1716,9 +1835,13 @@ document
 
 async function showStoragePage() {
 
-    authPage.classList.add("hidden");
+    authPage.classList.add(
+        "hidden"
+    );
 
-    storagePage.classList.remove("hidden");
+    storagePage.classList.remove(
+        "hidden"
+    );
 
     document
         .getElementById("userEmail")
@@ -1738,17 +1861,14 @@ async function loadFiles() {
     if (!currentUser)
         return;
 
-    /*
-       Jangan jalankan loadFiles
-       dua kali secara bersamaan.
-    */
-
     if (loadingFiles)
         return;
 
     loadingFiles = true;
 
     destroyThumbnailObserver();
+
+    cardMap.clear();
 
     fileGrid.innerHTML = `
         <div class="loading">
@@ -1834,6 +1954,8 @@ function renderFiles(files) {
 
     fileGrid.innerHTML = "";
 
+    cardMap.clear();
+
     if (!files.length) {
 
         fileGrid.innerHTML = `
@@ -1866,7 +1988,9 @@ function renderFiles(files) {
         file => {
 
             const card =
-                document.createElement("article");
+                document.createElement(
+                    "article"
+                );
 
             card.className =
                 "file-card";
@@ -1874,8 +1998,20 @@ function renderFiles(files) {
             card.dataset.fileName =
                 file.name;
 
+            /*
+               Simpan card langsung ke Map.
+               Tidak perlu Array.find() lagi.
+            */
+
+            cardMap.set(
+                file.name,
+                card
+            );
+
             const name =
-                escapeHtml(file.name);
+                escapeHtml(
+                    file.name
+                );
 
             const size =
                 formatSize(
@@ -1944,12 +2080,10 @@ function renderFiles(files) {
                 </div>
             `;
 
-            /*
-               Event listener tetap satu per card.
-            */
-
             card
-                .querySelector("[data-download]")
+                .querySelector(
+                    "[data-download]"
+                )
                 .onclick =
                 () =>
                     downloadFile(
@@ -1957,7 +2091,9 @@ function renderFiles(files) {
                     );
 
             card
-                .querySelector("[data-rename]")
+                .querySelector(
+                    "[data-rename]"
+                )
                 .onclick =
                 () =>
                     renameFile(
@@ -1965,19 +2101,18 @@ function renderFiles(files) {
                     );
 
             card
-                .querySelector("[data-delete]")
+                .querySelector(
+                    "[data-delete]"
+                )
                 .onclick =
                 () =>
                     deleteFile(
                         file.name
                     );
 
-            fragment.appendChild(card);
-
-            /*
-               Hanya gambar yang masuk
-               thumbnail observer.
-            */
+            fragment.appendChild(
+                card
+            );
 
             if (image) {
 
@@ -1991,12 +2126,9 @@ function renderFiles(files) {
         }
     );
 
-    fileGrid.appendChild(fragment);
-
-    /*
-       Setelah DOM selesai:
-       aktifkan lazy thumbnail.
-    */
+    fileGrid.appendChild(
+        fragment
+    );
 
     setupThumbnailObserver(
         imageCards
@@ -2017,6 +2149,25 @@ function setupThumbnailObserver(
 
     thumbnailQueue = [];
 
+    /*
+       Map untuk akses cepat.
+
+       Sebelumnya menggunakan:
+       imageCards.find(...)
+
+       Sekarang O(1).
+    */
+
+    const imageMap =
+        new Map(
+            imageCards.map(
+                item => [
+                    item.file.name,
+                    item
+                ]
+            )
+        );
+
     thumbnailObserver =
         new IntersectionObserver(
             entries => {
@@ -2029,29 +2180,44 @@ function setupThumbnailObserver(
                         )
                             return;
 
-                        const card =
-                            entry.target;
-
                         const fileName =
-                            card.dataset.fileName;
+                            entry
+                                .target
+                                .dataset
+                                .fileName;
 
                         const item =
-                            imageCards.find(
-                                x =>
-                                    x.file.name ===
-                                    fileName
+                            imageMap.get(
+                                fileName
                             );
 
                         if (!item)
                             return;
 
+                        /*
+                           Cegah item yang sama
+                           masuk queue dua kali.
+                        */
+
+                        if (
+                            item.card.dataset
+                                .thumbnailQueued ===
+                            "1"
+                        )
+                            return;
+
+                        item.card.dataset
+                            .thumbnailQueued =
+                            "1";
+
                         thumbnailQueue.push(
                             item
                         );
 
-                        thumbnailObserver.unobserve(
-                            card
-                        );
+                        thumbnailObserver
+                            .unobserve(
+                                item.card
+                            );
 
                     }
                 );
@@ -2063,12 +2229,12 @@ function setupThumbnailObserver(
                 root: null,
 
                 /*
-                   Thumbnail mulai dimuat
-                   sebelum benar-benar terlihat.
+                   Mulai request 400px
+                   sebelum masuk layar.
                 */
 
                 rootMargin:
-                    "300px 0px",
+                    "400px 0px",
 
                 threshold: 0
             }
@@ -2076,6 +2242,11 @@ function setupThumbnailObserver(
 
     imageCards.forEach(
         item => {
+
+            /*
+               Kalau sudah ada di cache,
+               langsung tampilkan.
+            */
 
             if (
                 thumbnailCache.has(
@@ -2104,6 +2275,104 @@ function setupThumbnailObserver(
 
 
 /* =========================================================
+   GET THUMBNAIL URL
+========================================================= */
+
+async function getThumbnailUrl(
+    file
+) {
+
+    const filePath =
+        `${currentUser.id}/${file.name}`;
+
+    /*
+       INI BAGIAN UTAMA OPTIMASI.
+
+       Browser meminta gambar yang sudah
+       di-resize oleh Supabase.
+
+       Bukan file original.
+    */
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .storage
+            .from(BUCKET)
+            .createSignedUrl(
+                filePath,
+                THUMB_EXPIRES,
+                {
+                    transform: {
+                        width:
+                            THUMB_WIDTH,
+
+                        height:
+                            THUMB_HEIGHT,
+
+                        resize:
+                            "cover",
+
+                        quality:
+                            THUMB_QUALITY
+                    }
+                }
+            );
+
+    if (
+        !error &&
+        data?.signedUrl
+    ) {
+
+        return data.signedUrl;
+
+    }
+
+    /*
+       FALLBACK
+
+       Kalau Image Transformation tidak
+       tersedia di project/plan, tetap
+       buat signed URL normal supaya
+       thumbnail tidak rusak total.
+    */
+
+    console.warn(
+        "Image transformation gagal untuk:",
+        file.name,
+        error
+    );
+
+    const fallback =
+        await supabaseClient
+            .storage
+            .from(BUCKET)
+            .createSignedUrl(
+                filePath,
+                THUMB_EXPIRES
+            );
+
+    if (
+        fallback.error ||
+        !fallback.data?.signedUrl
+    ) {
+
+        throw (
+            fallback.error ||
+            new Error(
+                "Tidak dapat membuat URL thumbnail."
+            )
+        );
+
+    }
+
+    return fallback.data.signedUrl;
+}
+
+
+/* =========================================================
    THUMBNAIL QUEUE
 ========================================================= */
 
@@ -2118,77 +2387,84 @@ async function processThumbnailQueue() {
     thumbnailLoading = true;
 
     /*
-       Ambil maksimal 8 gambar sekali request.
-       Ini jauh lebih ringan daripada semua gambar.
+       Hanya 6 thumbnail sekaligus.
+
+       Tidak membanjiri browser/network.
     */
 
     const batch =
         thumbnailQueue.splice(
             0,
-            8
+            6
         );
 
     try {
 
-        const paths =
+        await Promise.all(
             batch.map(
-                item =>
-                    `${currentUser.id}/${item.file.name}`
-            );
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .storage
-                .from(BUCKET)
-                .createSignedUrls(
-                    paths,
-                    3600
-                );
-
-        if (error)
-            throw error;
-
-        if (data) {
-
-            data.forEach(
-                (result, index) => {
-
-                    const item =
-                        batch[index];
+                async item => {
 
                     if (
-                        !item ||
-                        !result?.signedUrl
+                        !item?.file ||
+                        !item?.card
                     )
                         return;
 
-                    const url =
-                        result.signedUrl;
+                    /*
+                       Kalau cache sudah ada,
+                       tidak perlu request lagi.
+                    */
 
-                    thumbnailCache.set(
-                        item.file.name,
-                        url
-                    );
+                    if (
+                        thumbnailCache.has(
+                            item.file.name
+                        )
+                    ) {
 
-                    applyThumbnail(
-                        item.file,
-                        item.card,
-                        url
-                    );
+                        applyThumbnail(
+                            item.file,
+                            item.card,
+                            thumbnailCache.get(
+                                item.file.name
+                            )
+                        );
+
+                        return;
+                    }
+
+                    try {
+
+                        const url =
+                            await getThumbnailUrl(
+                                item.file
+                            );
+
+                        if (!url)
+                            return;
+
+                        thumbnailCache.set(
+                            item.file.name,
+                            url
+                        );
+
+                        applyThumbnail(
+                            item.file,
+                            item.card,
+                            url
+                        );
+
+                    } catch (error) {
+
+                        console.warn(
+                            "Thumbnail gagal:",
+                            item.file.name,
+                            error
+                        );
+
+                    }
 
                 }
-            );
-
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "Thumbnail batch gagal:",
-            error
+            )
         );
 
     } finally {
@@ -2196,11 +2472,13 @@ async function processThumbnailQueue() {
         thumbnailLoading = false;
 
         /*
-           Kalau masih ada gambar
-           dalam queue, lanjutkan.
+           Lanjutkan batch berikutnya
+           tanpa blocking render browser.
         */
 
-        if (thumbnailQueue.length) {
+        if (
+            thumbnailQueue.length
+        ) {
 
             setTimeout(
                 processThumbnailQueue,
@@ -2235,7 +2513,7 @@ function applyThumbnail(
         return;
 
     /*
-       Jangan membuat img dua kali.
+       Jangan render dua kali.
     */
 
     if (
@@ -2244,7 +2522,9 @@ function applyThumbnail(
         return;
 
     const img =
-        document.createElement("img");
+        document.createElement(
+            "img"
+        );
 
     img.loading =
         "lazy";
@@ -2252,14 +2532,33 @@ function applyThumbnail(
     img.decoding =
         "async";
 
+    img.fetchPriority =
+        "low";
+
     img.alt =
         file.name;
+
+    /*
+       Pasang URL sebelum append.
+       Browser langsung mulai download.
+    */
 
     img.src =
         url;
 
     img.onload =
         () => {
+
+            if (!card.isConnected)
+                return;
+
+            /*
+               Hilangkan icon setelah
+               thumbnail benar-benar siap.
+
+               Ini mencegah card kosong
+               saat gambar masih loading.
+            */
 
             preview.innerHTML = "";
 
@@ -2276,17 +2575,26 @@ function applyThumbnail(
     img.onerror =
         () => {
 
-            /*
-               Tetap gunakan icon
-               jika gambar gagal.
-            */
+            console.warn(
+                "Gambar thumbnail gagal ditampilkan:",
+                file.name
+            );
 
         };
+
+    /*
+       Masukkan langsung ke DOM agar
+       browser mulai proses download.
+    */
+
+    preview.appendChild(
+        img
+    );
 }
 
 
 /* =========================================================
-   DESTROY OBSERVER
+   DESTROY THUMBNAIL OBSERVER
 ========================================================= */
 
 function destroyThumbnailObserver() {
@@ -2297,10 +2605,11 @@ function destroyThumbnailObserver() {
 
         thumbnailObserver =
             null;
-
     }
 
     thumbnailQueue = [];
+
+    thumbnailLoading = false;
 }
 
 
@@ -2317,7 +2626,9 @@ fileInput.addEventListener(
                 event.target.files || []
             );
 
-        await uploadFiles(files);
+        await uploadFiles(
+            files
+        );
 
         fileInput.value = "";
 
@@ -2326,7 +2637,7 @@ fileInput.addEventListener(
 
 
 /* =========================================================
-   DRAG DROP
+   DRAG & DROP
 ========================================================= */
 
 [
@@ -2384,7 +2695,9 @@ uploadZone.addEventListener(
                 event.dataTransfer.files || []
             );
 
-        await uploadFiles(files);
+        await uploadFiles(
+            files
+        );
 
     }
 );
@@ -2412,7 +2725,10 @@ async function uploadFiles(files) {
     if (!files.length)
         return;
 
-    if (files.length > MAX_FILES) {
+    if (
+        files.length >
+        MAX_FILES
+    ) {
 
         showToast(
             `Maksimal ${MAX_FILES} file sekali upload.`,
@@ -2425,7 +2741,8 @@ async function uploadFiles(files) {
     const validFiles =
         files.filter(
             file =>
-                file.size <= MAX_FILE_SIZE
+                file.size <=
+                MAX_FILE_SIZE
         );
 
     if (
@@ -2449,13 +2766,12 @@ async function uploadFiles(files) {
         "none";
 
     let completed = 0;
-
     let failed = 0;
+    let cursor = 0;
 
     uploadStatus.textContent =
         `Mempersiapkan ${validFiles.length} file...`;
 
-    let cursor = 0;
 
     async function worker() {
 
@@ -2510,8 +2826,11 @@ async function uploadFiles(files) {
                             filePath,
                             file,
                             {
-                                cacheControl: "3600",
-                                upsert: false
+                                cacheControl:
+                                    "3600",
+
+                                upsert:
+                                    false
                             }
                         );
 
@@ -2535,6 +2854,7 @@ async function uploadFiles(files) {
 
     }
 
+
     const workers =
         Math.min(
             MAX_CONCURRENT_UPLOADS,
@@ -2544,7 +2864,8 @@ async function uploadFiles(files) {
     await Promise.all(
         Array.from(
             {
-                length: workers
+                length:
+                    workers
             },
             worker
         )
@@ -2573,6 +2894,15 @@ async function uploadFiles(files) {
 
     uploadStatus.textContent = "";
 
+    /*
+       Setelah upload:
+       refresh file list.
+
+       Cache thumbnail tidak perlu
+       dihapus semua karena file lama
+       tetap valid.
+    */
+
     await loadFiles();
 }
 
@@ -2594,10 +2924,8 @@ async function downloadFile(
             `${currentUser.id}/${fileName}`;
 
         /*
-           Kalau thumbnail cache ada,
-           jangan dipakai untuk download.
-           Download tetap membuat URL
-           sendiri agar valid.
+           Download tetap menggunakan
+           file ORIGINAL.
         */
 
         const {
@@ -2615,7 +2943,9 @@ async function downloadFile(
         if (error)
             throw error;
 
-        if (!data?.signedUrl)
+        if (
+            !data?.signedUrl
+        )
             throw new Error(
                 "URL download tidak tersedia."
             );
@@ -2822,7 +3152,9 @@ searchInput.addEventListener(
     "input",
     () => {
 
-        clearTimeout(searchTimer);
+        clearTimeout(
+            searchTimer
+        );
 
         searchTimer =
             setTimeout(
@@ -2911,14 +3243,6 @@ supabaseClient
             session
         ) => {
 
-            /*
-               Supabase bisa mengirim
-               INITIAL_SESSION.
-               Kita jadikan ini satu-satunya
-               sumber awal untuk menampilkan
-               storage.
-            */
-
             if (
                 session?.user
             ) {
@@ -2948,6 +3272,8 @@ supabaseClient
 
                 destroyThumbnailObserver();
 
+                cardMap.clear();
+
                 storagePage
                     .classList
                     .add("hidden");
@@ -2972,11 +3298,11 @@ supabaseClient
 async function init() {
 
     /*
-       Tidak lagi memanggil loadFiles()
-       secara langsung.
+       Jangan memanggil loadFiles()
+       dua kali.
 
-       Supabase onAuthStateChange akan
-       menangani session.
+       Auth listener menjadi sumber
+       utama session.
     */
 
     const {
