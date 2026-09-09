@@ -1,1297 +1,250 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
-  <!-- =========================================================
-       ⚙️ DASAR HTML
-       =========================================================
-       Bagian ini mengatur encoding, ukuran layar, judul aplikasi,
-       serta library eksternal yang digunakan.
-       ========================================================= -->
-
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <title>My Cloud Storage</title>
 
-  <!-- 🟢 AMAN DIUBAH
-       Nama yang tampil di tab browser -->
-  <title>Ju𝟱tFun Cloud</title>
-
-
-  <!-- =========================================================
-       📦 LIBRARY
-       ========================================================= -->
-
-  <!-- Tailwind CSS
-       Digunakan untuk membuat tampilan/UI aplikasi -->
+  <!-- =====================================================
+       TAILWIND CSS
+  ====================================================== -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Supabase JavaScript SDK
-       Digunakan untuk:
-       - Login/register
-       - Database
-       - Storage
-       - Signed URL
-       -->
+  <!-- =====================================================
+       SUPABASE JS
+  ====================================================== -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
-  <!-- =========================================================
-       🎨 KONFIGURASI TAILWIND
-       ========================================================= -->
-
-  <script>
-
-    tailwind.config = {
-
-      /*
-       * darkMode: "class"
-       *
-       * Artinya mode gelap dikontrol melalui class "dark"
-       * pada elemen <html>.
-       */
-      darkMode: "class",
-
-      theme: {
-
-        extend: {
-
-          fontFamily: {
-
-            /*
-             * 🟢 AMAN DIUBAH
-             *
-             * Font utama aplikasi.
-             */
-            sans: [
-              "Inter",
-              "ui-sans-serif",
-              "system-ui",
-              "sans-serif"
-            ]
-
-          }
-
-        }
-
-      }
-
-    };
-
-  </script>
-
-
-  <!-- =========================================================
-       🎨 CSS CUSTOM
-       =========================================================
-       Tailwind menangani sebagian besar tampilan.
-       CSS di bawah ini digunakan untuk animasi dan efek tambahan.
-       ========================================================= -->
-
   <style>
+    /* =====================================================
+       THUMBNAIL
+       ====================================================== */
 
-    /*
-     * Scrollbar tipis.
-     */
-    * {
-
-      scrollbar-width: thin;
-
-      scrollbar-color:
-        #cbd5e1
-        transparent;
-
+    .thumbnail-box {
+      width: 100%;
+      height: 220px;
+      background: #f3f4f6;
+      overflow: hidden;
+      position: relative;
     }
 
-
-    /*
-     * Warna scrollbar ketika dark mode.
-     */
-    html.dark * {
-
-      scrollbar-color:
-        #475569
-        transparent;
-
+    .thumbnail-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-
-    /*
-     * Font utama body.
-     */
-    body {
-
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        sans-serif;
-
+    .thumbnail-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      color: #9ca3af;
     }
 
+    /* =====================================================
+       PREVIEW IMAGE
+       ====================================================== */
 
-    /*
-     * Class untuk menyembunyikan elemen.
-     */
-    .hidden-important {
-
-      display: none !important;
-
+    #previewModal img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
     }
-
-
-    /*
-     * Efek glass / kaca.
-     */
-    .glass {
-
-      backdrop-filter:
-        blur(18px);
-
-      -webkit-backdrop-filter:
-        blur(18px);
-
-    }
-
-
-    /*
-     * Animasi kartu file ketika mouse diarahkan.
-     */
-    .file-card {
-
-      transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        border-color .2s ease,
-        background .2s ease;
-
-    }
-
-
-    .file-card:hover {
-
-      transform:
-        translateY(-3px);
-
-    }
-
-
-    /*
-     * Animasi area drag & drop.
-     */
-    .drop-zone {
-
-      transition:
-        border-color .2s ease,
-        background .2s ease,
-        transform .2s ease;
-
-    }
-
-
-    .drop-zone.dragover {
-
-      transform:
-        scale(1.01);
-
-      border-color:
-        #6366f1;
-
-      background:
-        rgba(99, 102, 241, .08);
-
-    }
-
-
-    /*
-     * Animasi modal.
-     */
-    .modal-backdrop {
-
-      animation:
-        fadeIn .18s ease;
-
-    }
-
-
-    .modal-box {
-
-      animation:
-        modalIn .2s ease;
-
-    }
-
-
-    /*
-     * Animasi toast notification.
-     */
-    .toast {
-
-      animation:
-        toastIn .25s ease;
-
-    }
-
-
-    @keyframes fadeIn {
-
-      from {
-
-        opacity: 0;
-
-      }
-
-      to {
-
-        opacity: 1;
-
-      }
-
-    }
-
-
-    @keyframes modalIn {
-
-      from {
-
-        opacity: 0;
-
-        transform:
-          translateY(12px)
-          scale(.98);
-
-      }
-
-      to {
-
-        opacity: 1;
-
-        transform:
-          translateY(0)
-          scale(1);
-
-      }
-
-    }
-
-
-    @keyframes toastIn {
-
-      from {
-
-        opacity: 0;
-
-        transform:
-          translateY(12px);
-
-      }
-
-      to {
-
-        opacity: 1;
-
-        transform:
-          translateY(0);
-
-      }
-
-    }
-
-
-    /*
-     * Animasi logo cloud.
-     */
-    @keyframes float {
-
-      0%, 100% {
-
-        transform:
-          translateY(0);
-
-      }
-
-      50% {
-
-        transform:
-          translateY(-5px);
-
-      }
-
-    }
-
-
-    .float {
-
-      animation:
-        float 3s ease-in-out infinite;
-
-    }
-
-
-    /*
-     * Animasi progress upload.
-     */
-    .progress-bar {
-
-      transition:
-        width .35s ease;
-
-    }
-
-
-    /*
-     * Membatasi teks maksimal 2 baris.
-     */
-    .line-clamp-2 {
-
-      display:
-        -webkit-box;
-
-      -webkit-line-clamp:
-        2;
-
-      -webkit-box-orient:
-        vertical;
-
-      overflow:
-        hidden;
-
-    }
-
-
-    button,
-    input {
-
-      outline:
-        none;
-
-    }
-
-
-    /*
-     * Warna teks ketika diseleksi.
-     */
-    ::selection {
-
-      background:
-        #6366f1;
-
-      color:
-        white;
-
-    }
-
   </style>
-
 </head>
 
+<body class="bg-gray-100 min-h-screen">
 
-<body
-  class="
-    bg-slate-50
-    text-slate-900
-    min-h-screen
-    transition-colors
-    duration-300
-    dark:bg-slate-950
-    dark:text-slate-100
-  "
->
-
-
-<!-- =========================================================
-     🔐 AUTH PAGE
-     =========================================================
-     Halaman login dan register.
-     Hanya salah satu form yang ditampilkan.
-     ========================================================= -->
-
-<div
-  id="authPage"
-  class="
-    min-h-screen
-    flex
-    items-center
-    justify-center
-    p-4
-    relative
-    overflow-hidden
-    bg-gradient-to-br
-    from-indigo-50
-    via-white
-    to-blue-100
-    dark:from-slate-950
-    dark:via-slate-900
-    dark:to-indigo-950
-  "
->
-
-  <!-- Dekorasi background -->
-  <div
-    class="
-      absolute
-      -top-32
-      -left-32
-      w-80
-      h-80
-      bg-indigo-400/20
-      rounded-full
-      blur-3xl
-    "
-  ></div>
+  <!-- =====================================================
+       LOGIN / REGISTER
+  ====================================================== -->
 
   <div
-    class="
-      absolute
-      -bottom-32
-      -right-32
-      w-96
-      h-96
-      bg-blue-400/20
-      rounded-full
-      blur-3xl
-    "
-  ></div>
-
-
-  <!-- Kotak login/register -->
-  <div
-    class="
-      relative
-      w-full
-      max-w-md
-      bg-white/90
-      dark:bg-slate-900/90
-      glass
-      border
-      border-white/60
-      dark:border-slate-700
-      rounded-[2rem]
-      shadow-2xl
-      p-7
-      sm:p-9
-    "
+    id="authPage"
+    class="min-h-screen flex items-center justify-center p-4"
   >
 
-
-    <!-- =====================================================
-         ☁️ BRAND
-         ===================================================== -->
-
     <div
-      class="text-center mb-8"
+      class="bg-white w-full max-w-md rounded-2xl shadow-lg p-7"
     >
 
-      <div
-        class="
-          w-20
-          h-20
-          mx-auto
-          rounded-3xl
-          bg-gradient-to-br
-          from-indigo-500
-          to-blue-600
-          flex
-          items-center
-          justify-center
-          text-4xl
-          shadow-xl
-          shadow-indigo-500/20
-          float
-        "
-      >
-        ☁️
-      </div>
+      <!-- LOGO / JUDUL -->
+      <div class="text-center mb-6">
 
+        <div class="text-5xl mb-3">
+          ☁️
+        </div>
 
-      <!-- 🟢 AMAN DIUBAH
-           Nama aplikasi -->
-      <h1
-        class="
-          text-3xl
-          font-black
-          tracking-tight
-          mt-5
-        "
-      >
-        Ju𝟱tFun
-        <span
-          class="
-            text-indigo-600
-            dark:text-indigo-400
-          "
-        >
-          Cloud
-        </span>
-      </h1>
+        <h1 class="text-2xl font-bold text-gray-800">
+          My Cloud Storage
+        </h1>
 
-
-      <p
-        class="
-          text-slate-500
-          dark:text-slate-400
-          mt-2
-        "
-      >
-        Simpan dan kelola file kamu dengan mudah.
-      </p>
-
-    </div>
-
-
-    <!-- =====================================================
-         🔑 LOGIN FORM
-         ===================================================== -->
-
-    <div id="loginForm">
-
-      <div class="mb-5">
-
-        <h2 class="text-xl font-bold">
-          Selamat datang kembali 👋
-        </h2>
-
-        <p
-          class="
-            text-sm
-            text-slate-500
-            dark:text-slate-400
-            mt-1
-          "
-        >
-          Login untuk mengakses file kamu.
+        <p class="text-gray-500 mt-1">
+          Simpan file kamu dengan aman
         </p>
 
       </div>
 
 
-      <label
-        class="block text-sm font-semibold mb-2"
-      >
-        Email
-      </label>
+      <!-- =================================================
+           LOGIN
+      ================================================== -->
 
+      <div id="loginForm">
 
-      <input
-        id="loginEmail"
-        type="email"
-        autocomplete="email"
-        placeholder="nama@email.com"
-        class="
-          w-full
-          px-4
-          py-3.5
-          rounded-2xl
-          border
-          border-slate-200
-          dark:border-slate-700
-          bg-slate-50
-          dark:bg-slate-800
-          focus:ring-2
-          focus:ring-indigo-500
-          focus:border-indigo-500
-          transition
-          mb-4
-        "
-      />
-
-
-      <label
-        class="block text-sm font-semibold mb-2"
-      >
-        Password
-      </label>
-
-
-      <input
-        id="loginPassword"
-        type="password"
-        autocomplete="current-password"
-        placeholder="Masukkan password"
-        class="
-          w-full
-          px-4
-          py-3.5
-          rounded-2xl
-          border
-          border-slate-200
-          dark:border-slate-700
-          bg-slate-50
-          dark:bg-slate-800
-          focus:ring-2
-          focus:ring-indigo-500
-          focus:border-indigo-500
-          transition
-        "
-      />
-
-
-      <button
-        id="loginButton"
-        class="
-          w-full
-          mt-5
-          py-3.5
-          rounded-2xl
-          bg-gradient-to-r
-          from-indigo-600
-          to-blue-600
-          hover:from-indigo-700
-          hover:to-blue-700
-          text-white
-          font-bold
-          shadow-lg
-          shadow-indigo-500/20
-          active:scale-[.99]
-        "
-      >
-        Login
-      </button>
-
-
-      <p
-        class="
-          text-center
-          text-sm
-          text-slate-500
-          dark:text-slate-400
-          mt-6
-        "
-      >
-
-        Belum punya akun?
-
-        <button
-          id="showRegister"
-          class="
-            font-bold
-            text-indigo-600
-            dark:text-indigo-400
-            hover:underline
-          "
-        >
-          Daftar sekarang
-        </button>
-
-      </p>
-
-    </div>
-
-
-    <!-- =====================================================
-         📝 REGISTER FORM
-         ===================================================== -->
-
-    <div
-      id="registerForm"
-      class="hidden"
-    >
-
-      <div class="mb-5">
-
-        <h2 class="text-xl font-bold">
-          Buat akun baru ✨
+        <h2 class="text-xl font-semibold mb-4">
+          Login
         </h2>
 
-        <p
-          class="
-            text-sm
-            text-slate-500
-            dark:text-slate-400
-            mt-1
-          "
-        >
-          Mulai gunakan cloud storage kamu.
-        </p>
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="Email"
+          class="w-full border rounded-lg px-4 py-3 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-      </div>
-
-
-      <label
-        class="block text-sm font-semibold mb-2"
-      >
-        Email
-      </label>
-
-
-      <input
-        id="registerEmail"
-        type="email"
-        autocomplete="email"
-        placeholder="nama@email.com"
-        class="
-          w-full
-          px-4
-          py-3.5
-          rounded-2xl
-          border
-          border-slate-200
-          dark:border-slate-700
-          bg-slate-50
-          dark:bg-slate-800
-          focus:ring-2
-          focus:ring-indigo-500
-          focus:border-indigo-500
-          transition
-          mb-4
-        "
-      />
-
-
-      <label
-        class="block text-sm font-semibold mb-2"
-      >
-        Password
-      </label>
-
-
-      <input
-        id="registerPassword"
-        type="password"
-        autocomplete="new-password"
-        placeholder="Minimal 6 karakter"
-        class="
-          w-full
-          px-4
-          py-3.5
-          rounded-2xl
-          border
-          border-slate-200
-          dark:border-slate-700
-          bg-slate-50
-          dark:bg-slate-800
-          focus:ring-2
-          focus:ring-indigo-500
-          focus:border-indigo-500
-          transition
-        "
-      />
-
-
-      <button
-        id="registerButton"
-        class="
-          w-full
-          mt-5
-          py-3.5
-          rounded-2xl
-          bg-gradient-to-r
-          from-emerald-600
-          to-green-600
-          hover:from-emerald-700
-          hover:to-green-700
-          text-white
-          font-bold
-          shadow-lg
-          shadow-green-500/20
-        "
-      >
-        Buat Akun
-      </button>
-
-
-      <p
-        class="
-          text-center
-          text-sm
-          text-slate-500
-          dark:text-slate-400
-          mt-6
-        "
-      >
-
-        Sudah punya akun?
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Password"
+          class="w-full border rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
         <button
-          id="showLogin"
-          class="
-            font-bold
-            text-indigo-600
-            dark:text-indigo-400
-            hover:underline
-          "
+          id="loginButton"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg"
         >
           Login
         </button>
 
-      </p>
+        <p class="text-center text-sm text-gray-500 mt-5">
+
+          Belum punya akun?
+
+          <button
+            id="showRegister"
+            class="text-blue-600 font-semibold"
+          >
+            Daftar
+          </button>
+
+        </p>
+
+      </div>
+
+
+      <!-- =================================================
+           REGISTER
+      ================================================== -->
+
+      <div
+        id="registerForm"
+        class="hidden"
+      >
+
+        <h2 class="text-xl font-semibold mb-4">
+          Buat Akun
+        </h2>
+
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="Email"
+          class="w-full border rounded-lg px-4 py-3 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+
+        <input
+          id="registerPassword"
+          type="password"
+          placeholder="Password minimal 6 karakter"
+          class="w-full border rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+
+        <button
+          id="registerButton"
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg"
+        >
+          Daftar
+        </button>
+
+        <p class="text-center text-sm text-gray-500 mt-5">
+
+          Sudah punya akun?
+
+          <button
+            id="showLogin"
+            class="text-blue-600 font-semibold"
+          >
+            Login
+          </button>
+
+        </p>
+
+      </div>
+
+
+      <!-- =================================================
+           AUTH MESSAGE
+      ================================================== -->
+
+      <div
+        id="authMessage"
+        class="hidden mt-4 p-3 rounded-lg text-sm"
+      ></div>
 
     </div>
-
-
-    <!-- Pesan error/sukses login/register -->
-    <div
-      id="authMessage"
-      class="
-        hidden
-        mt-5
-        p-4
-        rounded-2xl
-        text-sm
-        font-medium
-      "
-    ></div>
 
   </div>
 
-</div>
 
+  <!-- =====================================================
+       STORAGE PAGE
+  ====================================================== -->
 
-<!-- =========================================================
-     ☁️ MAIN APP
-     ========================================================= -->
-
-<div
-  id="appPage"
-  class="hidden min-h-screen"
->
-
-
-  <!-- =======================================================
-       📱 MOBILE HEADER
-       ======================================================= -->
-
-  <header
-    class="
-      lg:hidden
-      sticky
-      top-0
-      z-40
-      bg-white/90
-      dark:bg-slate-900/90
-      glass
-      border-b
-      border-slate-200
-      dark:border-slate-800
-    "
-  >
-
-    <div
-      class="
-        px-4
-        py-3
-        flex
-        items-center
-        justify-between
-      "
-    >
-
-      <button
-        id="mobileMenuButton"
-        class="
-          w-11
-          h-11
-          rounded-xl
-          bg-slate-100
-          dark:bg-slate-800
-          flex
-          items-center
-          justify-center
-          text-xl
-        "
-      >
-        ☰
-      </button>
-
-
-      <div class="font-black text-lg">
-
-        Ju𝟱tFun
-        <span class="text-indigo-500">
-          Cloud
-        </span>
-
-      </div>
-
-
-      <button
-        id="mobileThemeButton"
-        class="
-          w-11
-          h-11
-          rounded-xl
-          bg-slate-100
-          dark:bg-slate-800
-          flex
-          items-center
-          justify-center
-        "
-      >
-        🌙
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <!-- =======================================================
-       📂 SIDEBAR
-       ======================================================= -->
-
-  <aside
-    id="sidebar"
-    class="
-      fixed
-      z-50
-      lg:z-30
-      inset-y-0
-      left-0
-      w-72
-      bg-white
-      dark:bg-slate-900
-      border-r
-      border-slate-200
-      dark:border-slate-800
-      flex
-      flex-col
-      transform
-      -translate-x-full
-      lg:translate-x-0
-      transition-transform
-      duration-300
-    "
-  >
-
-    <!-- Logo sidebar -->
-    <div class="p-6">
-
-      <div class="flex items-center gap-3">
-
-        <div
-          class="
-            w-11
-            h-11
-            rounded-2xl
-            bg-gradient-to-br
-            from-indigo-500
-            to-blue-600
-            flex
-            items-center
-            justify-center
-            text-xl
-            shadow-lg
-          "
-        >
-          ☁️
-        </div>
-
-
-        <div>
-
-          <div class="font-black text-lg">
-            Ju𝟱tFun Cloud
-          </div>
-
-          <div class="text-xs text-slate-400">
-            Personal storage
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- Navigasi -->
-    <nav class="px-4 space-y-1">
-
-      <button
-        class="
-          sidebar-item
-          w-full
-          flex
-          items-center
-          gap-3
-          px-4
-          py-3
-          rounded-xl
-          bg-indigo-50
-          dark:bg-indigo-500/10
-          text-indigo-600
-          dark:text-indigo-400
-          font-semibold
-        "
-      >
-        <span>🏠</span>
-        <span>My Files</span>
-      </button>
-
-
-      <button
-        id="sidebarUploadButton"
-        class="
-          sidebar-item
-          w-full
-          flex
-          items-center
-          gap-3
-          px-4
-          py-3
-          rounded-xl
-          text-slate-600
-          dark:text-slate-300
-          hover:bg-slate-100
-          dark:hover:bg-slate-800
-          font-medium
-        "
-      >
-        <span>📤</span>
-        <span>Upload File</span>
-      </button>
-
-    </nav>
-
-
-    <!-- =====================================================
-         💾 STORAGE INFO
-         ===================================================== -->
-
-    <div class="mt-auto p-4">
-
-      <div
-        class="
-          rounded-2xl
-          bg-slate-50
-          dark:bg-slate-800/70
-          border
-          border-slate-200
-          dark:border-slate-700
-          p-4
-        "
-      >
-
-        <div
-          class="
-            flex
-            justify-between
-            items-center
-            mb-2
-          "
-        >
-
-          <span
-            class="
-              text-xs
-              font-semibold
-              text-slate-500
-              dark:text-slate-400
-            "
-          >
-            Storage
-          </span>
-
-
-          <span
-            id="sidebarStoragePercentage"
-            class="
-              text-xs
-              font-bold
-              text-indigo-600
-              dark:text-indigo-400
-            "
-          >
-            0%
-          </span>
-
-        </div>
-
-
-        <div
-          class="
-            h-2
-            bg-slate-200
-            dark:bg-slate-700
-            rounded-full
-            overflow-hidden
-          "
-        >
-
-          <div
-            id="sidebarStorageBar"
-            class="
-              h-full
-              bg-gradient-to-r
-              from-indigo-500
-              to-blue-500
-              rounded-full
-              progress-bar
-            "
-            style="width:0%"
-          ></div>
-
-        </div>
-
-
-        <div
-          id="sidebarStorageText"
-          class="
-            text-xs
-            text-slate-400
-            mt-2
-          "
-        >
-          0 Bytes / 10 GB
-        </div>
-
-      </div>
-
-
-      <!-- Tombol tema dan logout -->
-      <div class="mt-3 flex gap-2">
-
-        <button
-          id="themeButton"
-          class="
-            flex-1
-            py-2.5
-            rounded-xl
-            bg-slate-100
-            dark:bg-slate-800
-            hover:bg-slate-200
-            dark:hover:bg-slate-700
-            text-sm
-          "
-        >
-          🌙 Tema
-        </button>
-
-
-        <button
-          id="logoutButton"
-          class="
-            flex-1
-            py-2.5
-            rounded-xl
-            bg-red-50
-            dark:bg-red-500/10
-            text-red-600
-            dark:text-red-400
-            hover:bg-red-100
-            dark:hover:bg-red-500/20
-            text-sm
-            font-semibold
-          "
-        >
-          Logout
-        </button>
-
-      </div>
-
-    </div>
-
-  </aside>
-
-
-  <!-- Overlay sidebar mobile -->
   <div
-    id="sidebarOverlay"
-    class="
-      hidden
-      fixed
-      inset-0
-      bg-black/40
-      z-40
-      lg:hidden
-    "
-  ></div>
-
-
-  <!-- =======================================================
-       🖥️ MAIN CONTENT
-       ======================================================= -->
-
-  <main
-    class="lg:ml-72 min-h-screen"
+    id="storagePage"
+    class="hidden min-h-screen"
   >
 
+    <!-- ===================================================
+         HEADER
+    ==================================================== -->
 
-    <!-- Desktop topbar -->
-    <header
-      class="
-        hidden
-        lg:block
-        sticky
-        top-0
-        z-20
-        bg-white/80
-        dark:bg-slate-950/80
-        glass
-        border-b
-        border-slate-200
-        dark:border-slate-800
-      "
-    >
+    <header class="bg-white shadow-sm">
 
-      <div
-        class="
-          px-8
-          py-4
-          flex
-          items-center
-          justify-between
-        "
-      >
+      <div class="max-w-5xl mx-auto px-4 py-4">
 
-        <div>
+        <div
+          class="flex items-center justify-between gap-3"
+        >
 
-          <h1 class="text-xl font-bold">
-            My Files
-          </h1>
+          <div>
 
-          <p
-            id="desktopUserEmail"
-            class="
-              text-xs
-              text-slate-400
-              mt-1
-            "
-          ></p>
+            <h1
+              class="text-xl md:text-2xl font-bold text-gray-800"
+            >
+              ☁️ My Cloud Storage
+            </h1>
 
-        </div>
+            <p
+              id="userEmail"
+              class="text-sm text-gray-500 break-all"
+            ></p>
 
+          </div>
 
-        <div class="flex items-center gap-3">
 
           <button
-            id="desktopThemeButton"
-            class="
-              w-10
-              h-10
-              rounded-xl
-              bg-slate-100
-              dark:bg-slate-800
-              hover:bg-slate-200
-              dark:hover:bg-slate-700
-            "
+            id="logoutButton"
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold"
           >
-            🌙
+            Logout
           </button>
-
-
-          <div
-            id="desktopAvatar"
-            class="
-              w-10
-              h-10
-              rounded-full
-              bg-indigo-100
-              dark:bg-indigo-500/20
-              text-indigo-600
-              dark:text-indigo-400
-              flex
-              items-center
-              justify-center
-              font-bold
-            "
-          >
-            U
-          </div>
 
         </div>
 
@@ -1300,3123 +253,1134 @@
     </header>
 
 
-    <div
-      class="
-        max-w-7xl
-        mx-auto
-        px-4
-        sm:px-6
-        lg:px-8
-        py-6
-      "
+    <!-- ===================================================
+         MAIN
+    ==================================================== -->
+
+    <main
+      class="max-w-5xl mx-auto px-4 py-6"
     >
 
+      <!-- =================================================
+           UPLOAD AREA
+      ================================================== -->
 
-      <!-- =====================================================
-           👋 WELCOME
-           ===================================================== -->
-
-      <section
-        class="
-          relative
-          overflow-hidden
-          rounded-3xl
-          bg-gradient-to-br
-          from-indigo-600
-          via-indigo-600
-          to-blue-600
-          text-white
-          p-6
-          sm:p-8
-          mb-6
-          shadow-xl
-          shadow-indigo-500/10
-        "
+      <div
+        class="bg-white rounded-2xl shadow-sm p-5 mb-6"
       >
 
-        <div
-          class="
-            absolute
-            -right-10
-            -top-20
-            w-60
-            h-60
-            rounded-full
-            bg-white/10
-            blur-2xl
-          "
-        ></div>
+        <h2
+          class="text-lg font-bold text-gray-800 mb-2"
+        >
+          Upload File
+        </h2>
+
+        <p class="text-sm text-gray-500 mb-4">
+          Maksimal ukuran satu file:
+          <b>100 MB</b>
+        </p>
 
 
-        <div
-          class="
-            absolute
-            right-20
-            bottom-[-100px]
-            w-60
-            h-60
-            rounded-full
-            bg-blue-300/10
-            blur-2xl
-          "
-        ></div>
+        <!-- DROP AREA -->
 
-
-        <div
-          class="
-            relative
-            flex
-            flex-col
-            md:flex-row
-            md:items-center
-            justify-between
-            gap-6
-          "
+        <label
+          id="dropArea"
+          for="fileInput"
+          class="block border-2 border-dashed border-gray-300 hover:border-blue-500 rounded-xl p-8 text-center cursor-pointer transition"
         >
 
-          <div>
-
-            <div
-              class="
-                text-indigo-100
-                text-sm
-                font-medium
-                mb-2
-              "
-            >
-              CLOUD STORAGE
-            </div>
-
-
-            <h2
-              class="
-                text-2xl
-                sm:text-3xl
-                font-black
-              "
-            >
-              Semua file kamu, satu tempat. ☁️
-            </h2>
-
-
-            <p
-              class="
-                text-indigo-100
-                mt-2
-                max-w-xl
-                text-sm
-                sm:text-base
-              "
-            >
-              Upload, simpan, cari, dan download file dengan cepat.
-            </p>
-
-          </div>
-
-
-          <button
-            id="heroUploadButton"
-            class="
-              flex-shrink-0
-              px-5
-              py-3
-              rounded-2xl
-              bg-white
-              text-indigo-600
-              font-bold
-              hover:bg-indigo-50
-              shadow-lg
-            "
-          >
-            + Upload File
-          </button>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           💾 STORAGE CARDS
-           ===================================================== -->
-
-      <section
-        class="grid sm:grid-cols-3 gap-4 mb-6"
-      >
-
-        <!-- Storage digunakan -->
-        <div
-          class="
-            bg-white
-            dark:bg-slate-900
-            border
-            border-slate-200
-            dark:border-slate-800
-            rounded-2xl
-            p-5
-          "
-        >
-
-          <div
-            class="
-              flex
-              items-center
-              justify-between
-            "
-          >
-
-            <div>
-
-              <div
-                class="
-                  text-xs
-                  uppercase
-                  tracking-wide
-                  text-slate-400
-                  font-bold
-                "
-              >
-                Storage Digunakan
-              </div>
-
-              <div
-                id="storageUsedCard"
-                class="
-                  text-2xl
-                  font-black
-                  mt-2
-                "
-              >
-                0 Bytes
-              </div>
-
-            </div>
-
-
-            <div
-              class="
-                w-11
-                h-11
-                rounded-xl
-                bg-indigo-50
-                dark:bg-indigo-500/10
-                flex
-                items-center
-                justify-center
-              "
-            >
-              💾
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- Storage tersisa -->
-        <div
-          class="
-            bg-white
-            dark:bg-slate-900
-            border
-            border-slate-200
-            dark:border-slate-800
-            rounded-2xl
-            p-5
-          "
-        >
-
-          <div
-            class="
-              flex
-              items-center
-              justify-between
-            "
-          >
-
-            <div>
-
-              <div
-                class="
-                  text-xs
-                  uppercase
-                  tracking-wide
-                  text-slate-400
-                  font-bold
-                "
-              >
-                Tersisa
-              </div>
-
-              <div
-                id="storageRemainingCard"
-                class="
-                  text-2xl
-                  font-black
-                  mt-2
-                "
-              >
-                10 GB
-              </div>
-
-            </div>
-
-
-            <div
-              class="
-                w-11
-                h-11
-                rounded-xl
-                bg-emerald-50
-                dark:bg-emerald-500/10
-                flex
-                items-center
-                justify-center
-              "
-            >
-              📦
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- Total file -->
-        <div
-          class="
-            bg-white
-            dark:bg-slate-900
-            border
-            border-slate-200
-            dark:border-slate-800
-            rounded-2xl
-            p-5
-          "
-        >
-
-          <div
-            class="
-              flex
-              items-center
-              justify-between
-            "
-          >
-
-            <div>
-
-              <div
-                class="
-                  text-xs
-                  uppercase
-                  tracking-wide
-                  text-slate-400
-                  font-bold
-                "
-              >
-                Total File
-              </div>
-
-              <div
-                id="totalFilesCard"
-                class="
-                  text-2xl
-                  font-black
-                  mt-2
-                "
-              >
-                0
-              </div>
-
-            </div>
-
-
-            <div
-              class="
-                w-11
-                h-11
-                rounded-xl
-                bg-blue-50
-                dark:bg-blue-500/10
-                flex
-                items-center
-                justify-center
-              "
-            >
-              📁
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           📤 UPLOAD SECTION
-           ===================================================== -->
-
-      <section
-        id="uploadSection"
-        class="
-          bg-white
-          dark:bg-slate-900
-          border
-          border-slate-200
-          dark:border-slate-800
-          rounded-3xl
-          p-5
-          sm:p-7
-          mb-6
-          shadow-sm
-        "
-      >
-
-        <div
-          class="
-            flex
-            items-center
-            justify-between
-            mb-5
-          "
-        >
-
-          <div>
-
-            <h2 class="font-bold text-lg">
-              Upload File
-            </h2>
-
-            <p
-              class="
-                text-sm
-                text-slate-400
-                mt-1
-              "
-            >
-              Maksimal 100 MB untuk setiap file.
-            </p>
-
-          </div>
-
-
-          <div class="text-3xl">
+          <div class="text-4xl mb-2">
             📤
           </div>
 
-        </div>
-
-
-        <!--
-          Area drag & drop.
-
-          User dapat:
-          1. Klik area ini untuk memilih file.
-          2. Drag file ke area ini.
-        -->
-
-        <label
-          id="dropZone"
-          for="fileInput"
-          class="
-            drop-zone
-            block
-            border-2
-            border-dashed
-            border-slate-300
-            dark:border-slate-700
-            rounded-2xl
-            p-8
-            sm:p-12
-            text-center
-            cursor-pointer
-            hover:border-indigo-500
-            hover:bg-indigo-50/50
-            dark:hover:bg-indigo-500/5
-          "
-        >
-
-          <div class="text-5xl mb-4">
-            📁
-          </div>
-
           <div
-            class="
-              font-bold
-              text-slate-700
-              dark:text-slate-200
-            "
+            class="font-semibold text-gray-700"
           >
             Klik untuk memilih file
           </div>
 
           <div
-            class="
-              text-sm
-              text-slate-400
-              mt-2
-            "
+            class="text-sm text-gray-400 mt-1"
           >
-            atau drag & drop beberapa file di sini
+            atau drag & drop file di sini
           </div>
 
-          <div
-            class="
-              inline-flex
-              mt-4
-              px-3
-              py-1.5
-              rounded-lg
-              bg-slate-100
-              dark:bg-slate-800
-              text-xs
-              text-slate-500
-            "
-          >
-            Maks. 100 MB / file
-          </div>
-
-
-          <!--
-            Input file asli.
-
-            multiple = user boleh memilih banyak file.
-          -->
           <input
             id="fileInput"
             type="file"
-            multiple
             class="hidden"
           />
 
         </label>
 
 
-        <!-- Antrian proses upload -->
+        <!-- UPLOAD STATUS -->
+
         <div
-          id="uploadQueue"
-          class="
-            hidden
-            mt-5
-            space-y-3
-          "
+          id="uploadStatus"
+          class="hidden mt-4 p-3 rounded-lg text-sm"
         ></div>
 
-      </section>
+      </div>
 
 
-      <!-- =====================================================
-           🔎 FILE TOOLBAR
-           ===================================================== -->
-
-      <section
-        class="
-          bg-white
-          dark:bg-slate-900
-          border
-          border-slate-200
-          dark:border-slate-800
-          rounded-2xl
-          p-3
-          sm:p-4
-          mb-5
-        "
-      >
-
-        <div
-          class="
-            flex
-            flex-col
-            lg:flex-row
-            gap-3
-          "
-        >
-
-          <!-- Search -->
-          <div class="relative flex-1">
-
-            <span
-              class="
-                absolute
-                left-4
-                top-1/2
-                -translate-y-1/2
-                text-slate-400
-              "
-            >
-              🔎
-            </span>
-
-            <input
-              id="searchInput"
-              type="text"
-              placeholder="Cari nama file..."
-              class="
-                w-full
-                pl-11
-                pr-4
-                py-3
-                rounded-xl
-                bg-slate-50
-                dark:bg-slate-800
-                border
-                border-transparent
-                focus:border-indigo-500
-                focus:ring-2
-                focus:ring-indigo-500/20
-              "
-            />
-
-          </div>
-
-
-          <!-- Sorting -->
-          <select
-            id="sortSelect"
-            class="
-              px-4
-              py-3
-              rounded-xl
-              bg-slate-50
-              dark:bg-slate-800
-              border
-              border-transparent
-              focus:border-indigo-500
-            "
-          >
-
-            <option value="newest">
-              Terbaru
-            </option>
-
-            <option value="oldest">
-              Terlama
-            </option>
-
-            <option value="name_asc">
-              Nama A-Z
-            </option>
-
-            <option value="name_desc">
-              Nama Z-A
-            </option>
-
-            <option value="size_desc">
-              Ukuran terbesar
-            </option>
-
-            <option value="size_asc">
-              Ukuran terkecil
-            </option>
-
-          </select>
-
-
-          <!-- Grid / List / Refresh -->
-          <div class="flex gap-2">
-
-            <button
-              id="gridViewButton"
-              class="
-                flex-1
-                lg:flex-none
-                px-4
-                py-3
-                rounded-xl
-                bg-indigo-50
-                dark:bg-indigo-500/10
-                text-indigo-600
-                dark:text-indigo-400
-              "
-              title="Grid view"
-            >
-              ▦
-            </button>
-
-
-            <button
-              id="listViewButton"
-              class="
-                flex-1
-                lg:flex-none
-                px-4
-                py-3
-                rounded-xl
-                bg-slate-100
-                dark:bg-slate-800
-                text-slate-500
-              "
-              title="List view"
-            >
-              ☰
-            </button>
-
-
-            <button
-              id="refreshButton"
-              class="
-                flex-1
-                lg:flex-none
-                px-4
-                py-3
-                rounded-xl
-                bg-slate-100
-                dark:bg-slate-800
-                hover:bg-slate-200
-                dark:hover:bg-slate-700
-              "
-              title="Refresh"
-            >
-              ↻
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           📁 FILE HEADER
-           ===================================================== -->
+      <!-- =================================================
+           SEARCH
+      ================================================== -->
 
       <div
-        class="
-          flex
-          items-center
-          justify-between
-          mb-4
-        "
+        class="bg-white rounded-2xl shadow-sm p-4 mb-5"
       >
 
-        <div>
+        <div class="flex gap-2">
 
-          <h2 class="font-bold text-lg">
-            File Saya
-          </h2>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="🔎 Cari file..."
+            class="flex-1 border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
 
-          <p
-            id="fileCount"
-            class="
-              text-sm
-              text-slate-400
-              mt-1
-            "
+          <button
+            id="refreshButton"
+            class="bg-gray-700 hover:bg-gray-800 text-white px-4 rounded-lg"
+            title="Refresh"
           >
-            0 file
-          </p>
+            ↻
+          </button>
 
         </div>
 
       </div>
 
 
-      <!-- =====================================================
-           📂 FILE LIST
-           ===================================================== -->
+      <!-- =================================================
+           FILE INFO
+      ================================================== -->
+
+      <div
+        class="flex justify-between items-center mb-3"
+      >
+
+        <h2
+          class="text-lg font-bold text-gray-800"
+        >
+          File Saya
+        </h2>
+
+        <span
+          id="fileCount"
+          class="text-sm text-gray-500"
+        >
+          0 file
+        </span>
+
+      </div>
+
+
+      <!-- =================================================
+           FILE LIST
+      ================================================== -->
 
       <div
         id="fileList"
-        class="
-          grid
-          grid-cols-1
-          sm:grid-cols-2
-          xl:grid-cols-3
-          gap-4
-        "
+        class="space-y-4"
       ></div>
 
 
-      <!-- =====================================================
-           📭 EMPTY STATE
-           ===================================================== -->
+      <!-- =================================================
+           EMPTY STATE
+      ================================================== -->
 
       <div
         id="emptyState"
-        class="
-          hidden
-          bg-white
-          dark:bg-slate-900
-          border
-          border-slate-200
-          dark:border-slate-800
-          rounded-3xl
-          p-12
-          text-center
-        "
+        class="hidden bg-white rounded-2xl p-10 text-center"
       >
 
-        <div class="text-6xl mb-4">
+        <div class="text-5xl mb-3">
           📂
         </div>
 
-        <h3 class="text-lg font-bold">
+        <h3
+          class="font-semibold text-gray-700"
+        >
           Belum ada file
         </h3>
 
         <p
-          class="
-            text-sm
-            text-slate-400
-            mt-2
-          "
+          class="text-sm text-gray-400 mt-1"
         >
-          Upload file pertama kamu untuk mulai menggunakan cloud.
+          Upload file pertama kamu.
         </p>
-
-        <button
-          id="emptyUploadButton"
-          class="
-            mt-5
-            px-5
-            py-3
-            rounded-xl
-            bg-indigo-600
-            hover:bg-indigo-700
-            text-white
-            font-bold
-          "
-        >
-          + Upload File
-        </button>
 
       </div>
 
-    </div>
+    </main>
 
-  </main>
-
-</div>
+  </div>
 
 
-<!-- =========================================================
-     👁️ PREVIEW MODAL
-     ========================================================= -->
-
-<div
-  id="previewModal"
-  class="
-    hidden
-    fixed
-    inset-0
-    z-[100]
-    bg-black/70
-    flex
-    items-center
-    justify-center
-    p-4
-    modal-backdrop
-  "
->
+  <!-- =====================================================
+       PREVIEW MODAL
+  ====================================================== -->
 
   <div
-    class="
-      modal-box
-      w-full
-      max-w-5xl
-      max-h-[90vh]
-      bg-white
-      dark:bg-slate-900
-      rounded-3xl
-      overflow-hidden
-      shadow-2xl
-    "
+    id="previewModal"
+    class="hidden fixed inset-0 z-50 bg-black/80 p-4"
   >
 
     <div
-      class="
-        flex
-        items-center
-        justify-between
-        px-5
-        py-4
-        border-b
-        border-slate-200
-        dark:border-slate-800
-      "
+      class="w-full h-full flex items-center justify-center relative"
     >
 
-      <div class="min-w-0">
-
-        <div
-          id="previewTitle"
-          class="font-bold truncate"
-        >
-          Preview
-        </div>
-
-      </div>
-
+      <!-- CLOSE -->
 
       <button
         id="closePreviewButton"
-        class="
-          w-10
-          h-10
-          rounded-xl
-          bg-slate-100
-          dark:bg-slate-800
-        "
+        class="absolute top-4 right-4 bg-white/90 hover:bg-white text-gray-800 w-10 h-10 rounded-full text-xl font-bold"
       >
-        ✕
-      </button>
-
-    </div>
-
-
-    <div
-      id="previewContent"
-      class="
-        p-5
-        max-h-[calc(90vh-80px)]
-        overflow-auto
-        flex
-        items-center
-        justify-center
-      "
-    ></div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     ✏️ RENAME MODAL
-     ========================================================= -->
-
-<div
-  id="renameModal"
-  class="
-    hidden
-    fixed
-    inset-0
-    z-[100]
-    bg-black/50
-    flex
-    items-center
-    justify-center
-    p-4
-    modal-backdrop
-  "
->
-
-  <div
-    class="
-      modal-box
-      w-full
-      max-w-md
-      bg-white
-      dark:bg-slate-900
-      rounded-3xl
-      p-6
-      shadow-2xl
-    "
-  >
-
-    <h3 class="text-xl font-bold">
-      Rename File
-    </h3>
-
-    <p
-      class="
-        text-sm
-        text-slate-400
-        mt-1
-      "
-    >
-      Masukkan nama file baru.
-    </p>
-
-
-    <input
-      id="renameInput"
-      type="text"
-      class="
-        w-full
-        mt-5
-        px-4
-        py-3
-        rounded-xl
-        bg-slate-50
-        dark:bg-slate-800
-        border
-        border-slate-200
-        dark:border-slate-700
-        focus:ring-2
-        focus:ring-indigo-500
-      "
-    />
-
-
-    <div class="flex gap-3 mt-5">
-
-      <button
-        id="cancelRenameButton"
-        class="
-          flex-1
-          py-3
-          rounded-xl
-          bg-slate-100
-          dark:bg-slate-800
-          font-semibold
-        "
-      >
-        Batal
+        ×
       </button>
 
 
-      <button
-        id="saveRenameButton"
-        class="
-          flex-1
-          py-3
-          rounded-xl
-          bg-indigo-600
-          hover:bg-indigo-700
-          text-white
-          font-bold
-        "
+      <!-- CONTENT -->
+
+      <div
+        class="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-5"
       >
-        Simpan
-      </button>
+
+        <h3
+          id="previewTitle"
+          class="font-bold text-gray-800 mb-4 break-all"
+        ></h3>
+
+        <div
+          id="previewContent"
+          class="flex items-center justify-center"
+        ></div>
+
+      </div>
 
     </div>
 
   </div>
 
-</div>
-
-
-<!-- =========================================================
-     🗑️ DELETE MODAL
-     ========================================================= -->
-
-<div
-  id="deleteModal"
-  class="
-    hidden
-    fixed
-    inset-0
-    z-[100]
-    bg-black/50
-    flex
-    items-center
-    justify-center
-    p-4
-    modal-backdrop
-  "
->
-
-  <div
-    class="
-      modal-box
-      w-full
-      max-w-md
-      bg-white
-      dark:bg-slate-900
-      rounded-3xl
-      p-6
-      shadow-2xl
-    "
-  >
-
-    <div
-      class="
-        w-14
-        h-14
-        rounded-2xl
-        bg-red-100
-        dark:bg-red-500/10
-        text-red-600
-        flex
-        items-center
-        justify-center
-        text-2xl
-      "
-    >
-      🗑️
-    </div>
-
-
-    <h3
-      class="
-        text-xl
-        font-bold
-        mt-5
-      "
-    >
-      Hapus file?
-    </h3>
-
-
-    <p
-      class="
-        text-sm
-        text-slate-400
-        mt-2
-      "
-    >
-      File ini akan dihapus dari storage dan tidak dapat dikembalikan.
-    </p>
-
-
-    <p
-      id="deleteFileName"
-      class="
-        font-semibold
-        mt-3
-        break-all
-      "
-    ></p>
-
-
-    <div class="flex gap-3 mt-6">
-
-      <button
-        id="cancelDeleteButton"
-        class="
-          flex-1
-          py-3
-          rounded-xl
-          bg-slate-100
-          dark:bg-slate-800
-          font-semibold
-        "
-      >
-        Batal
-      </button>
-
-
-      <button
-        id="confirmDeleteButton"
-        class="
-          flex-1
-          py-3
-          rounded-xl
-          bg-red-600
-          hover:bg-red-700
-          text-white
-          font-bold
-        "
-      >
-        Hapus
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     🔔 TOAST
-     ========================================================= -->
-
-<div
-  id="toastContainer"
-  class="
-    fixed
-    right-4
-    bottom-4
-    z-[200]
-    space-y-3
-    w-[calc(100%-2rem)]
-    max-w-sm
-  "
-></div>
-
-
-<script>
-
-
-/* =========================================================
-   🔴 SUPABASE CONFIG
-   =========================================================
-   ⚠️ BAGIAN PENTING
-   =========================================================
-
-   SUPABASE_URL:
-   URL project Supabase kamu.
-
-   SUPABASE_KEY:
-   Gunakan Publishable Key / anon key.
-
-   JANGAN memasukkan:
-   - service_role key
-   - secret key
-   - password database
-
-   ke dalam HTML frontend.
-
-   ========================================================= */
-
-
-/*
- * URL project Supabase.
- */
-const SUPABASE_URL =
-  "https://jbrrlophgrdqniorjkjn.supabase.co";
-
-
-/*
- * Publishable key / anon key.
- *
- * ⚠️ Jika kamu mengganti key di Supabase,
- * ubah bagian ini.
- */
-const SUPABASE_KEY =
-  "sb_publishable_VxFQ1sUpf4-wjEpzhg4IMg_c_scLRSQ";
-
-
-/*
- * Nama bucket Storage.
- *
- * 🟢 Jika bucket kamu bernama berbeda,
- * ubah "file-storage" di sini.
- */
-const BUCKET =
-  "file-storage";
-
-
-/*
- * Membuat koneksi ke Supabase.
- *
- * Hampir semua operasi backend aplikasi
- * menggunakan object ini.
- */
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* =========================================================
-   ⚙️ SETTINGS
-   =========================================================
-   Pengaturan utama aplikasi.
-   ========================================================= */
-
-
-/*
- * 🟢 BATAS UKURAN FILE
- *
- * 100 MB.
- *
- * Contoh:
- *
- * 50 MB  = 50 * 1024 * 1024
- * 100 MB = 100 * 1024 * 1024
- * 500 MB = 500 * 1024 * 1024
- *
- * Kalau ingin maksimum 200 MB:
- *
- * const MAX_FILE_SIZE = 200 * 1024 * 1024;
- */
-const MAX_FILE_SIZE =
-  100 * 1024 * 1024;
-
-
-/*
- * 🟢 TOTAL QUOTA
- *
- * Saat ini 10 GB.
- *
- * Kalau ingin 20 GB:
- *
- * const STORAGE_QUOTA =
- *   20 * 1024 * 1024 * 1024;
- */
-const STORAGE_QUOTA =
-  10 * 1024 * 1024 * 1024;
-
-
-/*
- * 🟢 MASA BERLAKU SIGNED URL
- *
- * Thumbnail:
- * 5 menit = 300 detik.
- *
- * Preview:
- * 10 menit.
- *
- * Download:
- * 1 jam.
- */
-
-
-/* =========================================================
-   🧠 STATE
-   =========================================================
-   Variabel yang menyimpan kondisi aplikasi.
-   ========================================================= */
-
-
-/*
- * User yang sedang login.
- */
-let currentUser = null;
-
-
-/*
- * Semua file milik user.
- *
- * Data ini berasal dari tabel "files".
- */
-let allFiles = [];
-
-
-/*
- * Mode tampilan:
- *
- * "grid" = kartu
- * "list" = daftar
- */
-let currentView =
-  "grid";
-
-
-/*
- * File yang sedang di-rename.
- */
-let currentRenameFile =
-  null;
-
-
-/*
- * File yang sedang akan dihapus.
- */
-let currentDeleteFile =
-  null;
-
-
-/*
- * Informasi storage user.
- */
-let storageInfo = {
-
-  used: 0,
-
-  quota:
-    STORAGE_QUOTA,
-
-  remaining:
-    STORAGE_QUOTA,
-
-  percentage: 0
-
-};
-
-
-/* =========================================================
-   ⚡ CACHE THUMBNAIL
-   =========================================================
-   Cache membuat browser tidak perlu meminta signed URL
-   yang sama berulang kali.
-   ========================================================= */
-
-
-/*
- * Menyimpan URL thumbnail yang sudah dibuat.
- *
- * key   = storage_path
- * value = signed URL
- */
-const thumbnailCache =
-  new Map();
-
-
-/*
- * Menyimpan URL preview.
- *
- * Ini terpisah dari thumbnail karena preview
- * menggunakan file resolusi asli.
- */
-const previewCache =
-  new Map();
-
-
-/*
- * Mencegah request thumbnail yang sama
- * dilakukan bersamaan berkali-kali.
- */
-const thumbnailRequests =
-  new Map();
-
-
-/* =========================================================
-   🧩 ELEMENTS
-   =========================================================
-   Mengambil elemen HTML agar dapat dikontrol melalui JavaScript.
-   ========================================================= */
-
-const authPage =
-  document.getElementById(
-    "authPage"
-  );
-
-const appPage =
-  document.getElementById(
-    "appPage"
-  );
-
-const loginForm =
-  document.getElementById(
-    "loginForm"
-  );
-
-const registerForm =
-  document.getElementById(
-    "registerForm"
-  );
-
-const authMessage =
-  document.getElementById(
-    "authMessage"
-  );
-
-const fileInput =
-  document.getElementById(
-    "fileInput"
-  );
-
-const dropZone =
-  document.getElementById(
-    "dropZone"
-  );
-
-const fileList =
-  document.getElementById(
-    "fileList"
-  );
-
-const emptyState =
-  document.getElementById(
-    "emptyState"
-  );
-
-const searchInput =
-  document.getElementById(
-    "searchInput"
-  );
-
-const sortSelect =
-  document.getElementById(
-    "sortSelect"
-  );
-
-const uploadQueue =
-  document.getElementById(
-    "uploadQueue"
-  );
-
-const previewModal =
-  document.getElementById(
-    "previewModal"
-  );
-
-const previewContent =
-  document.getElementById(
-    "previewContent"
-  );
-
-const previewTitle =
-  document.getElementById(
-    "previewTitle"
-  );
-
-const renameModal =
-  document.getElementById(
-    "renameModal"
-  );
-
-const renameInput =
-  document.getElementById(
-    "renameInput"
-  );
-
-const deleteModal =
-  document.getElementById(
-    "deleteModal"
-  );
-
-const deleteFileName =
-  document.getElementById(
-    "deleteFileName"
-  );
-
-const toastContainer =
-  document.getElementById(
-    "toastContainer"
-  );
-
-
-/* =========================================================
-   📏 FORMAT SIZE
-   =========================================================
-   Mengubah angka bytes menjadi:
-   Bytes / KB / MB / GB / TB
-   ========================================================= */
-
-function formatSize(bytes) {
-
-  bytes =
-    Number(bytes) || 0;
-
-
-  if (bytes <= 0) {
-
-    return "0 Bytes";
-
-  }
-
-
-  const units = [
-
-    "Bytes",
-    "KB",
-    "MB",
-    "GB",
-    "TB"
-
-  ];
-
-
-  const index =
-    Math.min(
-
-      Math.floor(
-        Math.log(bytes) /
-        Math.log(1024)
-      ),
-
-      units.length - 1
-
-    );
-
-
-  return (
-
-    parseFloat(
-
-      (
-
-        bytes /
-        Math.pow(
-          1024,
-          index
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+
+  <script>
+
+    /* =====================================================
+       SUPABASE CONFIG
+       
+       🔧 Kalau nanti pindah project Supabase,
+       ubah bagian ini saja.
+    ====================================================== */
+
+    const SUPABASE_URL =
+      "https://jbrrlophgrdqniorjkjn.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_VxFQ1sUpf4-wjEpzhg4IMg_c_scLRSQ";
+
+    const BUCKET =
+      "file-storage";
+
+
+    /* =====================================================
+       BUAT CLIENT SUPABASE
+       
+       ⚠️ Jangan ubah kalau tidak diperlukan.
+    ====================================================== */
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    /* =====================================================
+       SETTINGS
+       
+       🔧 Tempat mengubah pengaturan utama.
+    ====================================================== */
+
+    const MAX_FILE_SIZE =
+      100 * 1024 * 1024;
+
+    /*
+      Berapa lama signed URL berlaku.
+
+      60 * 60 = 1 jam
+    */
+
+    const SIGNED_URL_LIFETIME =
+      60 * 60;
+
+
+    /*
+      Ukuran thumbnail yang diminta
+      ke Supabase Image Transformation.
+
+      Ini BUKAN ukuran tampilan CSS.
+    */
+
+    const THUMBNAIL_WIDTH = 480;
+    const THUMBNAIL_HEIGHT = 320;
+    const THUMBNAIL_QUALITY = 70;
+
+
+    /* =====================================================
+       STATE / DATA
+    ====================================================== */
+
+    let currentUser = null;
+
+    let allFiles = [];
+
+
+    /*
+      Cache thumbnail.
+
+      Tujuannya agar ketika render ulang
+      karena search/refresh, URL tidak selalu
+      dibuat ulang.
+    */
+
+    const thumbnailCache =
+      new Map();
+
+
+    /*
+      Cache preview.
+
+      Preview menggunakan gambar asli.
+    */
+
+    const previewCache =
+      new Map();
+
+
+    /* =====================================================
+       ELEMENTS
+    ====================================================== */
+
+    const authPage =
+      document.getElementById("authPage");
+
+    const storagePage =
+      document.getElementById("storagePage");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const registerForm =
+      document.getElementById("registerForm");
+
+    const authMessage =
+      document.getElementById("authMessage");
+
+    const fileInput =
+      document.getElementById("fileInput");
+
+    const fileList =
+      document.getElementById("fileList");
+
+    const emptyState =
+      document.getElementById("emptyState");
+
+    const fileCount =
+      document.getElementById("fileCount");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const uploadStatus =
+      document.getElementById("uploadStatus");
+
+    const dropArea =
+      document.getElementById("dropArea");
+
+    const previewModal =
+      document.getElementById("previewModal");
+
+    const previewTitle =
+      document.getElementById("previewTitle");
+
+    const previewContent =
+      document.getElementById("previewContent");
+
+    const closePreviewButton =
+      document.getElementById("closePreviewButton");
+
+
+    /* =====================================================
+       AUTH MESSAGE
+    ====================================================== */
+
+    function showAuthMessage(
+      message,
+      type = "error"
+    ) {
+
+      authMessage.textContent =
+        message;
+
+      authMessage.classList.remove(
+        "hidden",
+        "bg-red-100",
+        "text-red-700",
+        "bg-green-100",
+        "text-green-700"
+      );
+
+
+      if (type === "success") {
+
+        authMessage.classList.add(
+          "bg-green-100",
+          "text-green-700"
+        );
+
+      } else {
+
+        authMessage.classList.add(
+          "bg-red-100",
+          "text-red-700"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       UPLOAD MESSAGE
+    ====================================================== */
+
+    function showUploadMessage(
+      message,
+      type = "error"
+    ) {
+
+      uploadStatus.textContent =
+        message;
+
+      uploadStatus.classList.remove(
+        "hidden",
+        "bg-red-100",
+        "text-red-700",
+        "bg-green-100",
+        "text-green-700",
+        "bg-blue-100",
+        "text-blue-700"
+      );
+
+
+      if (type === "success") {
+
+        uploadStatus.classList.add(
+          "bg-green-100",
+          "text-green-700"
+        );
+
+      } else if (type === "loading") {
+
+        uploadStatus.classList.add(
+          "bg-blue-100",
+          "text-blue-700"
+        );
+
+      } else {
+
+        uploadStatus.classList.add(
+          "bg-red-100",
+          "text-red-700"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       SWITCH LOGIN / REGISTER
+    ====================================================== */
+
+    document
+      .getElementById("showRegister")
+      .addEventListener(
+        "click",
+        () => {
+
+          loginForm.classList.add(
+            "hidden"
+          );
+
+          registerForm.classList.remove(
+            "hidden"
+          );
+
+          authMessage.classList.add(
+            "hidden"
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("showLogin")
+      .addEventListener(
+        "click",
+        () => {
+
+          registerForm.classList.add(
+            "hidden"
+          );
+
+          loginForm.classList.remove(
+            "hidden"
+          );
+
+          authMessage.classList.add(
+            "hidden"
+          );
+
+        }
+      );
+
+
+    /* =====================================================
+       REGISTER
+    ====================================================== */
+
+    document
+      .getElementById("registerButton")
+      .addEventListener(
+        "click",
+        async () => {
+
+          const email =
+            document
+              .getElementById("registerEmail")
+              .value
+              .trim();
+
+          const password =
+            document
+              .getElementById("registerPassword")
+              .value;
+
+
+          if (!email || !password) {
+
+            showAuthMessage(
+              "Email dan password harus diisi."
+            );
+
+            return;
+          }
+
+
+          if (password.length < 6) {
+
+            showAuthMessage(
+              "Password minimal 6 karakter."
+            );
+
+            return;
+          }
+
+
+          const button =
+            document.getElementById(
+              "registerButton"
+            );
+
+          button.disabled = true;
+
+          button.textContent =
+            "Mendaftarkan...";
+
+
+          try {
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient.auth.signUp({
+                email: email,
+                password: password
+              });
+
+
+            if (error) {
+              throw error;
+            }
+
+
+            if (data.session) {
+
+              showAuthMessage(
+                "Akun berhasil dibuat!",
+                "success"
+              );
+
+              await loadUser();
+
+            } else {
+
+              showAuthMessage(
+                "Akun berhasil dibuat. Silakan cek email untuk verifikasi.",
+                "success"
+              );
+
+            }
+
+          } catch (error) {
+
+            console.error(error);
+
+            showAuthMessage(
+              error.message ||
+              "Gagal membuat akun."
+            );
+
+          } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+              "Daftar";
+
+          }
+
+        }
+      );
+
+
+    /* =====================================================
+       LOGIN
+    ====================================================== */
+
+    document
+      .getElementById("loginButton")
+      .addEventListener(
+        "click",
+        async () => {
+
+          const email =
+            document
+              .getElementById("loginEmail")
+              .value
+              .trim();
+
+          const password =
+            document
+              .getElementById("loginPassword")
+              .value;
+
+
+          if (!email || !password) {
+
+            showAuthMessage(
+              "Email dan password harus diisi."
+            );
+
+            return;
+          }
+
+
+          const button =
+            document.getElementById(
+              "loginButton"
+            );
+
+          button.disabled = true;
+
+          button.textContent =
+            "Login...";
+
+
+          try {
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+              });
+
+
+            if (error) {
+              throw error;
+            }
+
+
+            currentUser =
+              data.user;
+
+            await showStoragePage();
+
+          } catch (error) {
+
+            console.error(error);
+
+            showAuthMessage(
+              error.message ||
+              "Email atau password salah."
+            );
+
+          } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+              "Login";
+
+          }
+
+        }
+      );
+
+
+    /* =====================================================
+       LOGOUT
+    ====================================================== */
+
+    document
+      .getElementById("logoutButton")
+      .addEventListener(
+        "click",
+        async () => {
+
+          await supabaseClient.auth.signOut();
+
+          currentUser = null;
+
+          allFiles = [];
+
+          thumbnailCache.clear();
+
+          previewCache.clear();
+
+          storagePage.classList.add(
+            "hidden"
+          );
+
+          authPage.classList.remove(
+            "hidden"
+          );
+
+          fileList.innerHTML = "";
+
+        }
+      );
+
+
+    /* =====================================================
+       LOAD CURRENT USER
+    ====================================================== */
+
+    async function loadUser() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.getUser();
+
+
+      if (error || !data.user) {
+
+        authPage.classList.remove(
+          "hidden"
+        );
+
+        storagePage.classList.add(
+          "hidden"
+        );
+
+        return;
+      }
+
+
+      currentUser =
+        data.user;
+
+      await showStoragePage();
+
+    }
+
+
+    /* =====================================================
+       SHOW STORAGE PAGE
+    ====================================================== */
+
+    async function showStoragePage() {
+
+      authPage.classList.add(
+        "hidden"
+      );
+
+      storagePage.classList.remove(
+        "hidden"
+      );
+
+
+      document
+        .getElementById("userEmail")
+        .textContent =
+        currentUser.email;
+
+
+      await loadFiles();
+
+    }
+
+
+    /* =====================================================
+       FILE ICON
+    ====================================================== */
+
+    function getFileIcon(fileName) {
+
+      const ext =
+        fileName
+          .split(".")
+          .pop()
+          .toLowerCase();
+
+
+      const images = [
+        "jpg",
+        "jpeg",
+        "png",
+        "gif",
+        "webp",
+        "svg",
+        "bmp",
+        "ico",
+        "avif"
+      ];
+
+
+      const videos = [
+        "mp4",
+        "mov",
+        "avi",
+        "mkv",
+        "webm"
+      ];
+
+
+      const audio = [
+        "mp3",
+        "wav",
+        "ogg",
+        "m4a",
+        "aac"
+      ];
+
+
+      const documents = [
+        "pdf",
+        "doc",
+        "docx",
+        "txt",
+        "xls",
+        "xlsx",
+        "ppt",
+        "pptx"
+      ];
+
+
+      const archives = [
+        "zip",
+        "rar",
+        "7z",
+        "tar",
+        "gz"
+      ];
+
+
+      if (images.includes(ext))
+        return "🖼️";
+
+
+      if (videos.includes(ext))
+        return "🎬";
+
+
+      if (audio.includes(ext))
+        return "🎵";
+
+
+      if (documents.includes(ext))
+        return "📄";
+
+
+      if (archives.includes(ext))
+        return "📦";
+
+
+      return "📁";
+
+    }
+
+
+    /* =====================================================
+       CEK APAKAH FILE ADALAH GAMBAR
+       
+       🔧 Fungsi ini menentukan apakah file
+       akan mendapatkan thumbnail.
+    ====================================================== */
+
+    function isImageFile(file) {
+
+      const name =
+        String(file.name || "")
+          .toLowerCase();
+
+
+      const ext =
+        name
+          .split(".")
+          .pop();
+
+
+      const imageExtensions = [
+        "jpg",
+        "jpeg",
+        "png",
+        "gif",
+        "webp",
+        "svg",
+        "bmp",
+        "ico",
+        "avif"
+      ];
+
+
+      return imageExtensions.includes(
+        ext
+      );
+
+    }
+
+
+    /* =====================================================
+       FILE SIZE
+    ====================================================== */
+
+    function formatSize(bytes) {
+
+      if (!bytes || bytes === 0) {
+        return "0 Bytes";
+      }
+
+
+      const units = [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+      ];
+
+
+      const i =
+        Math.floor(
+          Math.log(bytes) /
+          Math.log(1024)
+        );
+
+
+      return (
+        parseFloat(
+          (
+            bytes /
+            Math.pow(1024, i)
+          ).toFixed(2)
+        ) +
+        " " +
+        units[i]
+      );
+
+    }
+
+
+    /* =====================================================
+       FILE DATE
+    ====================================================== */
+
+    function formatDate(date) {
+
+      return new Date(date)
+        .toLocaleString(
+          "id-ID",
+          {
+            dateStyle: "medium",
+            timeStyle: "short"
+          }
+        );
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+       
+       ⚠️ Penting untuk keamanan.
+    ====================================================== */
+
+    function escapeHtml(text) {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.textContent =
+        String(text ?? "");
+
+      return div.innerHTML;
+
+    }
+
+
+    /* =====================================================
+       GET THUMBNAIL URL
+       
+       ⭐ BAGIAN PALING PENTING ⭐
+       
+       URL thumbnail dibuat LANGSUNG ketika
+       file dirender.
+
+       Tidak menunggu klik.
+       Tidak menunggu preview.
+       Tidak menggunakan IntersectionObserver.
+    ====================================================== */
+
+    async function getThumbnailUrl(file) {
+
+      const cacheKey =
+        file.name;
+
+
+      /* -----------------------------------------------
+         CEK CACHE
+      ------------------------------------------------ */
+
+      if (
+        thumbnailCache.has(
+          cacheKey
         )
-
-      ).toFixed(2)
-
-    )
-
-    + " "
-
-    + units[index]
-
-  );
-
-}
-
-
-/* =========================================================
-   📅 FORMAT DATE
-   ========================================================= */
-
-function formatDate(date) {
-
-  if (!date) {
-
-    return "-";
-
-  }
-
-
-  return new Date(
-    date
-  ).toLocaleString(
-    "id-ID",
-    {
-      dateStyle:
-        "medium",
-
-      timeStyle:
-        "short"
-    }
-  );
-
-}
-
-
-/* =========================================================
-   🛡️ ESCAPE HTML
-   =========================================================
-   Mencegah nama file tertentu merusak HTML.
-   ========================================================= */
-
-function escapeHtml(text) {
-
-  const div =
-    document.createElement(
-      "div"
-    );
-
-
-  div.textContent =
-    text ?? "";
-
-
-  return div.innerHTML;
-
-}
-
-
-/* =========================================================
-   📁 FILE ICON
-   =========================================================
-   Menentukan icon berdasarkan extension file.
-   ========================================================= */
-
-function getFileIcon(fileName) {
-
-  const ext =
-    fileName
-      .split(".")
-      .pop()
-      .toLowerCase();
-
-
-  const imageTypes = [
-
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "webp",
-    "svg",
-    "bmp",
-    "ico"
-
-  ];
-
-
-  const videoTypes = [
-
-    "mp4",
-    "mov",
-    "avi",
-    "mkv",
-    "webm",
-    "m4v"
-
-  ];
-
-
-  const audioTypes = [
-
-    "mp3",
-    "wav",
-    "ogg",
-    "m4a",
-    "flac",
-    "aac"
-
-  ];
-
-
-  const documentTypes = [
-
-    "pdf",
-    "doc",
-    "docx",
-    "txt",
-    "xls",
-    "xlsx",
-    "ppt",
-    "pptx",
-    "csv"
-
-  ];
-
-
-  const archiveTypes = [
-
-    "zip",
-    "rar",
-    "7z",
-    "tar",
-    "gz"
-
-  ];
-
-
-  if (
-    imageTypes.includes(ext)
-  ) {
-
-    return "🖼️";
-
-  }
-
-
-  if (
-    videoTypes.includes(ext)
-  ) {
-
-    return "🎬";
-
-  }
-
-
-  if (
-    audioTypes.includes(ext)
-  ) {
-
-    return "🎵";
-
-  }
-
-
-  if (
-    documentTypes.includes(ext)
-  ) {
-
-    return "📄";
-
-  }
-
-
-  if (
-    archiveTypes.includes(ext)
-  ) {
-
-    return "📦";
-
-  }
-
-
-  return "📁";
-
-}
-
-
-/* =========================================================
-   🔎 FILE TYPE
-   ========================================================= */
-
-function getFileType(file) {
-
-  const mime =
-    file.mime_type || "";
-
-
-  if (
-    mime.startsWith(
-      "image/"
-    )
-  ) {
-
-    return "image";
-
-  }
-
-
-  if (
-    mime.startsWith(
-      "video/"
-    )
-  ) {
-
-    return "video";
-
-  }
-
-
-  if (
-    mime.startsWith(
-      "audio/"
-    )
-  ) {
-
-    return "audio";
-
-  }
-
-
-  if (
-
-    mime ===
-      "application/pdf"
-
-    ||
-
-    file.file_name
-      ?.toLowerCase()
-      .endsWith(".pdf")
-
-  ) {
-
-    return "pdf";
-
-  }
-
-
-  return "other";
-
-}
-
-
-/* =========================================================
-   🔔 TOAST
-   =========================================================
-   Menampilkan notifikasi kecil di kanan bawah.
-   ========================================================= */
-
-function showToast(
-  message,
-  type = "success"
-) {
-
-  const toast =
-    document.createElement(
-      "div"
-    );
-
-
-  let icon =
-    "✅";
-
-
-  let classes =
-    "bg-emerald-600 text-white";
-
-
-  if (
-    type === "error"
-  ) {
-
-    icon =
-      "❌";
-
-    classes =
-      "bg-red-600 text-white";
-
-  }
-
-
-  if (
-    type === "warning"
-  ) {
-
-    icon =
-      "⚠️";
-
-    classes =
-      "bg-amber-500 text-white";
-
-  }
-
-
-  if (
-    type === "info"
-  ) {
-
-    icon =
-      "ℹ️";
-
-    classes =
-      "bg-indigo-600 text-white";
-
-  }
-
-
-  toast.className =
-    `toast ${classes} rounded-2xl shadow-xl px-4 py-3 flex items-start gap-3`;
-
-
-  toast.innerHTML = `
-
-    <span class="text-lg">
-      ${icon}
-    </span>
-
-    <div
-      class="
-        text-sm
-        font-medium
-        flex-1
-      "
-    >
-      ${escapeHtml(message)}
-    </div>
-
-    <button
-      class="opacity-80 hover:opacity-100"
-    >
-      ✕
-    </button>
-
-  `;
-
-
-  toast
-    .querySelector("button")
-    .addEventListener(
-      "click",
-      () => toast.remove()
-    );
-
-
-  toastContainer.appendChild(
-    toast
-  );
-
-
-  /*
-   * 🟢 Lama toast ditampilkan.
-   *
-   * 4500 = 4.5 detik.
-   *
-   * Kalau ingin 8 detik:
-   * 8000
-   */
-  setTimeout(
-    () => {
-
-      if (
-        toast.isConnected
       ) {
 
-        toast.remove();
-
-      }
-
-    },
-    4500
-  );
-
-}
-
-
-/* =========================================================
-   🔐 AUTH MESSAGE
-   ========================================================= */
-
-function showAuthMessage(
-  message,
-  type = "error"
-) {
-
-  authMessage.textContent =
-    message;
-
-
-  authMessage.className =
-    "mt-5 p-4 rounded-2xl text-sm font-medium";
-
-
-  if (
-    type === "success"
-  ) {
-
-    authMessage.classList.add(
-      "bg-emerald-100",
-      "text-emerald-700"
-    );
-
-  }
-
-  else {
-
-    authMessage.classList.add(
-      "bg-red-100",
-      "text-red-700"
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   🌙 THEME
-   ========================================================= */
-
-function applyTheme(theme) {
-
-  /*
-   * Menambahkan / menghapus class "dark"
-   * dari <html>.
-   */
-  document.documentElement.classList.toggle(
-    "dark",
-    theme === "dark"
-  );
-
-
-  /*
-   * Menyimpan pilihan tema di browser.
-   */
-  localStorage.setItem(
-    "jf_theme",
-    theme
-  );
-
-
-  const icon =
-    theme === "dark"
-      ? "☀️"
-      : "🌙";
-
-
-  /*
-   * Mengubah icon tombol tema.
-   */
-  [
-
-    "themeButton",
-    "desktopThemeButton",
-    "mobileThemeButton"
-
-  ].forEach(
-    id => {
-
-      const element =
-        document.getElementById(
-          id
+        return thumbnailCache.get(
+          cacheKey
         );
-
-
-      if (element) {
-
-        element.textContent =
-          icon;
-
-      }
-
-    }
-  );
-
-}
-
-
-/*
- * Mengubah light <-> dark.
- */
-function toggleTheme() {
-
-  const current =
-    document.documentElement.classList.contains(
-      "dark"
-    )
-      ? "dark"
-      : "light";
-
-
-  applyTheme(
-
-    current === "dark"
-      ? "light"
-      : "dark"
-
-  );
-
-}
-
-
-/*
- * 🟢 Tema awal.
- *
- * Jika user pernah memilih tema,
- * gunakan pilihan tersebut.
- *
- * Jika belum ada:
- * gunakan light.
- */
-applyTheme(
-
-  localStorage.getItem(
-    "jf_theme"
-  ) || "light"
-
-);
-
-
-/* =========================================================
-   🔐 LOGIN / REGISTER SWITCH
-   ========================================================= */
-
-document
-  .getElementById(
-    "showRegister"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      loginForm.classList.add(
-        "hidden"
-      );
-
-      registerForm.classList.remove(
-        "hidden"
-      );
-
-      authMessage.classList.add(
-        "hidden"
-      );
-
-    }
-  );
-
-
-document
-  .getElementById(
-    "showLogin"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      registerForm.classList.add(
-        "hidden"
-      );
-
-      loginForm.classList.remove(
-        "hidden"
-      );
-
-      authMessage.classList.add(
-        "hidden"
-      );
-
-    }
-  );
-
-
-/* =========================================================
-   📝 REGISTER
-   ========================================================= */
-
-document
-  .getElementById(
-    "registerButton"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      const email =
-        document
-          .getElementById(
-            "registerEmail"
-          )
-          .value
-          .trim();
-
-
-      const password =
-        document
-          .getElementById(
-            "registerPassword"
-          )
-          .value;
-
-
-      if (
-        !email ||
-        !password
-      ) {
-
-        showAuthMessage(
-          "Email dan password harus diisi."
-        );
-
-        return;
 
       }
 
 
-      /*
-       * 🟢 Panjang password minimum.
-       */
-      if (
-        password.length < 6
-      ) {
-
-        showAuthMessage(
-          "Password minimal 6 karakter."
-        );
-
-        return;
-
-      }
-
-
-      const button =
-        document.getElementById(
-          "registerButton"
-        );
-
-
-      button.disabled =
-        true;
-
-
-      button.textContent =
-        "Membuat akun...";
+      const filePath =
+        `${currentUser.id}/${file.name}`;
 
 
       try {
+
+        /* ---------------------------------------------
+           COBA THUMBNAIL TERKOMPRESI
+
+           Supabase akan membuat gambar kecil
+           480 x 320 dengan kualitas 70.
+
+           Kalau fitur transform aktif,
+           ini jauh lebih ringan daripada
+           mengirim foto original.
+        ---------------------------------------------- */
 
         const {
           data,
           error
         } =
           await supabaseClient
-            .auth
-            .signUp({
+            .storage
+            .from(BUCKET)
+            .createSignedUrl(
+              filePath,
+              SIGNED_URL_LIFETIME,
+              {
+                transform: {
+                  width:
+                    THUMBNAIL_WIDTH,
 
-              email,
+                  height:
+                    THUMBNAIL_HEIGHT,
 
-              password
+                  resize:
+                    "cover",
 
-            });
+                  quality:
+                    THUMBNAIL_QUALITY
+                }
+              }
+            );
 
 
-        if (error) {
+        if (
+          !error &&
+          data &&
+          data.signedUrl
+        ) {
 
-          throw error;
+          thumbnailCache.set(
+            cacheKey,
+            data.signedUrl
+          );
+
+          return data.signedUrl;
 
         }
 
 
         /*
-         * Jika Supabase langsung memberikan session,
-         * user dapat langsung masuk aplikasi.
-         */
-        if (
-          data.session
-        ) {
+          Kalau transform gagal,
+          lanjut ke fallback.
+        */
 
-          showAuthMessage(
-            "Akun berhasil dibuat!",
-            "success"
-          );
-
-
-          await loadUser();
-
-        }
-
-        else {
-
-          /*
-           * Jika email confirmation aktif,
-           * user harus melakukan verifikasi email.
-           */
-          showAuthMessage(
-            "Akun berhasil dibuat. Silakan cek email untuk verifikasi.",
-            "success"
-          );
-
-        }
-
-
-      }
-
-      catch (error) {
-
-        console.error(
+        console.warn(
+          "Image Transformation gagal. Menggunakan gambar asli.",
           error
         );
 
 
-        showAuthMessage(
-          error.message ||
-          "Gagal membuat akun."
-        );
+      } catch (error) {
 
-      }
-
-
-      finally {
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "Buat Akun";
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   🔑 LOGIN
-   ========================================================= */
-
-document
-  .getElementById(
-    "loginButton"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      const email =
-        document
-          .getElementById(
-            "loginEmail"
-          )
-          .value
-          .trim();
-
-
-      const password =
-        document
-          .getElementById(
-            "loginPassword"
-          )
-          .value;
-
-
-      if (
-        !email ||
-        !password
-      ) {
-
-        showAuthMessage(
-          "Email dan password harus diisi."
-        );
-
-        return;
-
-      }
-
-
-      const button =
-        document.getElementById(
-          "loginButton"
-        );
-
-
-      button.disabled =
-        true;
-
-
-      button.textContent =
-        "Login...";
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .auth
-            .signInWithPassword({
-
-              email,
-
-              password
-
-            });
-
-
-        if (error) {
-
-          throw error;
-
-        }
-
-
-        currentUser =
-          data.user;
-
-
-        await showApp();
-
-
-      }
-
-      catch (error) {
-
-        console.error(
+        console.warn(
+          "Thumbnail transform error:",
           error
         );
 
-
-        showAuthMessage(
-          error.message ||
-          "Email atau password salah."
-        );
-
       }
 
 
-      finally {
+      /* -----------------------------------------------
+         FALLBACK
 
-        button.disabled =
-          false;
+         Ini sangat penting.
 
-        button.textContent =
-          "Login";
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   🚪 LOGOUT
-   ========================================================= */
-
-document
-  .getElementById(
-    "logoutButton"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      await supabaseClient
-        .auth
-        .signOut();
-
-
-      currentUser =
-        null;
-
-
-      allFiles =
-        [];
-
-
-      /*
-       * Membersihkan cache ketika logout.
-       */
-      thumbnailCache.clear();
-
-      previewCache.clear();
-
-      thumbnailRequests.clear();
-
-
-      appPage.classList.add(
-        "hidden"
-      );
-
-
-      authPage.classList.remove(
-        "hidden"
-      );
-
-    }
-  );
-
-
-/* =========================================================
-   👤 LOAD USER
-   ========================================================= */
-
-async function loadUser() {
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .auth
-      .getUser();
-
-
-  if (
-    error ||
-    !data.user
-  ) {
-
-    showAuthPage();
-
-    return;
-
-  }
-
-
-  currentUser =
-    data.user;
-
-
-  await showApp();
-
-}
-
-
-/* =========================================================
-   🔐 SHOW AUTH PAGE
-   ========================================================= */
-
-function showAuthPage() {
-
-  appPage.classList.add(
-    "hidden"
-  );
-
-
-  authPage.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-/* =========================================================
-   ☁️ SHOW APP
-   ========================================================= */
-
-async function showApp() {
-
-  authPage.classList.add(
-    "hidden"
-  );
-
-
-  appPage.classList.remove(
-    "hidden"
-  );
-
-
-  updateUserUI();
-
-
-  await loadFiles();
-
-}
-
-
-/* =========================================================
-   👤 USER UI
-   ========================================================= */
-
-function updateUserUI() {
-
-  if (!currentUser) {
-
-    return;
-
-  }
-
-
-  const email =
-    currentUser.email || "";
-
-
-  const first =
-    email.charAt(0).toUpperCase() ||
-    "U";
-
-
-  const desktopEmail =
-    document.getElementById(
-      "desktopUserEmail"
-    );
-
-
-  const avatar =
-    document.getElementById(
-      "desktopAvatar"
-    );
-
-
-  if (
-    desktopEmail
-  ) {
-
-    desktopEmail.textContent =
-      email;
-
-  }
-
-
-  if (
-    avatar
-  ) {
-
-    avatar.textContent =
-      first;
-
-  }
-
-}
-
-
-/* =========================================================
-   💾 LOAD STORAGE INFO
-   =========================================================
-   Mengambil informasi penggunaan storage dari Supabase RPC.
-
-   ⚠️ Fungsi ini membutuhkan database function:
-   get_storage_info
-
-   Jika RPC tersebut tidak ada di Supabase,
-   bagian ini akan error.
-   ========================================================= */
-
-async function loadStorageInfo() {
-
-  if (!currentUser) {
-
-    return;
-
-  }
-
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "get_storage_info"
-        );
-
-
-    if (error) {
-
-      throw error;
-
-    }
-
-
-    const used =
-      Number(
-        data?.used_bytes || 0
-      );
-
-
-    const quota =
-      Number(
-        data?.quota_bytes ||
-        STORAGE_QUOTA
-      );
-
-
-    const remaining =
-      Math.max(
-        quota - used,
-        0
-      );
-
-
-    const percentage =
-      Math.min(
-        (used / quota) * 100,
-        100
-      );
-
-
-    storageInfo = {
-
-      used,
-
-      quota,
-
-      remaining,
-
-      percentage
-
-    };
-
-
-    updateStorageUI();
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Storage info error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   💾 UPDATE STORAGE UI
-   ========================================================= */
-
-function updateStorageUI() {
-
-  const {
-    used,
-    quota,
-    remaining,
-    percentage
-  } =
-    storageInfo;
-
-
-  const percent =
-    Number(
-      percentage.toFixed(2)
-    );
-
-
-  const usedCard =
-    document.getElementById(
-      "storageUsedCard"
-    );
-
-
-  const remainingCard =
-    document.getElementById(
-      "storageRemainingCard"
-    );
-
-
-  const totalFilesCard =
-    document.getElementById(
-      "totalFilesCard"
-    );
-
-
-  const sidebarText =
-    document.getElementById(
-      "sidebarStorageText"
-    );
-
-
-  const sidebarPercentage =
-    document.getElementById(
-      "sidebarStoragePercentage"
-    );
-
-
-  const sidebarBar =
-    document.getElementById(
-      "sidebarStorageBar"
-    );
-
-
-  if (usedCard) {
-
-    usedCard.textContent =
-      formatSize(used);
-
-  }
-
-
-  if (remainingCard) {
-
-    remainingCard.textContent =
-      formatSize(remaining);
-
-  }
-
-
-  if (totalFilesCard) {
-
-    totalFilesCard.textContent =
-      allFiles.length;
-
-  }
-
-
-  if (sidebarText) {
-
-    sidebarText.textContent =
-      `${formatSize(used)} / ${formatSize(quota)}`;
-
-  }
-
-
-  if (sidebarPercentage) {
-
-    sidebarPercentage.textContent =
-      `${percent}%`;
-
-  }
-
-
-  if (sidebarBar) {
-
-    sidebarBar.style.width =
-      `${percent}%`;
-
-  }
-
-}
-
-
-/* =========================================================
-   📂 LOAD FILES
-   =========================================================
-   Mengambil daftar file milik user dari tabel "files".
-   ========================================================= */
-
-async function loadFiles() {
-
-  if (!currentUser) {
-
-    return;
-
-  }
-
-
-  /*
-   * Tampilkan loading sementara.
-   */
-  fileList.innerHTML = `
-
-    <div
-      class="
-        col-span-full
-        bg-white
-        dark:bg-slate-900
-        border
-        border-slate-200
-        dark:border-slate-800
-        rounded-2xl
-        p-8
-        text-center
-        text-slate-400
-      "
-    >
-
-      <div
-        class="
-          text-3xl
-          mb-3
-          animate-pulse
-        "
-      >
-        ☁️
-      </div>
-
-      Memuat file...
-
-    </div>
-
-  `;
-
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("files")
-        .select("*")
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .order(
-          "created_at",
-          {
-            ascending:
-              false
-          }
-        );
-
-
-    if (error) {
-
-      throw error;
-
-    }
-
-
-    allFiles =
-      data || [];
-
-
-    /*
-     * Render file ke halaman.
-     */
-    renderFiles();
-
-
-    /*
-     * Update storage.
-     */
-    await loadStorageInfo();
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    fileList.innerHTML = `
-
-      <div
-        class="
-          col-span-full
-          bg-red-50
-          dark:bg-red-500/10
-          text-red-600
-          dark:text-red-400
-          rounded-2xl
-          p-5
-        "
-      >
-
-        Gagal memuat file:
-        ${escapeHtml(error.message)}
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* =========================================================
-   🔎 FILTER + SORT
-   ========================================================= */
-
-function getVisibleFiles() {
-
-  const keyword =
-    searchInput.value
-      .toLowerCase()
-      .trim();
-
-
-  /*
-   * Salin array supaya sorting tidak merusak
-   * array allFiles asli.
-   */
-  let files =
-    [...allFiles];
-
-
-  /*
-   * Filter berdasarkan nama file.
-   */
-  if (keyword) {
-
-    files =
-      files.filter(
-        file =>
-          String(
-            file.file_name || ""
-          )
-          .toLowerCase()
-          .includes(
-            keyword
-          )
-      );
-
-  }
-
-
-  /*
-   * Sorting.
-   */
-  switch (
-    sortSelect.value
-  ) {
-
-
-    case "oldest":
-
-      files.sort(
-        (a, b) =>
-          new Date(
-            a.created_at
-          ) -
-          new Date(
-            b.created_at
-          )
-      );
-
-      break;
-
-
-    case "name_asc":
-
-      files.sort(
-        (a, b) =>
-          String(
-            a.file_name
-          )
-          .localeCompare(
-            String(
-              b.file_name
-            ),
-            "id"
-          )
-      );
-
-      break;
-
-
-    case "name_desc":
-
-      files.sort(
-        (a, b) =>
-          String(
-            b.file_name
-          )
-          .localeCompare(
-            String(
-              a.file_name
-            ),
-            "id"
-          )
-      );
-
-      break;
-
-
-    case "size_desc":
-
-      files.sort(
-        (a, b) =>
-          Number(
-            b.file_size || 0
-          ) -
-          Number(
-            a.file_size || 0
-          )
-      );
-
-      break;
-
-
-    case "size_asc":
-
-      files.sort(
-        (a, b) =>
-          Number(
-            a.file_size || 0
-          ) -
-          Number(
-            b.file_size || 0
-          )
-      );
-
-      break;
-
-
-    case "newest":
-
-    default:
-
-      files.sort(
-        (a, b) =>
-          new Date(
-            b.created_at
-          ) -
-          new Date(
-            a.created_at
-          )
-      );
-
-  }
-
-
-  return files;
-
-}
-
-
-/* =========================================================
-   🖼️ THUMBNAIL URL
-   =========================================================
-   ⚡ BAGIAN PENTING UNTUK PERFORMA FOTO
-   =========================================================
-
-   Foto asli mungkin berukuran:
-   3 MB
-   5 MB
-   10 MB
-   dst.
-
-   Untuk kartu file kita TIDAK perlu foto sebesar itu.
-
-   Supabase Image Transformation digunakan untuk membuat
-   gambar kecil khusus thumbnail.
-
-   width  = 480
-   height = 288
-   quality = 70
-
-   🟢 Kalau thumbnail masih terlalu besar:
-      turunkan quality menjadi 60.
-
-   🟢 Kalau gambar terlalu kecil:
-      naikkan width menjadi 640.
-
-   ⚠️ Image Transformation harus tersedia/aktif pada
-      project Supabase kamu.
-
-   ========================================================= */
-
-async function getThumbnailUrl(file) {
-
-  const path =
-    file.storage_path;
-
-
-  /*
-   * Jika URL sudah pernah dibuat,
-   * gunakan cache.
-   */
-  if (
-    thumbnailCache.has(path)
-  ) {
-
-    return thumbnailCache.get(
-      path
-    );
-
-  }
-
-
-  /*
-   * Jika request untuk path yang sama
-   * sedang berjalan, tunggu request tersebut.
-   */
-  if (
-    thumbnailRequests.has(path)
-  ) {
-
-    return thumbnailRequests.get(
-      path
-    );
-
-  }
-
-
-  const request =
-    (async () => {
+         Kalau Image Transformation belum aktif
+         di Supabase, gambar tetap harus muncul.
+      ------------------------------------------------ */
 
       try {
 
@@ -4428,835 +1392,76 @@ async function getThumbnailUrl(file) {
             .storage
             .from(BUCKET)
             .createSignedUrl(
-              path,
-              300,
-              {
-
-                /*
-                 * ⚡ IMAGE TRANSFORMATION
-                 *
-                 * Inilah yang membuat thumbnail
-                 * jauh lebih ringan daripada file asli.
-                 */
-                transform: {
-
-                  /*
-                   * 🟢 Lebar thumbnail.
-                   */
-                  width:
-                    480,
-
-                  /*
-                   * 🟢 Tinggi thumbnail.
-                   */
-                  height:
-                    288,
-
-                  /*
-                   * cover:
-                   * gambar memenuhi seluruh kotak.
-                   *
-                   * contain:
-                   * seluruh gambar terlihat tetapi
-                   * bisa muncul ruang kosong.
-                   */
-                  resize:
-                    "cover",
-
-                  /*
-                   * 🟢 Kualitas thumbnail.
-                   *
-                   * 50 = sangat ringan
-                   * 70 = seimbang
-                   * 80 = lebih bagus
-                   * 100 = kualitas tinggi
-                   */
-                  quality:
-                    70
-
-                }
-
-              }
+              filePath,
+              SIGNED_URL_LIFETIME
             );
 
 
         if (error) {
-
-          /*
-           * Jika transform tidak tersedia,
-           * error akan muncul di console.
-           */
-          console.error(
-            "Thumbnail error:",
-            error
-          );
-
-          return null;
-
+          throw error;
         }
 
 
-        const url =
-          data?.signedUrl;
+        if (
+          data &&
+          data.signedUrl
+        ) {
 
-
-        if (url) {
-
-          /*
-           * Simpan URL ke cache.
-           */
           thumbnailCache.set(
-            path,
-            url
+            cacheKey,
+            data.signedUrl
           );
+
+          return data.signedUrl;
 
         }
 
 
-        return url;
+        return null;
 
-      }
+      } catch (error) {
 
-      finally {
-
-        /*
-         * Hapus request dari daftar setelah selesai.
-         */
-        thumbnailRequests.delete(
-          path
+        console.error(
+          "Gagal mendapatkan URL gambar:",
+          file.name,
+          error
         );
 
+        return null;
+
       }
-
-    })();
-
-
-  thumbnailRequests.set(
-    path,
-    request
-  );
-
-
-  return request;
-
-}
-
-
-/* =========================================================
-   🖼️ LOAD IMAGE THUMBNAIL
-   ========================================================= */
-
-async function loadImageThumbnail(
-  img,
-  file
-) {
-
-  try {
-
-    /*
-     * Ambil thumbnail URL.
-     */
-    const url =
-      await getThumbnailUrl(
-        file
-      );
-
-
-    if (!url) {
-
-      return;
 
     }
 
 
-    /*
-     * Masukkan URL ke img.
-     */
-    img.src =
-      url;
+    /* =====================================================
+       GET ORIGINAL FILE URL
+       
+       Dipakai untuk preview.
+    ====================================================== */
 
+    async function getOriginalFileUrl(file) {
 
-    /*
-     * Ketika gambar selesai dimuat,
-     * tampilkan gambar dan sembunyikan placeholder.
-     */
-    img.onload = () => {
+      const cacheKey =
+        file.name;
 
-      img.classList.remove(
-        "hidden"
-      );
-
-
-      const placeholder =
-        img.parentElement
-          .querySelector(
-            ".preview-placeholder"
-          );
-
-
-      placeholder?.classList.add(
-        "hidden"
-      );
-
-    };
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Thumbnail loading error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   📦 RENDER FILES
-   ========================================================= */
-
-function renderFiles() {
-
-  const files =
-    getVisibleFiles();
-
-
-  fileList.innerHTML =
-    "";
-
-
-  document.getElementById(
-    "fileCount"
-  ).textContent =
-    `${files.length} file${files.length !== 1 ? "s" : ""}`;
-
-
-  if (
-    files.length === 0
-  ) {
-
-    emptyState.classList.remove(
-      "hidden"
-    );
-
-    return;
-
-  }
-
-
-  emptyState.classList.add(
-    "hidden"
-  );
-
-
-  /*
-   * Tentukan mode grid/list.
-   */
-  if (
-    currentView === "list"
-  ) {
-
-    fileList.className =
-      "space-y-3";
-
-  }
-
-  else {
-
-    fileList.className =
-      "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4";
-
-  }
-
-
-  /*
-   * Gunakan DocumentFragment.
-   *
-   * Ini mengurangi perubahan DOM berulang ketika
-   * banyak file ditampilkan.
-   */
-  const fragment =
-    document.createDocumentFragment();
-
-
-  files.forEach(
-    file => {
 
       if (
-        currentView === "list"
+        previewCache.has(
+          cacheKey
+        )
       ) {
 
-        fragment.appendChild(
-          createListCard(
-            file
-          )
+        return previewCache.get(
+          cacheKey
         );
 
       }
 
-      else {
 
-        fragment.appendChild(
-          createGridCard(
-            file
-          )
-        );
+      const filePath =
+        `${currentUser.id}/${file.name}`;
 
-      }
-
-    }
-  );
-
-
-  fileList.appendChild(
-    fragment
-  );
-
-
-  updateStorageUI();
-
-}
-
-
-/* =========================================================
-   🖼️ GRID CARD
-   ========================================================= */
-
-function createGridCard(file) {
-
-  const card =
-    document.createElement(
-      "div"
-    );
-
-
-  card.className =
-    "file-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl";
-
-
-  const type =
-    getFileType(
-      file
-    );
-
-
-  /*
-   * Default preview.
-   *
-   * Digunakan untuk file selain image.
-   */
-  let preview = `
-
-    <div
-      class="
-        h-36
-        bg-slate-50
-        dark:bg-slate-800
-        flex
-        items-center
-        justify-center
-        text-6xl
-      "
-    >
-      ${getFileIcon(file.file_name)}
-    </div>
-
-  `;
-
-
-  /*
-   * Jika file adalah gambar,
-   * buat area thumbnail.
-   */
-  if (
-    type === "image"
-  ) {
-
-    preview = `
-
-      <div
-        class="
-          h-36
-          bg-slate-100
-          dark:bg-slate-800
-          flex
-          items-center
-          justify-center
-          overflow-hidden
-        "
-      >
-
-        <img
-          src=""
-          class="
-            preview-thumbnail
-            w-full
-            h-full
-            object-cover
-            hidden
-          "
-          alt=""
-          loading="lazy"
-          decoding="async"
-          fetchpriority="low"
-        />
-
-
-        <div
-          class="
-            preview-placeholder
-            text-5xl
-          "
-        >
-          ${getFileIcon(file.file_name)}
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  card.innerHTML = `
-
-    ${preview}
-
-
-    <div class="p-4">
-
-      <div
-        class="
-          flex
-          items-start
-          gap-3
-        "
-      >
-
-        <div
-          class="
-            min-w-0
-            flex-1
-          "
-        >
-
-          <div
-            class="
-              font-bold
-              text-sm
-              truncate
-            "
-            title="${escapeHtml(file.file_name)}"
-          >
-            ${escapeHtml(file.file_name)}
-          </div>
-
-
-          <div
-            class="
-              text-xs
-              text-slate-400
-              mt-1
-            "
-          >
-            ${formatSize(file.file_size)}
-            •
-            ${formatDate(file.created_at)}
-          </div>
-
-        </div>
-
-
-        <div class="text-xl">
-          ${getFileIcon(file.file_name)}
-        </div>
-
-      </div>
-
-
-      <div
-        class="
-          grid
-          grid-cols-3
-          gap-2
-          mt-4
-        "
-      >
-
-        <button
-          class="
-            preview-button
-            py-2
-            rounded-xl
-            bg-slate-100
-            dark:bg-slate-800
-            hover:bg-indigo-50
-            dark:hover:bg-indigo-500/10
-            text-xs
-            font-semibold
-          "
-        >
-          👁️ Lihat
-        </button>
-
-
-        <button
-          class="
-            rename-button
-            py-2
-            rounded-xl
-            bg-amber-50
-            dark:bg-amber-500/10
-            text-amber-600
-            hover:bg-amber-100
-            text-xs
-            font-semibold
-          "
-        >
-          ✏️ Nama
-        </button>
-
-
-        <button
-          class="
-            delete-button
-            py-2
-            rounded-xl
-            bg-red-50
-            dark:bg-red-500/10
-            text-red-600
-            hover:bg-red-100
-            text-xs
-            font-semibold
-          "
-        >
-          🗑️
-        </button>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  /*
-   * Tombol preview.
-   */
-  card
-    .querySelector(
-      ".preview-button"
-    )
-    .addEventListener(
-      "click",
-      () =>
-        previewFile(
-          file
-        )
-    );
-
-
-  /*
-   * Tombol rename.
-   */
-  card
-    .querySelector(
-      ".rename-button"
-    )
-    .addEventListener(
-      "click",
-      () =>
-        openRenameModal(
-          file
-        )
-    );
-
-
-  /*
-   * Tombol delete.
-   */
-  card
-    .querySelector(
-      ".delete-button"
-    )
-    .addEventListener(
-      "click",
-      () =>
-        openDeleteModal(
-          file
-        )
-    );
-
-
-  /*
-   * Jika file gambar,
-   * load thumbnail.
-   */
-  const thumbnail =
-    card.querySelector(
-      ".preview-thumbnail"
-    );
-
-
-  if (thumbnail) {
-
-    loadImageThumbnail(
-      thumbnail,
-      file
-    );
-
-  }
-
-
-  return card;
-
-}
-
-
-/* =========================================================
-   📋 LIST CARD
-   ========================================================= */
-
-function createListCard(file) {
-
-  const card =
-    document.createElement(
-      "div"
-    );
-
-
-  card.className =
-    "file-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4";
-
-
-  card.innerHTML = `
-
-    <div
-      class="
-        flex
-        items-center
-        gap-4
-      "
-    >
-
-      <div
-        class="
-          w-14
-          h-14
-          flex-shrink-0
-          rounded-2xl
-          bg-slate-100
-          dark:bg-slate-800
-          flex
-          items-center
-          justify-center
-          text-3xl
-        "
-      >
-        ${getFileIcon(file.file_name)}
-      </div>
-
-
-      <div
-        class="
-          min-w-0
-          flex-1
-        "
-      >
-
-        <div
-          class="
-            font-bold
-            truncate
-          "
-          title="${escapeHtml(file.file_name)}"
-        >
-          ${escapeHtml(file.file_name)}
-        </div>
-
-
-        <div
-          class="
-            text-xs
-            text-slate-400
-            mt-1
-          "
-        >
-          ${formatSize(file.file_size)}
-          •
-          ${formatDate(file.created_at)}
-        </div>
-
-      </div>
-
-
-      <div
-        class="
-          hidden
-          sm:flex
-          gap-2
-        "
-      >
-
-        <button
-          class="
-            preview-button
-            px-3
-            py-2
-            rounded-xl
-            bg-slate-100
-            dark:bg-slate-800
-            text-sm
-          "
-        >
-          👁️
-        </button>
-
-
-        <button
-          class="
-            rename-button
-            px-3
-            py-2
-            rounded-xl
-            bg-amber-50
-            dark:bg-amber-500/10
-            text-amber-600
-            text-sm
-          "
-        >
-          ✏️
-        </button>
-
-
-        <button
-          class="
-            delete-button
-            px-3
-            py-2
-            rounded-xl
-            bg-red-50
-            dark:bg-red-500/10
-            text-red-600
-            text-sm
-          "
-        >
-          🗑️
-        </button>
-
-      </div>
-
-
-      <!-- Mobile menu -->
-      <div class="sm:hidden">
-
-        <button
-          class="
-            mobile-menu-button
-            w-10
-            h-10
-            rounded-xl
-            bg-slate-100
-            dark:bg-slate-800
-          "
-        >
-          ⋮
-        </button>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  card
-    .querySelector(
-      ".preview-button"
-    )
-    ?.addEventListener(
-      "click",
-      () =>
-        previewFile(
-          file
-        )
-    );
-
-
-  card
-    .querySelector(
-      ".rename-button"
-    )
-    ?.addEventListener(
-      "click",
-      () =>
-        openRenameModal(
-          file
-        )
-    );
-
-
-  card
-    .querySelector(
-      ".delete-button"
-    )
-    ?.addEventListener(
-      "click",
-      () =>
-        openDeleteModal(
-          file
-        )
-    );
-
-
-  card
-    .querySelector(
-      ".mobile-menu-button"
-    )
-    ?.addEventListener(
-      "click",
-      () =>
-        showMobileFileActions(
-          file
-        )
-    );
-
-
-  return card;
-
-}
-
-
-/* =========================================================
-   👁️ PREVIEW
-   =========================================================
-   Preview menggunakan file asli/resolusi penuh,
-   bukan thumbnail.
-
-   Jadi:
-   - daftar file = thumbnail ringan
-   - preview = file asli
-   ========================================================= */
-
-async function previewFile(file) {
-
-  try {
-
-    let url =
-      previewCache.get(
-        file.storage_path
-      );
-
-
-    /*
-     * Jika URL preview belum ada,
-     * buat signed URL baru.
-     */
-    if (!url) {
 
       const {
         data,
@@ -5266,2039 +1471,1267 @@ async function previewFile(file) {
           .storage
           .from(BUCKET)
           .createSignedUrl(
-            file.storage_path,
-            60 * 10
+            filePath,
+            SIGNED_URL_LIFETIME
           );
 
 
       if (error) {
-
         throw error;
-
       }
 
 
-      url =
+      const url =
         data.signedUrl;
 
 
-      /*
-       * Simpan ke cache.
-       */
       previewCache.set(
-        file.storage_path,
+        cacheKey,
         url
       );
 
-    }
 
-
-    previewTitle.textContent =
-      file.file_name;
-
-
-    const type =
-      getFileType(
-        file
-      );
-
-
-    /*
-     * IMAGE
-     */
-    if (
-      type === "image"
-    ) {
-
-      previewContent.innerHTML = `
-
-        <img
-          src="${escapeHtml(url)}"
-          class="
-            max-w-full
-            max-h-[70vh]
-            rounded-2xl
-            object-contain
-          "
-          alt="${escapeHtml(file.file_name)}"
-        />
-
-      `;
+      return url;
 
     }
 
 
-    /*
-     * VIDEO
-     */
-    else if (
-      type === "video"
-    ) {
+    /* =====================================================
+       LOAD FILES
+    ====================================================== */
 
-      previewContent.innerHTML = `
+    async function loadFiles() {
 
-        <video
-          src="${escapeHtml(url)}"
-          controls
-          autoplay
-          class="
-            max-w-full
-            max-h-[70vh]
-            rounded-2xl
-          "
-        ></video>
-
-      `;
-
-    }
-
-
-    /*
-     * AUDIO
-     */
-    else if (
-      type === "audio"
-    ) {
-
-      previewContent.innerHTML = `
-
-        <div
-          class="
-            w-full
-            max-w-xl
-            text-center
-          "
-        >
-
-          <div
-            class="
-              text-7xl
-              mb-6
-            "
-          >
-            🎵
-          </div>
-
-
-          <div
-            class="
-              font-bold
-              mb-5
-            "
-          >
-            ${escapeHtml(file.file_name)}
-          </div>
-
-
-          <audio
-            src="${escapeHtml(url)}"
-            controls
-            class="w-full"
-          ></audio>
-
-        </div>
-
-      `;
-
-    }
-
-
-    /*
-     * PDF
-     */
-    else if (
-      type === "pdf"
-    ) {
-
-      previewContent.innerHTML = `
-
-        <iframe
-          src="${escapeHtml(url)}"
-          class="
-            w-full
-            h-[70vh]
-            rounded-2xl
-            border-0
-          "
-        ></iframe>
-
-      `;
-
-    }
-
-
-    /*
-     * FILE LAIN
-     */
-    else {
-
-      previewContent.innerHTML = `
-
-        <div
-          class="
-            text-center
-            py-10
-          "
-        >
-
-          <div
-            class="
-              text-7xl
-              mb-5
-            "
-          >
-            ${getFileIcon(file.file_name)}
-          </div>
-
-
-          <h3
-            class="
-              font-bold
-              text-lg
-            "
-          >
-            Preview tidak tersedia
-          </h3>
-
-
-          <p
-            class="
-              text-sm
-              text-slate-400
-              mt-2
-            "
-          >
-            File ini dapat didownload untuk dibuka.
-          </p>
-
-
-          <button
-            id="previewDownloadButton"
-            class="
-              mt-5
-              px-5
-              py-3
-              rounded-xl
-              bg-indigo-600
-              text-white
-              font-bold
-            "
-          >
-            ⬇️ Download File
-          </button>
-
-        </div>
-
-      `;
-
-
-      document
-        .getElementById(
-          "previewDownloadButton"
-        )
-        .addEventListener(
-          "click",
-          () =>
-            downloadFile(
-              file
-            )
-        );
-
-    }
-
-
-    previewModal.classList.remove(
-      "hidden"
-    );
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showToast(
-      "Preview gagal: " +
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   ❌ CLOSE PREVIEW
-   ========================================================= */
-
-document
-  .getElementById(
-    "closePreviewButton"
-  )
-  .addEventListener(
-    "click",
-    closePreview
-  );
-
-
-previewModal.addEventListener(
-  "click",
-  event => {
-
-    /*
-     * Klik background modal = tutup.
-     */
-    if (
-      event.target ===
-      previewModal
-    ) {
-
-      closePreview();
-
-    }
-
-  }
-);
-
-
-function closePreview() {
-
-  previewModal.classList.add(
-    "hidden"
-  );
-
-
-  /*
-   * Hapus isi preview.
-   *
-   * Ini juga membantu menghentikan video/audio.
-   */
-  previewContent.innerHTML =
-    "";
-
-}
-
-
-/* =========================================================
-   ⬇️ DOWNLOAD
-   ========================================================= */
-
-async function downloadFile(file) {
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .createSignedUrl(
-          file.storage_path,
-          60 * 60
-        );
-
-
-    if (error) {
-
-      throw error;
-
-    }
-
-
-    const link =
-      document.createElement(
-        "a"
-      );
-
-
-    link.href =
-      data.signedUrl;
-
-
-    link.target =
-      "_blank";
-
-
-    link.rel =
-      "noopener";
-
-
-    link.download =
-      file.file_name;
-
-
-    document.body.appendChild(
-      link
-    );
-
-
-    link.click();
-
-
-    link.remove();
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showToast(
-      "Download gagal: " +
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   ✏️ RENAME
-   ========================================================= */
-
-function openRenameModal(file) {
-
-  currentRenameFile =
-    file;
-
-
-  renameInput.value =
-    file.file_name;
-
-
-  renameModal.classList.remove(
-    "hidden"
-  );
-
-
-  /*
-   * Fokus input otomatis.
-   */
-  setTimeout(
-    () => {
-
-      renameInput.focus();
-
-      renameInput.select();
-
-    },
-    50
-  );
-
-}
-
-
-function closeRenameModal() {
-
-  currentRenameFile =
-    null;
-
-
-  renameModal.classList.add(
-    "hidden"
-  );
-
-}
-
-
-document
-  .getElementById(
-    "cancelRenameButton"
-  )
-  .addEventListener(
-    "click",
-    closeRenameModal
-  );
-
-
-document
-  .getElementById(
-    "saveRenameButton"
-  )
-  .addEventListener(
-    "click",
-    renameCurrentFile
-  );
-
-
-/*
- * Enter = simpan.
- * Escape = batal.
- */
-renameInput.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key === "Enter"
-    ) {
-
-      renameCurrentFile();
-
-    }
-
-
-    if (
-      event.key === "Escape"
-    ) {
-
-      closeRenameModal();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   💾 RENAME FILE DI DATABASE
-   ========================================================= */
-
-async function renameCurrentFile() {
-
-  if (
-    !currentRenameFile
-  ) {
-
-    return;
-
-  }
-
-
-  const newName =
-    renameInput.value.trim();
-
-
-  if (!newName) {
-
-    showToast(
-      "Nama file tidak boleh kosong.",
-      "warning"
-    );
-
-    return;
-
-  }
-
-
-  if (
-    newName ===
-    currentRenameFile.file_name
-  ) {
-
-    closeRenameModal();
-
-    return;
-
-  }
-
-
-  const button =
-    document.getElementById(
-      "saveRenameButton"
-    );
-
-
-  button.disabled =
-    true;
-
-
-  button.textContent =
-    "Menyimpan...";
-
-
-  try {
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("files")
-        .update({
-
-          file_name:
-            newName,
-
-          updated_at:
-            new Date().toISOString()
-
-        })
-        .eq(
-          "id",
-          currentRenameFile.id
-        )
-        .eq(
-          "user_id",
-          currentUser.id
-        );
-
-
-    if (error) {
-
-      throw error;
-
-    }
-
-
-    closeRenameModal();
-
-
-    showToast(
-      "Nama file berhasil diubah."
-    );
-
-
-    await loadFiles();
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showToast(
-      "Rename gagal: " +
-      error.message,
-      "error"
-    );
-
-  }
-
-
-  finally {
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "Simpan";
-
-  }
-
-}
-
-
-/* =========================================================
-   🗑️ DELETE MODAL
-   ========================================================= */
-
-function openDeleteModal(file) {
-
-  currentDeleteFile =
-    file;
-
-
-  deleteFileName.textContent =
-    file.file_name;
-
-
-  deleteModal.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-function closeDeleteModal() {
-
-  currentDeleteFile =
-    null;
-
-
-  deleteModal.classList.add(
-    "hidden"
-  );
-
-}
-
-
-document
-  .getElementById(
-    "cancelDeleteButton"
-  )
-  .addEventListener(
-    "click",
-    closeDeleteModal
-  );
-
-
-document
-  .getElementById(
-    "confirmDeleteButton"
-  )
-  .addEventListener(
-    "click",
-    deleteCurrentFile
-  );
-
-
-/* =========================================================
-   🗑️ DELETE FILE
-   =========================================================
-   Proses:
-   1. Hapus file dari Storage.
-   2. Hapus data file dari tabel database.
-   ========================================================= */
-
-async function deleteCurrentFile() {
-
-  if (
-    !currentDeleteFile
-  ) {
-
-    return;
-
-  }
-
-
-  const button =
-    document.getElementById(
-      "confirmDeleteButton"
-    );
-
-
-  button.disabled =
-    true;
-
-
-  button.textContent =
-    "Menghapus...";
-
-
-  try {
-
-    /*
-     * STEP 1
-     * Hapus file dari Supabase Storage.
-     */
-    const {
-      error:
-        storageError
-    } =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .remove([
-
-          currentDeleteFile.storage_path
-
-        ]);
-
-
-    if (
-      storageError
-    ) {
-
-      throw storageError;
-
-    }
-
-
-    /*
-     * STEP 2
-     * Hapus record dari database.
-     */
-    const {
-      error:
-        databaseError
-    } =
-      await supabaseClient
-        .from("files")
-        .delete()
-        .eq(
-          "id",
-          currentDeleteFile.id
-        )
-        .eq(
-          "user_id",
-          currentUser.id
-        );
-
-
-    if (
-      databaseError
-    ) {
-
-      throw databaseError;
-
-    }
-
-
-    /*
-     * Bersihkan cache file tersebut.
-     */
-    thumbnailCache.delete(
-      currentDeleteFile.storage_path
-    );
-
-    previewCache.delete(
-      currentDeleteFile.storage_path
-    );
-
-
-    closeDeleteModal();
-
-
-    showToast(
-      "File berhasil dihapus."
-    );
-
-
-    await loadFiles();
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showToast(
-      "Gagal menghapus file: " +
-      error.message,
-      "error"
-    );
-
-  }
-
-
-  finally {
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "Hapus";
-
-  }
-
-}
-
-
-/* =========================================================
-   📱 MOBILE FILE ACTIONS
-   ========================================================= */
-
-function showMobileFileActions(file) {
-
-  const action =
-    prompt(
-
-      `File: ${file.file_name}
-
-Ketik:
-
-1 = Preview
-2 = Download
-3 = Rename
-4 = Hapus`
-
-    );
-
-
-  if (
-    action === "1"
-  ) {
-
-    previewFile(
-      file
-    );
-
-  }
-
-  else if (
-    action === "2"
-  ) {
-
-    downloadFile(
-      file
-    );
-
-  }
-
-  else if (
-    action === "3"
-  ) {
-
-    openRenameModal(
-      file
-    );
-
-  }
-
-  else if (
-    action === "4"
-  ) {
-
-    openDeleteModal(
-      file
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   📤 UPLOAD QUEUE
-   ========================================================= */
-
-function showUploadQueue() {
-
-  uploadQueue.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-/*
- * Membuat satu item progress upload.
- */
-function createUploadItem(file) {
-
-  const id =
-    "upload_" +
-    Math.random()
-      .toString(36)
-      .substring(2);
-
-
-  const item =
-    document.createElement(
-      "div"
-    );
-
-
-  item.id =
-    id;
-
-
-  item.className =
-    "border border-slate-200 dark:border-slate-700 rounded-2xl p-4";
-
-
-  item.innerHTML = `
-
-    <div
-      class="
-        flex
-        items-center
-        gap-3
-      "
-    >
-
-      <div class="text-2xl">
-        ${getFileIcon(file.name)}
-      </div>
-
-
-      <div
-        class="
-          flex-1
-          min-w-0
-        "
-      >
-
-        <div
-          class="
-            font-semibold
-            text-sm
-            truncate
-          "
-        >
-          ${escapeHtml(file.name)}
-        </div>
-
-
-        <div
-          class="
-            upload-status
-            text-xs
-            text-slate-400
-            mt-1
-          "
-        >
-          Menunggu...
-        </div>
-
-      </div>
-
-
-      <div
-        class="
-          upload-percent
-          text-xs
-          font-bold
-        "
-      >
-        0%
-      </div>
-
-    </div>
-
-
-    <div
-      class="
-        h-2
-        bg-slate-100
-        dark:bg-slate-800
-        rounded-full
-        overflow-hidden
-        mt-3
-      "
-    >
-
-      <div
-        class="
-          upload-progress
-          h-full
-          bg-gradient-to-r
-          from-indigo-500
-          to-blue-500
-          rounded-full
-        "
-        style="width:0%"
-      ></div>
-
-    </div>
-
-  `;
-
-
-  uploadQueue.appendChild(
-    item
-  );
-
-
-  return {
-
-    item,
-
-    progress:
-      item.querySelector(
-        ".upload-progress"
-      ),
-
-    percent:
-      item.querySelector(
-        ".upload-percent"
-      ),
-
-    status:
-      item.querySelector(
-        ".upload-status"
-      )
-
-  };
-
-}
-
-
-/* =========================================================
-   📤 UPLOAD FILES
-   =========================================================
-   Proses:
-   1. Validasi user.
-   2. Validasi ukuran file.
-   3. Validasi quota.
-   4. Upload ke Storage.
-   5. Simpan informasi ke tabel files.
-   6. Jika database gagal -> rollback Storage.
-   ========================================================= */
-
-async function uploadFiles(files) {
-
-  if (!currentUser) {
-
-    showToast(
-      "Silakan login terlebih dahulu.",
-      "warning"
-    );
-
-    return;
-
-  }
-
-
-  if (
-    !files.length
-  ) {
-
-    return;
-
-  }
-
-
-  showUploadQueue();
-
-
-  let successCount =
-    0;
-
-
-  /*
-   * Upload satu per satu.
-   *
-   * Jika ingin upload paralel,
-   * bagian ini bisa diubah,
-   * tetapi upload paralel akan membutuhkan
-   * penanganan quota dan error yang lebih kompleks.
-   */
-  for (
-    const file of files
-  ) {
-
-    const ui =
-      createUploadItem(
-        file
-      );
-
-
-    /*
-     * Validasi ukuran file.
-     */
-    if (
-      file.size >
-      MAX_FILE_SIZE
-    ) {
-
-      ui.status.textContent =
-        "File terlalu besar.";
-
-
-      ui.status.className =
-        "upload-status text-xs text-red-500 mt-1";
-
-
-      continue;
-
-    }
-
-
-    /*
-     * Validasi storage.
-     */
-    if (
-      file.size >
-      storageInfo.remaining
-    ) {
-
-      ui.status.textContent =
-        "Storage tidak mencukupi.";
-
-
-      ui.status.className =
-        "upload-status text-xs text-red-500 mt-1";
-
-
-      continue;
-
-    }
-
-
-    try {
-
-      ui.status.textContent =
-        "Mengupload...";
-
-
-      /*
-       * =====================================================
-       * 🛡️ SANITASI NAMA FILE
-       * =====================================================
-       *
-       * Karakter aneh diubah menjadi "_".
-       */
-      const safeName =
-        file.name
-          .replace(
-            /[^a-zA-Z0-9._-]/g,
-            "_"
-          );
-
-
-      /*
-       * =====================================================
-       * 🆔 UNIQUE FILE NAME
-       * =====================================================
-       *
-       * Tujuannya agar dua file dengan nama sama
-       * tidak saling menimpa.
-       */
-      const uniqueName =
-        `${Date.now()}_${Math.random()
-          .toString(36)
-          .substring(2, 8)}_${safeName}`;
-
-
-      /*
-       * Struktur Storage:
-       *
-       * USER_ID / UNIQUE_FILE_NAME
-       *
-       * Contoh:
-       *
-       * abc123/1720000000_xxx_foto.jpg
-       */
-      const filePath =
-        `${currentUser.id}/${uniqueName}`;
-
-
-      /*
-       * Supabase upload biasa tidak memberikan
-       * progress callback native seperti upload
-       * XMLHttpRequest.
-       *
-       * Jadi progress ini merupakan indikator status,
-       * bukan persentase byte sebenarnya.
-       */
-
-      ui.progress.style.width =
-        "20%";
-
-
-      ui.percent.textContent =
-        "20%";
-
-
-      /*
-       * =====================================================
-       * 📤 UPLOAD KE STORAGE
-       * =====================================================
-       */
-
-      const {
-        error:
-          uploadError
-      } =
-        await supabaseClient
-          .storage
-          .from(BUCKET)
-          .upload(
-
-            filePath,
-
-            file,
-
-            {
-
-              /*
-               * Browser/CDN boleh cache file
-               * selama 1 jam.
-               */
-              cacheControl:
-                "3600",
-
-              /*
-               * false = jangan overwrite file.
-               */
-              upsert:
-                false,
-
-              /*
-               * MIME type file.
-               */
-              contentType:
-                file.type ||
-                "application/octet-stream"
-
-            }
-
-          );
-
-
-      if (
-        uploadError
-      ) {
-
-        throw uploadError;
-
+      if (!currentUser) {
+        return;
       }
 
 
-      ui.progress.style.width =
-        "75%";
+      fileList.innerHTML = `
+
+        <div
+          class="bg-white rounded-xl p-6 text-center text-gray-500"
+        >
+          Memuat file...
+        </div>
+
+      `;
 
 
-      ui.percent.textContent =
-        "75%";
+      try {
+
+        const folder =
+          currentUser.id;
 
 
-      /*
-       * =====================================================
-       * 🗄️ SIMPAN METADATA KE DATABASE
-       * =====================================================
-       */
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .storage
+            .from(BUCKET)
+            .list(
+              folder,
+              {
+                limit: 1000,
 
-      const {
-        error:
-          databaseError
-      } =
-        await supabaseClient
-          .from("files")
-          .insert({
+                sortBy: {
+                  column:
+                    "created_at",
 
-            user_id:
-              currentUser.id,
-
-            storage_path:
-              filePath,
-
-            file_name:
-              file.name,
-
-            file_size:
-              file.size,
-
-            mime_type:
-              file.type ||
-              "application/octet-stream"
-
-          });
+                  order:
+                    "desc"
+                }
+              }
+            );
 
 
-      if (
-        databaseError
-      ) {
+        if (error) {
+          throw error;
+        }
+
+
+        allFiles =
+          (data || [])
+            .filter(
+              file =>
+                file.name !==
+                ".emptyFolderPlaceholder"
+            );
+
 
         /*
-         * =================================================
-         * 🔄 ROLLBACK
-         * =================================================
-         *
-         * Storage berhasil tetapi database gagal.
-         *
-         * Maka file Storage dihapus lagi agar
-         * tidak meninggalkan file yatim.
-         */
-        await supabaseClient
-          .storage
-          .from(BUCKET)
-          .remove([
-            filePath
-          ]);
+          Tidak perlu await di sini.
 
+          renderFiles akan langsung membuat card,
+          lalu thumbnail dimuat satu per satu
+          tanpa membuat aplikasi macet.
+        */
 
-        throw databaseError;
-
-      }
-
-
-      /*
-       * Upload sukses.
-       */
-      ui.progress.style.width =
-        "100%";
-
-
-      ui.percent.textContent =
-        "100%";
-
-
-      ui.status.textContent =
-        "Berhasil diupload ✓";
-
-
-      ui.status.className =
-        "upload-status text-xs text-emerald-500 mt-1";
-
-
-      successCount++;
-
-
-      /*
-       * Update quota lokal sementara.
-       *
-       * Ini penting ketika user memilih banyak file sekaligus.
-       */
-      storageInfo.remaining =
-        Math.max(
-
-          storageInfo.remaining -
-          file.size,
-
-          0
-
+        renderFiles(
+          allFiles
         );
 
+
+      } catch (error) {
+
+        console.error(error);
+
+        fileList.innerHTML = `
+
+          <div
+            class="bg-red-100 text-red-700 rounded-xl p-4"
+          >
+            Gagal memuat file:
+            ${escapeHtml(error.message)}
+          </div>
+
+        `;
+
+      }
 
     }
 
-    catch (error) {
 
-      console.error(
-        error
-      );
+    /* =====================================================
+       RENDER FILES
+       
+       ⭐ SUDAH DIPERBAIKI ⭐
+       
+       Tidak ada IntersectionObserver.
 
+       Card dibuat dulu.
+       Setelah itu setiap thumbnail langsung
+       meminta signed URL dan memasangnya
+       ke img.src.
+    ====================================================== */
 
-      ui.status.textContent =
-        "Gagal: " +
-        error.message;
+    function renderFiles(files) {
 
-
-      ui.status.className =
-        "upload-status text-xs text-red-500 mt-1";
-
-
-      ui.progress.classList.remove(
-
-        "bg-gradient-to-r",
-        "from-indigo-500",
-        "to-blue-500"
-
-      );
+      fileList.innerHTML = "";
 
 
-      ui.progress.classList.add(
-        "bg-red-500"
-      );
-
-    }
-
-  }
-
-
-  /*
-   * Reset input file.
-   *
-   * Ini memungkinkan user memilih file yang sama
-   * lagi setelah upload.
-   */
-  fileInput.value =
-    "";
+      fileCount.textContent =
+        `${files.length} file${
+          files.length !== 1
+            ? "s"
+            : ""
+        }`;
 
 
-  /*
-   * Refresh daftar file dan storage.
-   */
-  await loadFiles();
+      if (
+        files.length === 0
+      ) {
 
-
-  if (
-    successCount > 0
-  ) {
-
-    showToast(
-      `${successCount} file berhasil diupload.`
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   📁 FILE INPUT
-   ========================================================= */
-
-fileInput.addEventListener(
-  "change",
-  event => {
-
-    uploadFiles(
-
-      Array.from(
-        event.target.files || []
-      )
-
-    );
-
-  }
-);
-
-
-/* =========================================================
-   🖱️ DRAG & DROP
-   ========================================================= */
-
-[
-  "dragenter",
-  "dragover"
-
-].forEach(
-  eventName => {
-
-    dropZone.addEventListener(
-      eventName,
-      event => {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-
-        dropZone.classList.add(
-          "dragover"
+        emptyState.classList.remove(
+          "hidden"
         );
 
-      }
-    );
-
-  }
-);
-
-
-[
-  "dragleave",
-  "drop"
-
-].forEach(
-  eventName => {
-
-    dropZone.addEventListener(
-      eventName,
-      event => {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-
-        dropZone.classList.remove(
-          "dragover"
-        );
+        return;
 
       }
-    );
-
-  }
-);
 
 
-/*
- * Ketika file dijatuhkan.
- */
-dropZone.addEventListener(
-  "drop",
-  event => {
-
-    const files =
-      Array.from(
-        event.dataTransfer.files || []
+      emptyState.classList.add(
+        "hidden"
       );
 
 
-    uploadFiles(
-      files
-    );
+      /*
+        DocumentFragment membuat rendering
+        lebih ringan daripada append satu-satu
+        langsung ke DOM.
+      */
 
-  }
-);
-
-
-/* =========================================================
-   📤 UPLOAD BUTTONS
-   ========================================================= */
-
-function scrollToUpload() {
-
-  document
-    .getElementById(
-      "uploadSection"
-    )
-    .scrollIntoView({
-
-      behavior:
-        "smooth",
-
-      block:
-        "center"
-
-    });
-
-}
+      const fragment =
+        document.createDocumentFragment();
 
 
-/*
- * Semua tombol upload menggunakan fungsi yang sama.
- */
-[
-  "heroUploadButton",
-  "emptyUploadButton",
-  "sidebarUploadButton"
+      files.forEach(
+        file => {
 
-].forEach(
-  id => {
-
-    const button =
-      document.getElementById(
-        id
-      );
+          const card =
+            document.createElement(
+              "div"
+            );
 
 
-    if (button) {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          scrollToUpload();
+          card.className =
+            "bg-white rounded-2xl shadow-sm overflow-hidden";
 
 
-          /*
-           * Sedikit delay agar scroll selesai
-           * sebelum file picker dibuka.
-           */
-          setTimeout(
-            () =>
-              fileInput.click(),
-            300
+          const name =
+            escapeHtml(
+              file.name
+            );
+
+
+          const size =
+            formatSize(
+              file.metadata?.size ||
+              file.size ||
+              0
+            );
+
+
+          const created =
+            formatDate(
+              file.created_at ||
+              new Date()
+            );
+
+
+          const image =
+            isImageFile(
+              file
+            );
+
+
+          /* -------------------------------------------
+             THUMBNAIL / ICON
+          -------------------------------------------- */
+
+          let visualHtml = "";
+
+
+          if (image) {
+
+            visualHtml = `
+
+              <div
+                class="thumbnail-box cursor-pointer"
+                data-preview="true"
+              >
+
+                <div
+                  class="thumbnail-placeholder"
+                >
+                  🖼️
+                </div>
+
+                <img
+                  class="hidden"
+                  alt="${name}"
+                  loading="lazy"
+                  decoding="async"
+                />
+
+              </div>
+
+            `;
+
+          } else {
+
+            visualHtml = `
+
+              <div
+                class="w-full h-32 bg-gray-50 flex items-center justify-center cursor-pointer"
+                data-preview="true"
+              >
+
+                <div class="text-6xl">
+                  ${getFileIcon(file.name)}
+                </div>
+
+              </div>
+
+            `;
+
+          }
+
+
+          /* -------------------------------------------
+             CARD HTML
+          -------------------------------------------- */
+
+          card.innerHTML = `
+
+            ${visualHtml}
+
+            <div class="p-4">
+
+              <div
+                class="flex items-start gap-3"
+              >
+
+                <div class="flex-1 min-w-0">
+
+                  <div
+                    class="font-semibold text-gray-800 truncate"
+                    title="${name}"
+                  >
+                    ${name}
+                  </div>
+
+                  <div
+                    class="text-xs text-gray-400 mt-1"
+                  >
+                    ${size}
+                    •
+                    ${created}
+                  </div>
+
+                </div>
+
+
+                <div
+                  class="flex gap-2 flex-shrink-0"
+                >
+
+                  <button
+                    class="downloadButton bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm"
+                  >
+                    Download
+                  </button>
+
+                  <button
+                    class="deleteButton bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
+                  >
+                    Hapus
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+
+          /* -------------------------------------------
+             PREVIEW CLICK
+          -------------------------------------------- */
+
+          const previewArea =
+            card.querySelector(
+              "[data-preview]"
+            );
+
+
+          previewArea.addEventListener(
+            "click",
+            () => {
+
+              previewFile(
+                file
+              );
+
+            }
+          );
+
+
+          /* -------------------------------------------
+             DOWNLOAD
+          -------------------------------------------- */
+
+          card
+            .querySelector(
+              ".downloadButton"
+            )
+            .addEventListener(
+              "click",
+              () => {
+
+                downloadFile(
+                  file.name
+                );
+
+              }
+            );
+
+
+          /* -------------------------------------------
+             DELETE
+          -------------------------------------------- */
+
+          card
+            .querySelector(
+              ".deleteButton"
+            )
+            .addEventListener(
+              "click",
+              () => {
+
+                deleteFile(
+                  file.name
+                );
+
+              }
+            );
+
+
+          /* -------------------------------------------
+             THUMBNAIL
+             
+             ⭐ INI YANG MEMPERBAIKI MASALAHMU ⭐
+
+             URL dibuat segera setelah card
+             masuk ke DOM.
+
+             BUKAN saat thumbnail diklik.
+          -------------------------------------------- */
+
+          if (image) {
+
+            const imageElement =
+              card.querySelector(
+                "img"
+              );
+
+
+            const placeholder =
+              card.querySelector(
+                ".thumbnail-placeholder"
+              );
+
+
+            loadThumbnailIntoImage(
+              file,
+              imageElement,
+              placeholder
+            );
+
+          }
+
+
+          fragment.appendChild(
+            card
           );
 
         }
       );
 
-    }
 
-  }
-);
-
-
-/* =========================================================
-   🔎 SEARCH
-   ========================================================= */
-
-searchInput.addEventListener(
-  "input",
-  renderFiles
-);
-
-
-/* =========================================================
-   ↕️ SORT
-   ========================================================= */
-
-sortSelect.addEventListener(
-  "change",
-  renderFiles
-);
-
-
-/* =========================================================
-   ▦ VIEW MODE
-   ========================================================= */
-
-document
-  .getElementById(
-    "gridViewButton"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      currentView =
-        "grid";
-
-
-      document
-        .getElementById(
-          "gridViewButton"
-        )
-        .className =
-        "flex-1 lg:flex-none px-4 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400";
-
-
-      document
-        .getElementById(
-          "listViewButton"
-        )
-        .className =
-        "flex-1 lg:flex-none px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500";
-
-
-      /*
-       * Simpan pilihan view.
-       */
-      localStorage.setItem(
-        "jf_view",
-        "grid"
-      );
-
-
-      renderFiles();
-
-    }
-  );
-
-
-document
-  .getElementById(
-    "listViewButton"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      currentView =
-        "list";
-
-
-      document
-        .getElementById(
-          "listViewButton"
-        )
-        .className =
-        "flex-1 lg:flex-none px-4 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400";
-
-
-      document
-        .getElementById(
-          "gridViewButton"
-        )
-        .className =
-        "flex-1 lg:flex-none px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500";
-
-
-      localStorage.setItem(
-        "jf_view",
-        "list"
-      );
-
-
-      renderFiles();
-
-    }
-  );
-
-
-/*
- * Ambil view terakhir yang dipilih user.
- */
-currentView =
-  localStorage.getItem(
-    "jf_view"
-  ) || "grid";
-
-
-/* =========================================================
-   🔄 REFRESH
-   ========================================================= */
-
-document
-  .getElementById(
-    "refreshButton"
-  )
-  .addEventListener(
-    "click",
-    async event => {
-
-      const button =
-        event.currentTarget;
-
-
-      button.disabled =
-        true;
-
-
-      button.textContent =
-        "⟳";
-
-
-      await loadFiles();
-
-
-      button.disabled =
-        false;
-
-
-      button.textContent =
-        "↻";
-
-
-      showToast(
-        "File berhasil diperbarui.",
-        "info"
-      );
-
-    }
-  );
-
-
-/* =========================================================
-   🌙 THEME BUTTONS
-   ========================================================= */
-
-[
-  "themeButton",
-  "desktopThemeButton",
-  "mobileThemeButton"
-
-].forEach(
-  id => {
-
-    const button =
-      document.getElementById(
-        id
-      );
-
-
-    if (button) {
-
-      button.addEventListener(
-        "click",
-        toggleTheme
+      fileList.appendChild(
+        fragment
       );
 
     }
 
-  }
-);
 
+    /* =====================================================
+       LOAD THUMBNAIL KE IMG
+       
+       Fungsi ini sengaja tidak di-await
+       oleh renderFiles.
 
-/* =========================================================
-   📱 MOBILE SIDEBAR
-   ========================================================= */
+       Jadi card langsung tampil,
+       sementara thumbnail masuk begitu
+       URL selesai dibuat.
+    ====================================================== */
 
-const sidebar =
-  document.getElementById(
-    "sidebar"
-  );
-
-
-const sidebarOverlay =
-  document.getElementById(
-    "sidebarOverlay"
-  );
-
-
-/*
- * Buka sidebar.
- */
-function openMobileSidebar() {
-
-  sidebar.classList.remove(
-    "-translate-x-full"
-  );
-
-
-  sidebarOverlay.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-/*
- * Tutup sidebar.
- */
-function closeMobileSidebar() {
-
-  sidebar.classList.add(
-    "-translate-x-full"
-  );
-
-
-  sidebarOverlay.classList.add(
-    "hidden"
-  );
-
-}
-
-
-/*
- * Tombol hamburger.
- */
-document
-  .getElementById(
-    "mobileMenuButton"
-  )
-  .addEventListener(
-    "click",
-    openMobileSidebar
-  );
-
-
-/*
- * Klik overlay = tutup sidebar.
- */
-sidebarOverlay.addEventListener(
-  "click",
-  closeMobileSidebar
-);
-
-
-/* =========================================================
-   ⌨️ ENTER KEY
-   ========================================================= */
-
-
-/*
- * Enter pada password login
- * = klik tombol Login.
- */
-document
-  .getElementById(
-    "loginPassword"
-  )
-  .addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Enter"
-      ) {
-
-        document
-          .getElementById(
-            "loginButton"
-          )
-          .click();
-
-      }
-
-    }
-  );
-
-
-/*
- * Enter pada password register
- * = klik tombol Buat Akun.
- */
-document
-  .getElementById(
-    "registerPassword"
-  )
-  .addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Enter"
-      ) {
-
-        document
-          .getElementById(
-            "registerButton"
-          )
-          .click();
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   ESCAPE MODALS
-   ========================================================= */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key === "Escape"
+    async function loadThumbnailIntoImage(
+      file,
+      img,
+      placeholder
     ) {
 
-      closePreview();
+      try {
 
-      closeRenameModal();
-
-      closeDeleteModal();
-
-    }
-
-  }
-);
+        const url =
+          await getThumbnailUrl(
+            file
+          );
 
 
-/* =========================================================
-   🔐 SUPABASE AUTH STATE
-   =========================================================
-   Supabase akan memanggil fungsi ini ketika:
-   - login
-   - logout
-   - session berubah
-   - session dipulihkan
-   ========================================================= */
+        if (!url) {
+          return;
+        }
 
-supabaseClient
-  .auth
-  .onAuthStateChange(
-    async (
-      event,
-      session
-    ) => {
-
-      if (
-        session &&
-        session.user
-      ) {
 
         /*
-         * User login.
-         */
-        currentUser =
-          session.user;
+          URL langsung dimasukkan ke src.
+
+          Tidak ada dataset.src.
+          Tidak ada IntersectionObserver.
+        */
+
+        img.src =
+          url;
 
 
-        await showApp();
+        /*
+          Tunggu gambar benar-benar berhasil
+          dimuat sebelum menampilkan img.
+        */
+
+        img.onload =
+          () => {
+
+            img.classList.remove(
+              "hidden"
+            );
+
+            if (placeholder) {
+
+              placeholder.classList.add(
+                "hidden"
+              );
+
+            }
+
+          };
+
+
+        img.onerror =
+          () => {
+
+            console.error(
+              "Gambar gagal ditampilkan:",
+              file.name
+            );
+
+            img.classList.add(
+              "hidden"
+            );
+
+            if (placeholder) {
+
+              placeholder.classList.remove(
+                "hidden"
+              );
+
+            }
+
+          };
+
+
+      } catch (error) {
+
+        console.error(
+          "Thumbnail error:",
+          file.name,
+          error
+        );
 
       }
 
-      else {
+    }
+
+
+    /* =====================================================
+       PREVIEW FILE
+       
+       Klik thumbnail -> gambar asli dibuka.
+    ====================================================== */
+
+    async function previewFile(file) {
+
+      previewModal.classList.remove(
+        "hidden"
+      );
+
+
+      previewTitle.textContent =
+        file.name;
+
+
+      previewContent.innerHTML = `
+
+        <div
+          class="py-10 text-gray-500"
+        >
+          Memuat preview...
+        </div>
+
+      `;
+
+
+      try {
 
         /*
-         * User logout.
-         */
-        currentUser =
-          null;
+          File gambar
+        */
+
+        if (
+          isImageFile(file)
+        ) {
+
+          const url =
+            await getOriginalFileUrl(
+              file
+            );
 
 
-        allFiles =
-          [];
+          previewContent.innerHTML = `
+
+            <img
+              src="${escapeHtml(url)}"
+              alt="${escapeHtml(file.name)}"
+              class="rounded-lg"
+            />
+
+          `;
+
+          return;
+
+        }
 
 
         /*
-         * Bersihkan cache.
-         */
+          File bukan gambar
+        */
+
+        previewContent.innerHTML = `
+
+          <div
+            class="text-center py-10"
+          >
+
+            <div class="text-7xl mb-4">
+              ${getFileIcon(file.name)}
+            </div>
+
+            <p class="text-gray-600">
+              Preview untuk jenis file ini
+              belum tersedia.
+            </p>
+
+            <button
+              id="previewDownloadButton"
+              class="mt-5 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg"
+            >
+              Download File
+            </button>
+
+          </div>
+
+        `;
+
+
+        document
+          .getElementById(
+            "previewDownloadButton"
+          )
+          .addEventListener(
+            "click",
+            () => {
+
+              downloadFile(
+                file.name
+              );
+
+            }
+          );
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        previewContent.innerHTML = `
+
+          <div
+            class="text-center py-10 text-red-600"
+          >
+            Gagal menampilkan preview.
+            <br>
+            <small>
+              ${escapeHtml(
+                error.message
+              )}
+            </small>
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       CLOSE PREVIEW
+    ====================================================== */
+
+    function closePreview() {
+
+      previewModal.classList.add(
+        "hidden"
+      );
+
+      previewContent.innerHTML =
+        "";
+
+    }
+
+
+    closePreviewButton.addEventListener(
+      "click",
+      closePreview
+    );
+
+
+    /*
+      Klik area hitam di luar preview
+      juga menutup modal.
+    */
+
+    previewModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          previewModal
+        ) {
+
+          closePreview();
+
+        }
+
+      }
+    );
+
+
+    /*
+      Tombol ESC untuk menutup preview.
+    */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closePreview();
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       UPLOAD FILE
+    ====================================================== */
+
+    async function uploadFile(
+      file
+    ) {
+
+      if (!file) {
+        return;
+      }
+
+
+      if (!currentUser) {
+
+        showUploadMessage(
+          "Silakan login terlebih dahulu."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        file.size >
+        MAX_FILE_SIZE
+      ) {
+
+        showUploadMessage(
+          `File terlalu besar. Maksimal 100 MB. Ukuran file kamu: ${formatSize(file.size)}`
+        );
+
+
+        fileInput.value =
+          "";
+
+
+        return;
+
+      }
+
+
+      showUploadMessage(
+        `Sedang mengupload ${file.name}...`,
+        "loading"
+      );
+
+
+      try {
+
+        /*
+          Bersihkan nama file
+          agar aman digunakan sebagai path.
+        */
+
+        const safeName =
+          file.name.replace(
+            /[^a-zA-Z0-9._-]/g,
+            "_"
+          );
+
+
+        /*
+          Tambahkan timestamp
+          agar nama tidak bentrok.
+        */
+
+        const fileName =
+          `${Date.now()}_${safeName}`;
+
+
+        /*
+          Struktur Storage:
+
+          USER_ID/
+              file.jpg
+              foto.png
+              video.mp4
+        */
+
+        const filePath =
+          `${currentUser.id}/${fileName}`;
+
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .storage
+            .from(BUCKET)
+            .upload(
+              filePath,
+              file,
+              {
+                cacheControl:
+                  "3600",
+
+                upsert:
+                  false
+              }
+            );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        /*
+          Bersihkan cache supaya
+          file baru langsung mendapatkan
+          thumbnail baru.
+        */
+
         thumbnailCache.clear();
 
         previewCache.clear();
 
-        thumbnailRequests.clear();
+
+        showUploadMessage(
+          "File berhasil diupload! ✅",
+          "success"
+        );
 
 
-        showAuthPage();
+        fileInput.value =
+          "";
+
+
+        /*
+          Reload daftar file.
+        */
+
+        await loadFiles();
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showUploadMessage(
+          "Upload gagal: " +
+          (
+            error.message ||
+            "Terjadi kesalahan."
+          )
+        );
 
       }
 
     }
-  );
 
 
-/* =========================================================
-   🚀 START APPLICATION
-   =========================================================
-   Fungsi pertama yang dijalankan ketika HTML selesai dibaca.
-   ========================================================= */
+    /* =====================================================
+       FILE INPUT
+    ====================================================== */
 
-loadUser();
+    fileInput.addEventListener(
+      "change",
+      async function () {
+
+        const file =
+          this.files[0];
 
 
-</script>
+        if (!file) {
+          return;
+        }
+
+
+        await uploadFile(
+          file
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       DRAG & DROP
+       
+       Di HTML lama tertulis drag & drop,
+       tetapi belum ada logic-nya.
+
+       Sekarang benar-benar berfungsi.
+    ====================================================== */
+
+    dropArea.addEventListener(
+      "dragover",
+      event => {
+
+        event.preventDefault();
+
+        dropArea.classList.add(
+          "border-blue-500",
+          "bg-blue-50"
+        );
+
+      }
+    );
+
+
+    dropArea.addEventListener(
+      "dragleave",
+      event => {
+
+        event.preventDefault();
+
+        dropArea.classList.remove(
+          "border-blue-500",
+          "bg-blue-50"
+        );
+
+      }
+    );
+
+
+    dropArea.addEventListener(
+      "drop",
+      async event => {
+
+        event.preventDefault();
+
+
+        dropArea.classList.remove(
+          "border-blue-500",
+          "bg-blue-50"
+        );
+
+
+        const files =
+          event.dataTransfer.files;
+
+
+        if (
+          !files ||
+          files.length === 0
+        ) {
+
+          return;
+
+        }
+
+
+        /*
+          Untuk menjaga struktur
+          aplikasi sederhana, upload
+          file pertama.
+        */
+
+        await uploadFile(
+          files[0]
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       DOWNLOAD
+    ====================================================== */
+
+    async function downloadFile(
+      fileName
+    ) {
+
+      try {
+
+        const filePath =
+          `${currentUser.id}/${fileName}`;
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .storage
+            .from(BUCKET)
+            .createSignedUrl(
+              filePath,
+              60 * 60
+            );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        window.open(
+          data.signedUrl,
+          "_blank"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        alert(
+          "Download gagal: " +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       DELETE
+    ====================================================== */
+
+    async function deleteFile(
+      fileName
+    ) {
+
+      if (
+        !confirm(
+          `Hapus file "${fileName}"?`
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      try {
+
+        const filePath =
+          `${currentUser.id}/${fileName}`;
+
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .storage
+            .from(BUCKET)
+            .remove([
+              filePath
+            ]);
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        /*
+          Bersihkan cache.
+        */
+
+        thumbnailCache.delete(
+          fileName
+        );
+
+        previewCache.delete(
+          fileName
+        );
+
+
+        /*
+          Reload daftar.
+        */
+
+        await loadFiles();
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        alert(
+          "Gagal menghapus file: " +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ====================================================== */
+
+    searchInput.addEventListener(
+      "input",
+      function () {
+
+        const keyword =
+          this.value
+            .toLowerCase()
+            .trim();
+
+
+        /*
+          Kalau search kosong,
+          tampilkan semua file.
+        */
+
+        if (!keyword) {
+
+          renderFiles(
+            allFiles
+          );
+
+          return;
+
+        }
+
+
+        /*
+          Cari berdasarkan nama file.
+        */
+
+        const filtered =
+          allFiles.filter(
+            file =>
+              file.name
+                .toLowerCase()
+                .includes(
+                  keyword
+                )
+          );
+
+
+        renderFiles(
+          filtered
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       REFRESH
+    ====================================================== */
+
+    document
+      .getElementById(
+        "refreshButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          /*
+            Jangan hapus cache ketika
+            refresh biasa.
+
+            Ini membuat URL yang masih valid
+            bisa digunakan kembali.
+          */
+
+          await loadFiles();
+
+        }
+      );
+
+
+    /* =====================================================
+       AUTH STATE
+    ====================================================== */
+
+    supabaseClient.auth.onAuthStateChange(
+      async (
+        event,
+        session
+      ) => {
+
+        if (
+          session &&
+          session.user
+        ) {
+
+          currentUser =
+            session.user;
+
+
+          await showStoragePage();
+
+        } else {
+
+          currentUser =
+            null;
+
+
+          storagePage.classList.add(
+            "hidden"
+          );
+
+
+          authPage.classList.remove(
+            "hidden"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       START
+    ====================================================== */
+
+    loadUser();
+
+  </script>
 
 </body>
-
 </html>
