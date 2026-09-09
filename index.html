@@ -1,2838 +1,3076 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>My Cloud Storage</title>
+<title>Ju5tFun Cloud</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
+<style>
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: #f5f7fb;
+    color: #172033;
+}
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+
+    --text: #172033;
+    --muted: #788195;
+
+    --border: #e7eaf0;
+    --card: #ffffff;
+    --bg: #f5f7fb;
+
+    --danger: #ef4444;
+    --success: #16a34a;
+
+    --radius: 18px;
+}
+
+
+/* =========================================================
+   COMMON
+========================================================= */
+
+.hidden {
+    display: none !important;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+.auth-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #e8eaff 0,
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            #e0e7ff 0,
+            transparent 35%
+        ),
+        #f7f8fc;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 410px;
+
+    background: rgba(255,255,255,.94);
+
+    border: 1px solid rgba(255,255,255,.8);
+
+    border-radius: 28px;
+
+    padding: 34px;
+
+    box-shadow:
+        0 25px 70px rgba(35,43,70,.12);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin-bottom: 30px;
+}
+
+.brand-logo {
+    width: 48px;
+    height: 48px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6366f1,
+            #8b5cf6
+        );
+
+    color: white;
+
+    font-size: 24px;
+
+    box-shadow:
+        0 10px 25px rgba(99,102,241,.25);
+}
+
+.brand-title {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.brand-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.auth-title {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 7px;
+}
+
+.auth-description {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 24px;
+}
+
+.field {
+    margin-bottom: 14px;
+}
+
+.field label {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    color: #596276;
+
+    margin-bottom: 7px;
+}
+
+.field input {
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: #fafbfe;
+
+    outline: none;
+
+    transition: .18s;
+}
+
+.field input:focus {
+    border-color: var(--primary);
+
+    background: white;
+
+    box-shadow:
+        0 0 0 4px rgba(99,102,241,.09);
+}
+
+.primary-button {
+    width: 100%;
+
+    height: 48px;
+
+    border: 0;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    color: white;
+
+    font-weight: 750;
+
+    transition: .18s;
+
+    box-shadow:
+        0 8px 20px rgba(79,70,229,.2);
+}
+
+.primary-button:hover {
+    transform: translateY(-1px);
+}
+
+.auth-switch {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-top: 19px;
+}
+
+.link-button {
+    border: 0;
+    background: none;
+
+    color: var(--primary);
+
+    font-weight: 750;
+
+    padding: 0 3px;
+}
+
+.message {
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    font-size: 13px;
+
+    margin-top: 14px;
+}
+
+.message.error {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.message.success {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+
+    background: rgba(255,255,255,.9);
+
+    border-bottom: 1px solid var(--border);
+
+    position: sticky;
+    top: 0;
+
+    z-index: 20;
+
+    backdrop-filter: blur(14px);
+}
+
+.header-inner {
+    width: min(1180px, calc(100% - 32px));
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.header-logo {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+
+    background: linear-gradient(
+        135deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+    color: white;
+
+    font-size: 19px;
+}
+
+.header-title {
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.header-user {
+    color: var(--muted);
+    font-size: 11px;
+
+    max-width: 260px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.logout {
+    border: 1px solid var(--border);
+
+    background: white;
+
+    color: #4b5563;
+
+    padding: 9px 13px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.logout:hover {
+    background: #f8fafc;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    width: min(1180px, calc(100% - 32px));
+
+    margin: auto;
+
+    padding: 30px 0 60px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+.hero h1 {
+    margin: 0;
+
+    font-size: clamp(25px, 4vw, 34px);
+
+    letter-spacing: -1px;
+}
+
+.hero p {
+    margin: 7px 0 0;
+
+    color: var(--muted);
+
+    font-size: 14px;
+}
+
+.file-count {
+    white-space: nowrap;
+
+    padding: 8px 12px;
+
+    border-radius: 999px;
+
+    background: #eef2ff;
+
+    color: #4f46e5;
+
+    font-size: 12px;
+
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+.upload-card {
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 18px;
+
+    margin-bottom: 22px;
+
+    box-shadow:
+        0 8px 30px rgba(20,28,50,.035);
+}
+
+.upload-zone {
+    min-height: 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border: 1.5px dashed #cdd3e0;
+
+    border-radius: 14px;
+
+    background: #fafbff;
+
+    transition: .18s;
+
+    cursor: pointer;
+}
+
+.upload-zone:hover,
+.upload-zone.dragging {
+    border-color: var(--primary);
+
+    background: #f5f5ff;
+}
+
+.upload-icon {
+    width: 48px;
+    height: 48px;
+
+    display: grid;
+    place-items: center;
+
+    margin: 0 auto 10px;
+
+    border-radius: 14px;
+
+    background: #eef2ff;
+
+    color: var(--primary);
+
+    font-size: 22px;
+}
+
+.upload-title {
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+.upload-subtitle {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-top: 4px;
+}
+
+.upload-limit {
+    color: #9aa2b2;
+
+    font-size: 11px;
+
+    margin-top: 9px;
+}
+
+.upload-status {
+    margin-top: 12px;
+
+    font-size: 12px;
+
+    color: var(--muted);
+
+    min-height: 17px;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.toolbar {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 17px;
+}
+
+.search-box {
+    flex: 1;
+
+    position: relative;
+}
+
+.search-box span {
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #9aa2b2;
+
+    font-size: 15px;
+}
+
+.search-box input {
+    width: 100%;
+
+    height: 44px;
+
+    padding:
+        0 14px 0 39px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: white;
+
+    outline: none;
+
+    font-size: 13px;
+}
+
+.search-box input:focus {
+    border-color: #b9bdfc;
+
+    box-shadow:
+        0 0 0 4px rgba(99,102,241,.07);
+}
+
+.refresh-button {
+    width: 44px;
+    height: 44px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: #596276;
+
+    font-size: 17px;
+
+    transition: .18s;
+}
+
+.refresh-button:hover {
+    color: var(--primary);
+
+    background: #fafaff;
+}
+
+
+/* =========================================================
+   FILE GRID
+========================================================= */
+
+.file-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(235px, 1fr));
+
+    gap: 14px;
+}
+
+.file-card {
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    transition:
+        transform .18s,
+        box-shadow .18s,
+        border-color .18s;
+}
+
+.file-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #d9dcf7;
+
+    box-shadow:
+        0 14px 30px rgba(25,32,55,.08);
+}
+
+.file-preview {
+    height: 145px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5f7ff,
+            #f9fafc
+        );
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.file-preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.file-type-icon {
+    width: 56px;
+    height: 56px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 17px;
+
+    background: white;
+
+    box-shadow:
+        0 8px 22px rgba(20,30,60,.08);
+
+    font-size: 27px;
+}
+
+.file-info {
+    padding: 14px 14px 10px;
+}
+
+.file-name {
+    font-size: 13px;
+
+    font-weight: 750;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #20283a;
+}
+
+.file-meta {
+    margin-top: 5px;
+
+    color: #929aab;
+
+    font-size: 11px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.file-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 7px;
+
+    padding:
+        0 14px 14px;
+}
+
+.action {
+    height: 34px;
+
+    border-radius: 9px;
+
+    border: 1px solid var(--border);
+
+    background: #fafbfc;
+
+    color: #596276;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    transition: .15s;
+}
+
+.action:hover {
+    background: #f2f4f8;
+}
+
+.action.download:hover {
+    color: var(--primary);
+    border-color: #cdd1ff;
+}
+
+.action.rename:hover {
+    color: #d97706;
+    border-color: #fde68a;
+}
+
+.action.delete:hover {
+    color: var(--danger);
+    border-color: #fecaca;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty {
+    grid-column: 1 / -1;
+
+    padding: 65px 20px;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+}
+
+.empty-icon {
+    font-size: 38px;
+
+    margin-bottom: 10px;
+
+    opacity: .8;
+}
+
+.empty-title {
+    font-size: 15px;
+
+    font-weight: 800;
+}
+
+.empty-text {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading {
+    grid-column: 1 / -1;
+
+    padding: 50px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+
+    margin: 0 auto 10px;
+
+    border: 2px solid #e5e7eb;
+
+    border-top-color: var(--primary);
+
+    border-radius: 50%;
+
+    animation:
+        spin .7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
+}
 
-    html {
-      -webkit-text-size-adjust: 100%;
-    }
 
-    body {
-      margin: 0;
-      background: #f5f7fb;
-      color: #1e293b;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+/* =========================================================
+   TOAST
+========================================================= */
 
-    button,
-    input {
-      font: inherit;
-    }
+.toast {
+    position: fixed;
 
-    button {
-      cursor: pointer;
-    }
+    right: 20px;
+    bottom: 20px;
 
-    .hidden {
-      display: none !important;
-    }
+    z-index: 100;
 
-    /* =========================
-       AUTH
-    ========================= */
+    min-width: 250px;
+    max-width: calc(100% - 40px);
 
-    .auth-page {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
+    padding: 13px 15px;
 
-    .auth-card {
-      width: 100%;
-      max-width: 390px;
-      background: #fff;
-      border-radius: 18px;
-      padding: 26px;
-      box-shadow: 0 8px 30px rgba(0,0,0,.07);
-    }
+    border-radius: 12px;
 
-    .auth-logo {
-      text-align: center;
-      font-size: 45px;
-      margin-bottom: 8px;
-    }
+    background: #172033;
 
-    .auth-title {
-      text-align: center;
-      font-size: 23px;
-      font-weight: 800;
-    }
+    color: white;
 
-    .auth-subtitle {
-      text-align: center;
-      color: #64748b;
-      font-size: 13px;
-      margin: 5px 0 22px;
-    }
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.18);
 
-    .auth-input {
-      width: 100%;
-      padding: 12px 13px;
-      margin-bottom: 10px;
-      border: 1px solid #dbe1e8;
-      border-radius: 10px;
-      outline: none;
-    }
+    font-size: 12px;
 
-    .auth-input:focus {
-      border-color: #2563eb;
-    }
+    transform:
+        translateY(20px);
 
-    .auth-button {
-      width: 100%;
-      padding: 12px;
-      border: 0;
-      border-radius: 10px;
-      color: #fff;
-      background: #2563eb;
-      font-weight: 700;
-    }
+    opacity: 0;
 
-    .auth-button:hover {
-      background: #1d4ed8;
-    }
+    pointer-events: none;
 
-    .register-button {
-      background: #059669;
-    }
+    transition: .2s;
+}
 
-    .register-button:hover {
-      background: #047857;
-    }
+.toast.show {
+    transform: translateY(0);
 
-    .switch-auth {
-      text-align: center;
-      margin-top: 17px;
-      font-size: 13px;
-      color: #64748b;
-    }
+    opacity: 1;
+}
 
-    .switch-auth button {
-      border: 0;
-      background: transparent;
-      color: #2563eb;
-      font-weight: 700;
-    }
+.toast.success {
+    background: #15803d;
+}
 
-    .auth-message {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 9px;
-      font-size: 13px;
-    }
+.toast.error {
+    background: #b91c1c;
+}
 
-    /* =========================
-       HEADER
-    ========================= */
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
 
     .header {
-      background: #fff;
-      border-bottom: 1px solid #e5e7eb;
+        height: 64px;
     }
 
     .header-inner {
-      max-width: 1000px;
-      margin: auto;
-      padding: 13px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+        width: min(
+            100% - 22px,
+            1180px
+        );
     }
 
-    .brand {
-      min-width: 0;
+    .header-user {
+        display: none;
     }
-
-    .brand-title {
-      font-size: 19px;
-      font-weight: 800;
-    }
-
-    .brand-email {
-      margin-top: 2px;
-      font-size: 12px;
-      color: #64748b;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .logout-btn {
-      flex-shrink: 0;
-      border: 0;
-      border-radius: 9px;
-      padding: 8px 12px;
-      background: #ef4444;
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .logout-btn:hover {
-      background: #dc2626;
-    }
-
-    /* =========================
-       MAIN
-    ========================= */
 
     .main {
-      max-width: 1000px;
-      margin: auto;
-      padding: 18px 16px 40px;
+        width: min(
+            100% - 22px,
+            1180px
+        );
+
+        padding-top: 22px;
     }
 
-    .box {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 15px;
-      margin-bottom: 15px;
+    .hero {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 10px;
     }
 
-    /* =========================
-       UPLOAD
-    ========================= */
+    .file-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
 
-    .upload-box {
-      padding: 18px;
+        gap: 10px;
     }
 
-    .title {
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    .description {
-      color: #64748b;
-      font-size: 12px;
-      margin: 4px 0 14px;
-    }
-
-    .upload-area {
-      border: 2px dashed #cbd5e1;
-      border-radius: 13px;
-      padding: 24px 15px;
-      text-align: center;
-      cursor: pointer;
-      background: #fafcff;
-    }
-
-    .upload-area:hover,
-    .upload-area.drag {
-      border-color: #2563eb;
-      background: #eff6ff;
-    }
-
-    .upload-icon {
-      font-size: 32px;
-      margin-bottom: 7px;
-    }
-
-    .upload-text {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .upload-sub {
-      color: #94a3b8;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .upload-limit {
-      display: inline-block;
-      margin-top: 9px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #f1f5f9;
-      color: #64748b;
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    #uploadStatus {
-      margin-top: 12px;
-      padding: 9px 11px;
-      border-radius: 9px;
-      font-size: 12px;
-    }
-
-    /* =========================
-       SEARCH
-    ========================= */
-
-    .search-box {
-      padding: 10px;
-    }
-
-    .search-row {
-      display: flex;
-      gap: 7px;
-    }
-
-    .search-input {
-      width: 100%;
-      min-width: 0;
-      padding: 11px 12px;
-      border: 1px solid #dbe1e8;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    .search-input:focus {
-      border-color: #2563eb;
-    }
-
-    .refresh-btn {
-      width: 42px;
-      flex-shrink: 0;
-      border: 0;
-      border-radius: 10px;
-      background: #0f172a;
-      color: #fff;
-      font-size: 19px;
-    }
-
-    /* =========================
-       FILE HEADER
-    ========================= */
-
-    .file-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 9px;
-    }
-
-    .file-title {
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    .file-count {
-      background: #e0e7ff;
-      color: #4338ca;
-      padding: 4px 9px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    /* =========================
-       FILE LIST
-    ========================= */
-
-    .file-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .file-card {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      min-width: 0;
-      padding: 10px;
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 13px;
-    }
-
-    .file-card:hover {
-      border-color: #cbd5e1;
-    }
-
-    /* Thumbnail kecil = lebih ringan */
-
-    .thumbnail {
-      width: 72px;
-      height: 58px;
-      flex: 0 0 72px;
-      border-radius: 9px;
-      overflow: hidden;
-      background: #f1f5f9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .thumbnail img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-    }
-
-    .file-icon {
-      font-size: 28px;
+    .file-preview {
+        height: 115px;
     }
 
     .file-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .file-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: #1e293b;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .file-meta {
-      margin-top: 4px;
-      color: #94a3b8;
-      font-size: 10px;
+        padding: 11px 11px 8px;
     }
 
     .file-actions {
-      flex-shrink: 0;
-      display: flex;
-      gap: 5px;
+        padding:
+            0 11px 11px;
+
+        gap: 5px;
     }
 
-    .action-btn {
-      border: 0;
-      border-radius: 8px;
-      padding: 7px 8px;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
+    .action {
+        height: 32px;
 
-    .rename-btn {
-      background: #f59e0b;
-    }
-
-    .rename-btn:hover {
-      background: #d97706;
-    }
-
-    .download-btn {
-      background: #2563eb;
-    }
-
-    .download-btn:hover {
-      background: #1d4ed8;
-    }
-
-    .delete-btn {
-      background: #ef4444;
-    }
-
-    .delete-btn:hover {
-      background: #dc2626;
-    }
-
-    /* =========================
-       EMPTY / LOADING
-    ========================= */
-
-    .empty {
-      padding: 40px 15px;
-      text-align: center;
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-    }
-
-    .empty-icon {
-      font-size: 40px;
-    }
-
-    .empty-title {
-      margin-top: 7px;
-      font-weight: 700;
-      color: #475569;
-    }
-
-    .empty-text {
-      margin-top: 3px;
-      font-size: 12px;
-      color: #94a3b8;
-    }
-
-    .loading {
-      padding: 25px;
-      text-align: center;
-      background: #fff;
-      border-radius: 13px;
-      color: #64748b;
-      font-size: 12px;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (max-width: 720px) {
-
-      .file-card {
-        flex-wrap: wrap;
-        align-items: flex-start;
-      }
-
-      .file-info {
-        padding-top: 1px;
-      }
-
-      .file-actions {
-        width: 100%;
-        padding-left: 83px;
-      }
-    }
-
-    @media (max-width: 430px) {
-
-      .main {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-
-      .header-inner {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-
-      .brand-title {
-        font-size: 16px;
-      }
-
-      .brand-email {
-        max-width: 180px;
-      }
-
-      .thumbnail {
-        width: 62px;
-        height: 52px;
-        flex-basis: 62px;
-      }
-
-      .file-actions {
-        padding-left: 0;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .action-btn {
-        width: 100%;
         font-size: 10px;
-        padding: 7px 3px;
-      }
     }
-  </style>
+
+    .auth-card {
+        padding: 27px 22px;
+
+        border-radius: 23px;
+    }
+}
+
+@media (max-width: 390px) {
+
+    .file-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .file-preview {
+        height: 150px;
+    }
+}
+</style>
 </head>
+
 
 <body>
 
-<!-- =====================================================
-     AUTH
-===================================================== -->
+<!-- ========================================================
+     AUTH PAGE
+========================================================= -->
 
-<div id="authPage" class="auth-page">
+<section id="authPage" class="auth-page">
 
-  <div class="auth-card">
+    <div class="auth-card">
 
-    <div class="auth-logo">☁️</div>
+        <div class="brand">
 
-    <div class="auth-title">
-      My Cloud Storage
-    </div>
+            <div class="brand-logo">
+                ☁
+            </div>
 
-    <div class="auth-subtitle">
-      Simpan file kamu dengan aman
-    </div>
+            <div>
+                <div class="brand-title">
+                    Ju5tFun Cloud
+                </div>
 
-    <!-- LOGIN -->
+                <div class="brand-subtitle">
+                    Personal cloud storage
+                </div>
+            </div>
 
-    <div id="loginForm">
-
-      <input
-        id="loginEmail"
-        class="auth-input"
-        type="email"
-        placeholder="Email"
-        autocomplete="email"
-      >
-
-      <input
-        id="loginPassword"
-        class="auth-input"
-        type="password"
-        placeholder="Password"
-        autocomplete="current-password"
-      >
-
-      <button
-        id="loginButton"
-        class="auth-button"
-        type="button"
-      >
-        Login
-      </button>
-
-      <div class="switch-auth">
-        Belum punya akun?
-        <button id="showRegister" type="button">
-          Daftar
-        </button>
-      </div>
-
-    </div>
-
-    <!-- REGISTER -->
-
-    <div id="registerForm" class="hidden">
-
-      <input
-        id="registerEmail"
-        class="auth-input"
-        type="email"
-        placeholder="Email"
-        autocomplete="email"
-      >
-
-      <input
-        id="registerPassword"
-        class="auth-input"
-        type="password"
-        placeholder="Password minimal 6 karakter"
-        autocomplete="new-password"
-      >
-
-      <button
-        id="registerButton"
-        class="auth-button register-button"
-        type="button"
-      >
-        Daftar
-      </button>
-
-      <div class="switch-auth">
-        Sudah punya akun?
-        <button id="showLogin" type="button">
-          Login
-        </button>
-      </div>
-
-    </div>
-
-    <div
-      id="authMessage"
-      class="auth-message hidden"
-    ></div>
-
-  </div>
-
-</div>
-
-
-<!-- =====================================================
-     STORAGE
-===================================================== -->
-
-<div id="storagePage" class="hidden">
-
-  <header class="header">
-
-    <div class="header-inner">
-
-      <div class="brand">
-
-        <div class="brand-title">
-          ☁️ My Cloud Storage
         </div>
+
+
+        <!-- LOGIN -->
+
+        <div id="loginForm">
+
+            <h1 class="auth-title">
+                Selamat datang
+            </h1>
+
+            <p class="auth-description">
+                Login untuk mengakses file kamu.
+            </p>
+
+
+            <div class="field">
+
+                <label>Email</label>
+
+                <input
+                    id="loginEmail"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="nama@email.com"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Password</label>
+
+                <input
+                    id="loginPassword"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="Masukkan password"
+                >
+
+            </div>
+
+
+            <button
+                id="loginButton"
+                class="primary-button"
+            >
+                Login
+            </button>
+
+
+            <div
+                id="loginMessage"
+                class="message hidden"
+            ></div>
+
+
+            <div class="auth-switch">
+
+                Belum punya akun?
+
+                <button
+                    id="showRegister"
+                    class="link-button"
+                >
+                    Daftar
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- REGISTER -->
 
         <div
-          id="userEmail"
-          class="brand-email"
+            id="registerForm"
+            class="hidden"
+        >
+
+            <h1 class="auth-title">
+                Buat akun
+            </h1>
+
+            <p class="auth-description">
+                Buat akun baru untuk mulai menyimpan file.
+            </p>
+
+
+            <div class="field">
+
+                <label>Email</label>
+
+                <input
+                    id="registerEmail"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="nama@email.com"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Password</label>
+
+                <input
+                    id="registerPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Minimal 6 karakter"
+                >
+
+            </div>
+
+
+            <button
+                id="registerButton"
+                class="primary-button"
+            >
+                Buat Akun
+            </button>
+
+
+            <div
+                id="registerMessage"
+                class="message hidden"
+            ></div>
+
+
+            <div class="auth-switch">
+
+                Sudah punya akun?
+
+                <button
+                    id="showLogin"
+                    class="link-button"
+                >
+                    Login
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================
+     STORAGE APP
+========================================================= -->
+
+<section
+    id="storagePage"
+    class="app hidden"
+>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="header-inner">
+
+            <div class="header-brand">
+
+                <div class="header-logo">
+                    ☁
+                </div>
+
+                <div>
+
+                    <div class="header-title">
+                        Ju5tFun Cloud
+                    </div>
+
+                    <div
+                        id="userEmail"
+                        class="header-user"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="logoutButton"
+                class="logout"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="main">
+
+        <!-- HERO -->
+
+        <div class="hero">
+
+            <div>
+
+                <h1>
+                    File saya
+                </h1>
+
+                <p>
+                    Kelola semua file kamu dengan cepat dan mudah.
+                </p>
+
+            </div>
+
+
+            <div
+                id="fileCount"
+                class="file-count"
+            >
+                0 file
+            </div>
+
+        </div>
+
+
+        <!-- UPLOAD -->
+
+        <div class="upload-card">
+
+            <label
+                id="uploadZone"
+                class="upload-zone"
+                for="fileInput"
+            >
+
+                <div>
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+                    <div class="upload-title">
+                        Upload file
+                    </div>
+
+                    <div class="upload-subtitle">
+                        Klik untuk memilih banyak file
+                        atau drag & drop
+                    </div>
+
+                    <div class="upload-limit">
+                        Maksimal 10 file • 100 MB per file
+                    </div>
+
+                </div>
+
+            </label>
+
+
+            <input
+                id="fileInput"
+                type="file"
+                multiple
+                hidden
+            >
+
+
+            <div
+                id="uploadStatus"
+                class="upload-status"
+            ></div>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <div class="search-box">
+
+                <span>
+                    ⌕
+                </span>
+
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Cari file..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <button
+                id="refreshButton"
+                class="refresh-button"
+                title="Refresh"
+            >
+                ↻
+            </button>
+
+        </div>
+
+
+        <!-- FILES -->
+
+        <div
+            id="fileGrid"
+            class="file-grid"
         ></div>
 
-      </div>
+    </main>
 
-      <button
-        id="logoutButton"
-        class="logout-btn"
-        type="button"
-      >
-        Logout
-      </button>
-
-    </div>
-
-  </header>
+</section>
 
 
-  <main class="main">
+<!-- TOAST -->
 
-    <!-- UPLOAD -->
-
-    <section class="box upload-box">
-
-      <div class="title">
-        Upload File
-      </div>
-
-      <div class="description">
-        Maksimal 10 file sekaligus • maksimal 100 MB per file
-      </div>
-
-      <label
-        id="uploadArea"
-        class="upload-area"
-        for="fileInput"
-      >
-
-        <div class="upload-icon">
-          📤
-        </div>
-
-        <div class="upload-text">
-          Klik untuk memilih banyak file
-        </div>
-
-        <div class="upload-sub">
-          atau drag & drop maksimal 10 file
-        </div>
-
-        <div class="upload-limit">
-          10 FILE • 100 MB / FILE
-        </div>
-
-        <input
-          id="fileInput"
-          type="file"
-          multiple
-          hidden
-        >
-
-      </label>
-
-      <div
-        id="uploadStatus"
-        class="hidden"
-      ></div>
-
-    </section>
-
-
-    <!-- SEARCH -->
-
-    <section class="box search-box">
-
-      <div class="search-row">
-
-        <input
-          id="searchInput"
-          class="search-input"
-          type="text"
-          placeholder="🔎 Cari file..."
-          autocomplete="off"
-        >
-
-        <button
-          id="refreshButton"
-          class="refresh-btn"
-          type="button"
-          title="Refresh"
-        >
-          ↻
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- FILE HEADER -->
-
-    <div class="file-header">
-
-      <div class="file-title">
-        File Saya
-      </div>
-
-      <div
-        id="fileCount"
-        class="file-count"
-      >
-        0 file
-      </div>
-
-    </div>
-
-
-    <!-- FILE LIST -->
-
-    <div
-      id="fileList"
-      class="file-list"
-    ></div>
-
-
-    <div
-      id="emptyState"
-      class="empty hidden"
-    >
-
-      <div class="empty-icon">
-        📂
-      </div>
-
-      <div class="empty-title">
-        Belum ada file
-      </div>
-
-      <div class="empty-text">
-        Upload file pertama kamu.
-      </div>
-
-    </div>
-
-  </main>
-
-</div>
+<div
+    id="toast"
+    class="toast"
+></div>
 
 
 <script>
-
-/* =====================================================
-   SUPABASE
-===================================================== */
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
 
 const SUPABASE_URL =
-  "https://jbrrlophgrdqniorjkjn.supabase.co";
+    "https://jbrrlophgrdqniorjkjn.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_VxFQ1sUpf4-wjEpzhg4IMg_c_scLRSQ";
+    "sb_publishable_VxFQ1sUpf4-wjEpzhg4IMg_c_scLRSQ";
 
 const BUCKET =
-  "file-storage";
-
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* =====================================================
-   SETTINGS
-===================================================== */
+    "file-storage";
 
 const MAX_FILE_SIZE =
-  100 * 1024 * 1024;
+    100 * 1024 * 1024;
 
 const MAX_FILES =
-  10;
+    10;
 
 const MAX_CONCURRENT_UPLOADS =
-  10;
+    10;
 
 
-/* =====================================================
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================================
    STATE
-===================================================== */
+========================================================= */
 
 let currentUser = null;
 
 let allFiles = [];
 
-let isUploading = false;
+let thumbnailCache =
+    new Map();
+
+let uploadRunning = false;
 
 
-/*
-  Cache thumbnail.
-
-  Tidak perlu request ulang selama
-  halaman masih terbuka.
-*/
-
-const thumbnailCache =
-  new Map();
-
-
-/* =====================================================
-   ELEMENT
-===================================================== */
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
 const authPage =
-  document.getElementById(
-    "authPage"
-  );
+    document.getElementById("authPage");
 
 const storagePage =
-  document.getElementById(
-    "storagePage"
-  );
+    document.getElementById("storagePage");
 
 const loginForm =
-  document.getElementById(
-    "loginForm"
-  );
+    document.getElementById("loginForm");
 
 const registerForm =
-  document.getElementById(
-    "registerForm"
-  );
+    document.getElementById("registerForm");
 
-const authMessage =
-  document.getElementById(
-    "authMessage"
-  );
+const fileGrid =
+    document.getElementById("fileGrid");
 
 const fileInput =
-  document.getElementById(
-    "fileInput"
-  );
+    document.getElementById("fileInput");
 
-const fileList =
-  document.getElementById(
-    "fileList"
-  );
-
-const emptyState =
-  document.getElementById(
-    "emptyState"
-  );
-
-const fileCount =
-  document.getElementById(
-    "fileCount"
-  );
-
-const searchInput =
-  document.getElementById(
-    "searchInput"
-  );
+const uploadZone =
+    document.getElementById("uploadZone");
 
 const uploadStatus =
-  document.getElementById(
-    "uploadStatus"
-  );
+    document.getElementById("uploadStatus");
 
-const uploadArea =
-  document.getElementById(
-    "uploadArea"
-  );
+const searchInput =
+    document.getElementById("searchInput");
+
+const fileCount =
+    document.getElementById("fileCount");
+
+const toast =
+    document.getElementById("toast");
 
 
-/* =====================================================
-   HTML ESCAPE
-===================================================== */
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function escapeHtml(value) {
 
-  const div =
-    document.createElement(
-      "div"
-    );
-
-  div.textContent =
-    String(value);
-
-  return div.innerHTML;
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-/* =====================================================
-   MESSAGE
-===================================================== */
+function formatSize(bytes) {
+
+    bytes = Number(bytes) || 0;
+
+    if (bytes < 1024)
+        return bytes + " B";
+
+    if (bytes < 1024 * 1024)
+        return (bytes / 1024).toFixed(1) + " KB";
+
+    if (bytes < 1024 * 1024 * 1024)
+        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+
+    return (
+        bytes /
+        (1024 * 1024 * 1024)
+    ).toFixed(1) + " GB";
+}
+
+
+function formatDate(date) {
+
+    if (!date)
+        return "-";
+
+    return new Date(date)
+        .toLocaleDateString(
+            "id-ID",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+}
+
+
+function getExtension(name) {
+
+    const parts =
+        name.split(".");
+
+    if (parts.length < 2)
+        return "";
+
+    return parts
+        .pop()
+        .toLowerCase();
+}
+
+
+function isImage(file) {
+
+    const type =
+        file.metadata?.mimetype ||
+        file.metadata?.contentType ||
+        "";
+
+    const ext =
+        getExtension(file.name);
+
+    return (
+        type.startsWith("image/") ||
+        [
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "webp",
+            "bmp",
+            "svg"
+        ].includes(ext)
+    );
+}
+
+
+function getFileIcon(name) {
+
+    const ext =
+        getExtension(name);
+
+    if (
+        [
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "webp",
+            "bmp",
+            "svg"
+        ].includes(ext)
+    )
+        return "🖼️";
+
+    if (
+        [
+            "mp4",
+            "mkv",
+            "mov",
+            "avi",
+            "webm"
+        ].includes(ext)
+    )
+        return "🎬";
+
+    if (
+        [
+            "mp3",
+            "wav",
+            "ogg",
+            "m4a"
+        ].includes(ext)
+    )
+        return "🎵";
+
+    if (
+        [
+            "pdf"
+        ].includes(ext)
+    )
+        return "📕";
+
+    if (
+        [
+            "doc",
+            "docx"
+        ].includes(ext)
+    )
+        return "📘";
+
+    if (
+        [
+            "xls",
+            "xlsx",
+            "csv"
+        ].includes(ext)
+    )
+        return "📗";
+
+    if (
+        [
+            "zip",
+            "rar",
+            "7z"
+        ].includes(ext)
+    )
+        return "📦";
+
+    if (
+        [
+            "js",
+            "html",
+            "css",
+            "json",
+            "php",
+            "py"
+        ].includes(ext)
+    )
+        return "💻";
+
+    return "📄";
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+function showToast(
+    message,
+    type = ""
+) {
+
+    clearTimeout(toastTimer);
+
+    toast.textContent =
+        message;
+
+    toast.className =
+        "toast show " + type;
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.className =
+                "toast";
+
+        }, 3000);
+}
+
+
+/* =========================================================
+   AUTH MESSAGE
+========================================================= */
 
 function showAuthMessage(
-  message,
-  type = "error"
+    element,
+    message,
+    type = "error"
 ) {
 
-  authMessage.textContent =
-    message;
+    element.textContent =
+        message;
 
-  authMessage.classList.remove(
-    "hidden"
-  );
-
-  authMessage.style.background =
-    type === "success"
-      ? "#dcfce7"
-      : "#fee2e2";
-
-  authMessage.style.color =
-    type === "success"
-      ? "#166534"
-      : "#991b1b";
+    element.className =
+        "message " + type;
 }
 
 
-function showUploadMessage(
-  message,
-  type = "error"
-) {
-
-  uploadStatus.textContent =
-    message;
-
-  uploadStatus.classList.remove(
-    "hidden"
-  );
-
-  uploadStatus.style.background =
-    type === "success"
-      ? "#dcfce7"
-      : type === "loading"
-        ? "#dbeafe"
-        : "#fee2e2";
-
-  uploadStatus.style.color =
-    type === "success"
-      ? "#166534"
-      : type === "loading"
-        ? "#1d4ed8"
-        : "#991b1b";
-}
-
-
-/* =====================================================
-   AUTH SWITCH
-===================================================== */
-
-document
-  .getElementById("showRegister")
-  .addEventListener(
-    "click",
-    () => {
-
-      loginForm.classList.add(
-        "hidden"
-      );
-
-      registerForm.classList.remove(
-        "hidden"
-      );
-
-      authMessage.classList.add(
-        "hidden"
-      );
-    }
-  );
-
-
-document
-  .getElementById("showLogin")
-  .addEventListener(
-    "click",
-    () => {
-
-      registerForm.classList.add(
-        "hidden"
-      );
-
-      loginForm.classList.remove(
-        "hidden"
-      );
-
-      authMessage.classList.add(
-        "hidden"
-      );
-    }
-  );
-
-
-/* =====================================================
-   REGISTER
-===================================================== */
-
-document
-  .getElementById("registerButton")
-  .addEventListener(
-    "click",
-    async () => {
-
-      const email =
-        document
-          .getElementById(
-            "registerEmail"
-          )
-          .value
-          .trim();
-
-      const password =
-        document
-          .getElementById(
-            "registerPassword"
-          )
-          .value;
-
-
-      if (!email || !password) {
-
-        showAuthMessage(
-          "Email dan password harus diisi."
-        );
-
-        return;
-      }
-
-
-      if (password.length < 6) {
-
-        showAuthMessage(
-          "Password minimal 6 karakter."
-        );
-
-        return;
-      }
-
-
-      const button =
-        document.getElementById(
-          "registerButton"
-        );
-
-
-      button.disabled = true;
-
-      button.textContent =
-        "Mendaftarkan...";
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .auth
-            .signUp({
-              email,
-              password
-            });
-
-
-        if (error)
-          throw error;
-
-
-        if (data.session) {
-
-          currentUser =
-            data.user;
-
-          await showStorage();
-
-        } else {
-
-          showAuthMessage(
-            "Akun berhasil dibuat. Silakan cek email untuk verifikasi.",
-            "success"
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(error);
-
-        showAuthMessage(
-          error.message ||
-          "Gagal membuat akun."
-        );
-
-      } finally {
-
-        button.disabled = false;
-
-        button.textContent =
-          "Daftar";
-      }
-
-    }
-  );
-
-
-/* =====================================================
+/* =========================================================
    LOGIN
-===================================================== */
+========================================================= */
 
 document
-  .getElementById("loginButton")
-  .addEventListener(
-    "click",
-    async () => {
+    .getElementById("loginButton")
+    .addEventListener(
+        "click",
+        login
+    );
 
-      const email =
+
+async function login() {
+
+    const email =
         document
-          .getElementById(
-            "loginEmail"
-          )
-          .value
-          .trim();
+            .getElementById("loginEmail")
+            .value
+            .trim();
 
-      const password =
+    const password =
         document
-          .getElementById(
-            "loginPassword"
-          )
-          .value;
+            .getElementById("loginPassword")
+            .value;
 
+    const message =
+        document
+            .getElementById("loginMessage");
 
-      if (!email || !password) {
+    if (!email || !password) {
 
         showAuthMessage(
-          "Email dan password harus diisi."
+            message,
+            "Email dan password wajib diisi."
         );
 
         return;
-      }
+    }
 
+    const button =
+        document
+            .getElementById("loginButton");
 
-      const button =
-        document.getElementById(
-          "loginButton"
-        );
+    button.disabled = true;
 
-
-      button.disabled = true;
-
-      button.textContent =
+    button.textContent =
         "Login...";
 
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
+    const {
+        error
+    } =
+        await supabaseClient
             .auth
             .signInWithPassword({
-              email,
-              password
+                email,
+                password
             });
 
+    button.disabled = false;
 
-        if (error)
-          throw error;
+    button.textContent =
+        "Login";
 
-
-        currentUser =
-          data.user;
-
-
-        await showStorage();
-
-      } catch (error) {
-
-        console.error(error);
+    if (error) {
 
         showAuthMessage(
-          error.message ||
-          "Login gagal."
+            message,
+            error.message
         );
 
-      } finally {
-
-        button.disabled = false;
-
-        button.textContent =
-          "Login";
-      }
-
+        return;
     }
-  );
+
+    message.className =
+        "message hidden";
+}
 
 
-/* =====================================================
-   LOGOUT
-===================================================== */
+/* =========================================================
+   REGISTER
+========================================================= */
 
 document
-  .getElementById(
-    "logoutButton"
-  )
-  .addEventListener(
-    "click",
-    async () => {
+    .getElementById("registerButton")
+    .addEventListener(
+        "click",
+        register
+    );
 
-      await supabaseClient
-        .auth
-        .signOut();
 
-      currentUser = null;
+async function register() {
 
-      allFiles = [];
+    const email =
+        document
+            .getElementById("registerEmail")
+            .value
+            .trim();
 
-      thumbnailCache.clear();
+    const password =
+        document
+            .getElementById("registerPassword")
+            .value;
 
-      storagePage.classList.add(
-        "hidden"
-      );
+    const message =
+        document
+            .getElementById("registerMessage");
 
-      authPage.classList.remove(
-        "hidden"
-      );
+    if (!email || !password) {
 
-      fileList.innerHTML = "";
+        showAuthMessage(
+            message,
+            "Email dan password wajib diisi."
+        );
+
+        return;
     }
-  );
+
+    if (password.length < 6) {
+
+        showAuthMessage(
+            message,
+            "Password minimal 6 karakter."
+        );
+
+        return;
+    }
+
+    const button =
+        document
+            .getElementById("registerButton");
+
+    button.disabled = true;
+
+    button.textContent =
+        "Membuat akun...";
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .auth
+            .signUp({
+                email,
+                password
+            });
+
+    button.disabled = false;
+
+    button.textContent =
+        "Buat Akun";
+
+    if (error) {
+
+        showAuthMessage(
+            message,
+            error.message
+        );
+
+        return;
+    }
+
+    if (!data.session) {
+
+        showAuthMessage(
+            message,
+            "Akun berhasil dibuat. Silakan cek email untuk verifikasi.",
+            "success"
+        );
+
+        return;
+    }
+}
 
 
-/* =====================================================
+/* =========================================================
+   AUTH SWITCH
+========================================================= */
+
+document
+    .getElementById("showRegister")
+    .addEventListener(
+        "click",
+        () => {
+
+            loginForm
+                .classList
+                .add("hidden");
+
+            registerForm
+                .classList
+                .remove("hidden");
+
+        }
+    );
+
+
+document
+    .getElementById("showLogin")
+    .addEventListener(
+        "click",
+        () => {
+
+            registerForm
+                .classList
+                .add("hidden");
+
+            loginForm
+                .classList
+                .remove("hidden");
+
+        }
+    );
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document
+    .getElementById("logoutButton")
+    .addEventListener(
+        "click",
+        async () => {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+        }
+    );
+
+
+/* =========================================================
    SHOW STORAGE
-===================================================== */
+========================================================= */
 
-async function showStorage() {
+async function showStoragePage() {
 
-  authPage.classList.add(
-    "hidden"
-  );
+    authPage
+        .classList
+        .add("hidden");
 
-  storagePage.classList.remove(
-    "hidden"
-  );
+    storagePage
+        .classList
+        .remove("hidden");
 
+    document
+        .getElementById("userEmail")
+        .textContent =
+        currentUser.email || "";
 
-  document
-    .getElementById(
-      "userEmail"
-    )
-    .textContent =
-    currentUser?.email || "";
-
-
-  await loadFiles();
+    await loadFiles();
 }
 
 
-/* =====================================================
-   FILE ICON
-===================================================== */
-
-function getFileIcon(
-  fileName
-) {
-
-  const ext =
-    fileName
-      .split(".")
-      .pop()
-      .toLowerCase();
-
-
-  if (
-    [
-      "jpg",
-      "jpeg",
-      "png",
-      "gif",
-      "webp",
-      "svg"
-    ].includes(ext)
-  ) return "🖼️";
-
-
-  if (
-    [
-      "mp4",
-      "mov",
-      "avi",
-      "mkv",
-      "webm"
-    ].includes(ext)
-  ) return "🎬";
-
-
-  if (
-    [
-      "mp3",
-      "wav",
-      "ogg",
-      "m4a"
-    ].includes(ext)
-  ) return "🎵";
-
-
-  if (
-    [
-      "pdf"
-    ].includes(ext)
-  ) return "📕";
-
-
-  if (
-    [
-      "doc",
-      "docx",
-      "txt"
-    ].includes(ext)
-  ) return "📄";
-
-
-  if (
-    [
-      "xls",
-      "xlsx"
-    ].includes(ext)
-  ) return "📊";
-
-
-  if (
-    [
-      "zip",
-      "rar",
-      "7z"
-    ].includes(ext)
-  ) return "📦";
-
-
-  return "📁";
-}
-
-
-/* =====================================================
-   IMAGE CHECK
-===================================================== */
-
-function isImageFile(
-  fileName
-) {
-
-  return /\.(jpg|jpeg|png|gif|webp|svg)$/i
-    .test(fileName);
-}
-
-
-/* =====================================================
-   SIZE
-===================================================== */
-
-function formatSize(
-  bytes
-) {
-
-  if (!bytes)
-    return "0 Bytes";
-
-
-  const units = [
-    "Bytes",
-    "KB",
-    "MB",
-    "GB"
-  ];
-
-
-  const i =
-    Math.floor(
-      Math.log(bytes) /
-      Math.log(1024)
-    );
-
-
-  return (
-    parseFloat(
-      (
-        bytes /
-        Math.pow(1024, i)
-      ).toFixed(2)
-    ) +
-    " " +
-    units[i]
-  );
-}
-
-
-/* =====================================================
-   DATE
-===================================================== */
-
-function formatDate(
-  date
-) {
-
-  if (!date)
-    return "-";
-
-
-  return new Date(date)
-    .toLocaleString(
-      "id-ID",
-      {
-        dateStyle: "medium",
-        timeStyle: "short"
-      }
-    );
-}
-
-
-/* =====================================================
+/* =========================================================
    LOAD FILES
-
-   HANYA 1 REQUEST UNTUK DAFTAR FILE.
-
-   Tidak ada thumbnail request di sini.
-===================================================== */
+========================================================= */
 
 async function loadFiles() {
 
-  if (!currentUser)
-    return;
+    if (!currentUser)
+        return;
 
-
-  /*
-    Jangan menampilkan spinner
-    setiap refresh jika file sudah ada.
-  */
-
-  if (!allFiles.length) {
-
-    fileList.innerHTML = `
-      <div class="loading">
-        Memuat file...
-      </div>
+    fileGrid.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            Memuat file...
+        </div>
     `;
-  }
-
-
-  try {
 
     const {
-      data,
-      error
+        data,
+        error
     } =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .list(
-          currentUser.id,
-          {
-            limit: 1000,
-            sortBy: {
-              column: "created_at",
-              order: "desc"
-            }
-          }
-        );
+        await supabaseClient
+            .storage
+            .from(BUCKET)
+            .list(
+                currentUser.id,
+                {
+                    limit: 1000,
+                    sortBy: {
+                        column: "created_at",
+                        order: "desc"
+                    }
+                }
+            );
 
+    if (error) {
 
-    if (error)
-      throw error;
+        console.error(error);
 
+        fileGrid.innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">⚠️</div>
+                <div class="empty-title">
+                    Gagal memuat file
+                </div>
+                <div class="empty-text">
+                    ${escapeHtml(error.message)}
+                </div>
+            </div>
+        `;
 
-    allFiles =
-      (data || [])
-        .filter(
-          file =>
-            file.name !==
-            ".emptyFolderPlaceholder"
-        );
-
-
-    /*
-      Render SEKARANG.
-
-      Tidak menunggu gambar.
-    */
-
-    renderFiles(
-      allFiles
-    );
-
-
-    /*
-      Thumbnail dilakukan setelah
-      browser selesai merender UI.
-    */
-
-    if (
-      typeof requestIdleCallback ===
-      "function"
-    ) {
-
-      requestIdleCallback(
-        () => loadThumbnailsBatch()
-      );
-
-    } else {
-
-      setTimeout(
-        loadThumbnailsBatch,
-        50
-      );
-
+        return;
     }
 
-  } catch (error) {
+    allFiles =
+        (data || [])
+            .filter(
+                file => file.name
+            );
 
-    console.error(error);
+    fileCount.textContent =
+        `${allFiles.length} file`;
 
-    fileList.innerHTML = `
-      <div class="empty">
-        Gagal memuat file:<br>
-        ${escapeHtml(
-          error.message
-        )}
-      </div>
-    `;
-  }
+    renderFiles(
+        allFiles
+    );
+
+    /*
+       Thumbnail dibuat setelah card selesai
+       sehingga tampilan utama tidak menunggu.
+    */
+    loadThumbnails(
+        allFiles
+    );
 }
 
 
-/* =====================================================
+/* =========================================================
    RENDER FILES
+========================================================= */
 
-   TIDAK ADA AWAIT.
-   TIDAK ADA REQUEST SUPABASE.
-===================================================== */
+function renderFiles(files) {
 
-function renderFiles(
-  files
-) {
+    fileGrid.innerHTML = "";
 
-  fileList.innerHTML = "";
+    if (!files.length) {
 
-  fileCount.textContent =
-    `${files.length} file`;
+        fileGrid.innerHTML = `
+            <div class="empty">
 
+                <div class="empty-icon">
+                    ☁️
+                </div>
 
-  if (!files.length) {
+                <div class="empty-title">
+                    Belum ada file
+                </div>
 
-    emptyState.classList.remove(
-      "hidden"
-    );
+                <div class="empty-text">
+                    Upload file pertama kamu di area upload.
+                </div>
 
-    return;
-  }
+            </div>
+        `;
 
-
-  emptyState.classList.add(
-    "hidden"
-  );
-
-
-  const fragment =
-    document.createDocumentFragment();
+        return;
+    }
 
 
-  for (
-    const file of files
-  ) {
-
-    const card =
-      document.createElement(
-        "div"
-      );
+    const fragment =
+        document.createDocumentFragment();
 
 
-    card.className =
-      "file-card";
+    files.forEach(
+        file => {
+
+            const card =
+                document.createElement("article");
+
+            card.className =
+                "file-card";
 
 
-    const safeName =
-      escapeHtml(
-        file.name
-      );
+            const name =
+                escapeHtml(
+                    file.name
+                );
+
+            const size =
+                formatSize(
+                    file.metadata?.size
+                );
+
+            const date =
+                formatDate(
+                    file.created_at
+                );
 
 
-    const image =
-      isImageFile(
-        file.name
-      );
+            card.innerHTML = `
+
+                <div
+                    class="file-preview"
+                    data-preview
+                >
+
+                    <div class="file-type-icon">
+                        ${getFileIcon(file.name)}
+                    </div>
+
+                </div>
 
 
-    card.innerHTML = `
+                <div class="file-info">
 
-      <div class="thumbnail">
+                    <div
+                        class="file-name"
+                        title="${name}"
+                    >
+                        ${name}
+                    </div>
 
-        ${
-          image
+                    <div class="file-meta">
+                        ${size} • ${date}
+                    </div>
 
-            ? `
-              <img
-                data-thumbnail="${safeName}"
-                alt=""
-              >
-            `
+                </div>
 
-            : `
-              <div class="file-icon">
-                ${getFileIcon(file.name)}
-              </div>
-            `
+
+                <div class="file-actions">
+
+                    <button
+                        class="action download"
+                        data-download
+                    >
+                        Download
+                    </button>
+
+                    <button
+                        class="action rename"
+                        data-rename
+                    >
+                        Rename
+                    </button>
+
+                    <button
+                        class="action delete"
+                        data-delete
+                    >
+                        Hapus
+                    </button>
+
+                </div>
+            `;
+
+
+            card
+                .querySelector("[data-download]")
+                .addEventListener(
+                    "click",
+                    () =>
+                        downloadFile(
+                            file.name
+                        )
+                );
+
+
+            card
+                .querySelector("[data-rename]")
+                .addEventListener(
+                    "click",
+                    () =>
+                        renameFile(
+                            file.name
+                        )
+                );
+
+
+            card
+                .querySelector("[data-delete]")
+                .addEventListener(
+                    "click",
+                    () =>
+                        deleteFile(
+                            file.name
+                        )
+                );
+
+
+            card.dataset.fileName =
+                file.name;
+
+
+            fragment.appendChild(
+                card
+            );
+
         }
-
-      </div>
-
-
-      <div class="file-info">
-
-        <div
-          class="file-name"
-          title="${safeName}"
-        >
-          ${safeName}
-        </div>
-
-        <div class="file-meta">
-          ${formatSize(
-            file.metadata?.size || 0
-          )}
-          •
-          ${formatDate(
-            file.created_at
-          )}
-        </div>
-
-      </div>
-
-
-      <div class="file-actions">
-
-        <button
-          type="button"
-          class="action-btn rename-btn"
-        >
-          ✏️ Rename
-        </button>
-
-        <button
-          type="button"
-          class="action-btn download-btn"
-        >
-          ⬇️ Download
-        </button>
-
-        <button
-          type="button"
-          class="action-btn delete-btn"
-        >
-          🗑️ Hapus
-        </button>
-
-      </div>
-
-    `;
-
-
-    card
-      .querySelector(
-        ".rename-btn"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          renameFile(
-            file.name
-          )
-      );
-
-
-    card
-      .querySelector(
-        ".download-btn"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          downloadFile(
-            file.name
-          )
-      );
-
-
-    card
-      .querySelector(
-        ".delete-btn"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          deleteFile(
-            file.name
-          )
-      );
-
-
-    fragment.appendChild(
-      card
     );
-  }
 
 
-  /*
-    Hanya satu operasi DOM.
-  */
-
-  fileList.appendChild(
-    fragment
-  );
+    fileGrid.appendChild(
+        fragment
+    );
 }
 
 
-/* =====================================================
-   THUMBNAIL BATCH
+/* =========================================================
+   THUMBNAILS
+========================================================= */
 
-   INI YANG MEMBUAT VERSI INI LEBIH RINGAN.
+async function loadThumbnails(files) {
 
-   Semua URL gambar diminta sekaligus,
-   bukan satu request per gambar.
-===================================================== */
-
-async function loadThumbnailsBatch() {
-
-  if (!currentUser)
-    return;
+    const imageFiles =
+        files.filter(
+            file =>
+                isImage(file)
+        );
 
 
-  const imageElements =
-    Array.from(
-      document.querySelectorAll(
-        "[data-thumbnail]"
-      )
-    );
+    if (!imageFiles.length)
+        return;
 
-
-  if (!imageElements.length)
-    return;
-
-
-  const fileNames =
-    imageElements.map(
-      element =>
-        element.dataset.thumbnail
-    );
-
-
-  /*
-    Cek cache dahulu.
-  */
-
-  const uncached =
-    fileNames.filter(
-      name =>
-        !thumbnailCache.has(
-          `${currentUser.id}/${name}`
-        )
-    );
-
-
-  /*
-    Kalau semua sudah ada di cache,
-    langsung tampilkan.
-  */
-
-  if (!uncached.length) {
-
-    imageElements.forEach(
-      element => {
-
-        const key =
-          `${currentUser.id}/${element.dataset.thumbnail}`;
-
-        const url =
-          thumbnailCache.get(
-            key
-          );
-
-        if (url) {
-
-          element.src =
-            url;
-
-        }
-
-      }
-    );
-
-    return;
-  }
-
-
-  try {
 
     const paths =
-      uncached.map(
-        name =>
-          `${currentUser.id}/${name}`
-      );
+        imageFiles.map(
+            file =>
+                `${currentUser.id}/${file.name}`
+        );
 
 
     /*
-      SATU REQUEST untuk banyak URL.
+       Satu request batch untuk semua
+       thumbnail, bukan request satu-satu.
     */
 
     const {
-      data,
-      error
+        data,
+        error
     } =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .createSignedUrls(
-          paths,
-          60 * 60
-        );
+        await supabaseClient
+            .storage
+            .from(BUCKET)
+            .createSignedUrls(
+                paths,
+                3600
+            );
 
 
     if (error) {
 
-      console.warn(
-        "Thumbnail tidak tersedia:",
-        error
-      );
+        console.warn(
+            "Thumbnail gagal:",
+            error
+        );
 
-      return;
+        return;
     }
 
 
-    /*
-      Simpan hasil ke cache.
-    */
-
-    (data || []).forEach(
-      item => {
-
-        if (
-          !item.signedUrl ||
-          !item.path
-        ) return;
+    if (!data)
+        return;
 
 
-        thumbnailCache.set(
-          item.path,
-          item.signedUrl
-        );
+    data.forEach(
+        (item, index) => {
 
-      }
-    );
+            if (!item?.signedUrl)
+                return;
 
 
-    /*
-      Tampilkan gambar.
-    */
-
-    imageElements.forEach(
-      element => {
-
-        const name =
-          element.dataset.thumbnail;
+            const file =
+                imageFiles[index];
 
 
-        const key =
-          `${currentUser.id}/${name}`;
+            if (!file)
+                return;
 
 
-        const url =
-          thumbnailCache.get(
-            key
-          );
+            thumbnailCache.set(
+                file.name,
+                item.signedUrl
+            );
 
 
-        if (url) {
+            const card =
+                Array.from(
+                    fileGrid.children
+                ).find(
+                    element =>
+                        element.dataset.fileName ===
+                        file.name
+                );
 
-          element.src =
-            url;
+
+            if (!card)
+                return;
+
+
+            const preview =
+                card.querySelector(
+                    "[data-preview]"
+                );
+
+
+            if (!preview)
+                return;
+
+
+            const img =
+                document.createElement("img");
+
+
+            img.loading =
+                "lazy";
+
+            img.decoding =
+                "async";
+
+            img.alt =
+                file.name;
+
+            img.src =
+                item.signedUrl;
+
+
+            img.onload =
+                () => {
+
+                    preview.innerHTML = "";
+
+                    preview.appendChild(
+                        img
+                    );
+
+                };
+
+
+            img.onerror =
+                () => {
+
+                    // tetap gunakan icon
+
+                };
 
         }
-
-      }
     );
-
-  } catch (error) {
-
-    console.warn(
-      "Thumbnail error:",
-      error
-    );
-
-  }
 }
 
 
-/* =====================================================
-   UPLOAD SINGLE
-===================================================== */
-
-async function uploadSingleFile(
-  file
-) {
-
-  if (
-    file.size >
-    MAX_FILE_SIZE
-  ) {
-
-    throw new Error(
-      "Maksimal 100 MB"
-    );
-  }
-
-
-  const safeName =
-    file.name.replace(
-      /[^a-zA-Z0-9._-]/g,
-      "_"
-    );
-
-
-  const uniqueName =
-    `${Date.now()}_${Math.random()
-      .toString(36)
-      .slice(2, 8)}_${safeName}`;
-
-
-  const path =
-    `${currentUser.id}/${uniqueName}`;
-
-
-  const {
-    error
-  } =
-    await supabaseClient
-      .storage
-      .from(BUCKET)
-      .upload(
-        path,
-        file,
-        {
-          cacheControl: "3600",
-          upsert: false,
-          contentType:
-            file.type || undefined
-        }
-      );
-
-
-  if (error)
-    throw error;
-
-
-  return uniqueName;
-}
-
-
-/* =====================================================
-   MULTI UPLOAD
-===================================================== */
-
-async function uploadFiles(
-  files
-) {
-
-  if (
-    !files.length ||
-    isUploading
-  ) return;
-
-
-  if (
-    files.length >
-    MAX_FILES
-  ) {
-
-    showUploadMessage(
-      `Maksimal ${MAX_FILES} file sekaligus. Kamu memilih ${files.length} file.`
-    );
-
-    return;
-  }
-
-
-  isUploading = true;
-
-
-  let next =
-    0;
-
-  let completed =
-    0;
-
-  let success =
-    0;
-
-  let failed =
-    0;
-
-
-  const errors = [];
-
-
-  showUploadMessage(
-    `Mengupload ${files.length} file...`,
-    "loading"
-  );
-
-
-  async function worker() {
-
-    while (true) {
-
-      const index =
-        next++;
-
-
-      if (
-        index >=
-        files.length
-      ) return;
-
-
-      const file =
-        files[index];
-
-
-      try {
-
-        await uploadSingleFile(
-          file
-        );
-
-        success++;
-
-      } catch (error) {
-
-        failed++;
-
-        errors.push(
-          `${file.name}: ${
-            error.message
-          }`
-        );
-
-      }
-
-
-      completed++;
-
-
-      showUploadMessage(
-        `Upload ${completed}/${files.length} • ${success} berhasil • ${failed} gagal`,
-        "loading"
-      );
-    }
-  }
-
-
-  const workers =
-    Math.min(
-      MAX_CONCURRENT_UPLOADS,
-      files.length
-    );
-
-
-  await Promise.all(
-    Array.from(
-      {
-        length:
-          workers
-      },
-      worker
-    )
-  );
-
-
-  isUploading =
-    false;
-
-
-  if (failed === 0) {
-
-    showUploadMessage(
-      `${success} file berhasil diupload. ✅`,
-      "success"
-    );
-
-  } else {
-
-    showUploadMessage(
-      `${success} berhasil • ${failed} gagal.`,
-      success
-        ? "success"
-        : "error"
-    );
-
-    console.warn(
-      errors
-    );
-  }
-
-
-  fileInput.value = "";
-
-
-  /*
-    Refresh hanya satu request list.
-  */
-
-  await loadFiles();
-}
-
-
-/* =====================================================
-   FILE INPUT
-===================================================== */
+/* =========================================================
+   UPLOAD
+========================================================= */
 
 fileInput.addEventListener(
-  "change",
-  async () => {
+    "change",
+    async event => {
 
-    const files =
-      Array.from(
-        fileInput.files || []
-      );
+        const files =
+            Array.from(
+                event.target.files || []
+            );
 
+        await uploadFiles(
+            files
+        );
 
-    if (!files.length)
-      return;
+        fileInput.value = "";
 
-
-    await uploadFiles(
-      files
-    );
-
-  }
+    }
 );
 
 
-/* =====================================================
+/* =========================================================
    DRAG DROP
-===================================================== */
+========================================================= */
 
 [
-  "dragenter",
-  "dragover"
+    "dragenter",
+    "dragover"
 ].forEach(
-  eventName => {
+    eventName => {
 
-    uploadArea.addEventListener(
-      eventName,
-      event => {
+        uploadZone.addEventListener(
+            eventName,
+            event => {
 
-        event.preventDefault();
+                event.preventDefault();
 
-        uploadArea.classList.add(
-          "drag"
+                uploadZone.classList.add(
+                    "dragging"
+                );
+
+            }
         );
 
-      }
-    );
-
-  }
+    }
 );
 
 
 [
-  "dragleave",
-  "drop"
+    "dragleave",
+    "drop"
 ].forEach(
-  eventName => {
+    eventName => {
 
-    uploadArea.addEventListener(
-      eventName,
-      event => {
+        uploadZone.addEventListener(
+            eventName,
+            event => {
 
-        event.preventDefault();
+                event.preventDefault();
 
-        uploadArea.classList.remove(
-          "drag"
+                uploadZone.classList.remove(
+                    "dragging"
+                );
+
+            }
         );
 
-      }
-    );
-
-  }
+    }
 );
 
 
-uploadArea.addEventListener(
-  "drop",
-  async event => {
+uploadZone.addEventListener(
+    "drop",
+    async event => {
 
-    const files =
-      Array.from(
-        event
-          .dataTransfer
-          .files || []
-      );
+        const files =
+            Array.from(
+                event.dataTransfer.files || []
+            );
+
+        await uploadFiles(
+            files
+        );
+
+    }
+);
+
+
+/* =========================================================
+   UPLOAD FILES
+========================================================= */
+
+async function uploadFiles(files) {
+
+    if (!currentUser)
+        return;
+
+
+    if (uploadRunning) {
+
+        showToast(
+            "Upload sedang berjalan.",
+            "error"
+        );
+
+        return;
+    }
 
 
     if (!files.length)
-      return;
+        return;
 
 
-    await uploadFiles(
-      files
-    );
+    if (files.length > MAX_FILES) {
 
-  }
-);
-
-
-/* =====================================================
-   DOWNLOAD
-===================================================== */
-
-async function downloadFile(
-  fileName
-) {
-
-  try {
-
-    const path =
-      `${currentUser.id}/${fileName}`;
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .createSignedUrl(
-          path,
-          60 * 60
+        showToast(
+            `Maksimal ${MAX_FILES} file sekali upload.`,
+            "error"
         );
 
-
-    if (error)
-      throw error;
-
-
-    if (!data?.signedUrl)
-      throw new Error(
-        "URL tidak tersedia."
-      );
-
-
-    const link =
-      document.createElement(
-        "a"
-      );
-
-
-    link.href =
-      data.signedUrl;
-
-    link.target =
-      "_blank";
-
-    link.rel =
-      "noopener";
-
-
-    document.body.appendChild(
-      link
-    );
-
-    link.click();
-
-    link.remove();
-
-  } catch (error) {
-
-    console.error(error);
-
-    alert(
-      "Download gagal: " +
-      error.message
-    );
-  }
-}
-
-
-/* =====================================================
-   RENAME
-
-   METODE:
-   1. Coba MOVE
-   2. Jika gagal → COPY
-   3. Jika COPY berhasil → DELETE file lama
-===================================================== */
-
-async function renameFile(
-  oldName
-) {
-
-  if (!currentUser)
-    return;
-
-
-  const input =
-    prompt(
-      "Masukkan nama file baru:",
-      oldName
-    );
-
-
-  if (input === null)
-    return;
-
-
-  const newName =
-    input.trim();
-
-
-  if (!newName) {
-
-    alert(
-      "Nama file tidak boleh kosong."
-    );
-
-    return;
-  }
-
-
-  if (
-    newName === oldName
-  ) return;
-
-
-  const safeName =
-    newName.replace(
-      /[^a-zA-Z0-9._-]/g,
-      "_"
-    );
-
-
-  if (!safeName) {
-
-    alert(
-      "Nama file tidak valid."
-    );
-
-    return;
-  }
-
-
-  /*
-    Cek duplicate.
-  */
-
-  const duplicate =
-    allFiles.some(
-      file =>
-        file.name ===
-        safeName
-    );
-
-
-  if (duplicate) {
-
-    alert(
-      "Nama file tersebut sudah digunakan."
-    );
-
-    return;
-  }
-
-
-  const oldPath =
-    `${currentUser.id}/${oldName}`;
-
-  const newPath =
-    `${currentUser.id}/${safeName}`;
-
-
-  showUploadMessage(
-    `Mengganti nama ${oldName}...`,
-    "loading"
-  );
-
-
-  try {
-
-    /*
-      METODE 1:
-      MOVE
-    */
-
-    const moveResult =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .move(
-          oldPath,
-          newPath
-        );
-
-
-    if (!moveResult.error) {
-
-      thumbnailCache.delete(
-        oldPath
-      );
-
-
-      showUploadMessage(
-        `Berhasil rename menjadi ${safeName}.`,
-        "success"
-      );
-
-
-      await loadFiles();
-
-      return;
+        return;
     }
 
 
-    /*
-      Kalau MOVE ditolak policy,
-      coba COPY.
-    */
-
-    console.warn(
-      "MOVE gagal, mencoba COPY:",
-      moveResult.error
-    );
-
-
-    const copyResult =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .copy(
-          oldPath,
-          newPath
+    const validFiles =
+        files.filter(
+            file =>
+                file.size <= MAX_FILE_SIZE
         );
 
 
-    if (copyResult.error) {
+    if (validFiles.length !== files.length) {
 
-      throw copyResult.error;
+        showToast(
+            "Ada file yang lebih besar dari 100 MB.",
+            "error"
+        );
+
     }
+
+
+    if (!validFiles.length)
+        return;
+
+
+    uploadRunning = true;
+
+    uploadZone.style.pointerEvents =
+        "none";
+
+
+    let completed = 0;
+
+    let failed = 0;
+
+
+    uploadStatus.textContent =
+        `Mempersiapkan ${validFiles.length} file...`;
 
 
     /*
-      COPY berhasil.
-      Sekarang hapus file lama.
+       Worker pool.
+       Maksimal 10 upload bersamaan.
     */
 
-    const removeResult =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .remove([
-          oldPath
-        ]);
+    let cursor = 0;
 
 
-    if (removeResult.error) {
+    async function worker() {
 
-      throw removeResult.error;
+        while (true) {
+
+            const index =
+                cursor++;
+
+
+            if (
+                index >=
+                validFiles.length
+            )
+                break;
+
+
+            const file =
+                validFiles[index];
+
+
+            try {
+
+                uploadStatus.textContent =
+                    `Mengupload ${completed + failed + 1}/${validFiles.length}...`;
+
+
+                const safeName =
+                    file.name
+                        .replace(
+                            /[^a-zA-Z0-9._-]/g,
+                            "_"
+                        )
+                        .replace(
+                            /_+/g,
+                            "_"
+                        );
+
+
+                const random =
+                    Math.random()
+                        .toString(36)
+                        .slice(2, 8);
+
+
+                const fileName =
+                    `${Date.now()}_${random}_${safeName}`;
+
+
+                const filePath =
+                    `${currentUser.id}/${fileName}`;
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .storage
+                        .from(BUCKET)
+                        .upload(
+                            filePath,
+                            file,
+                            {
+                                cacheControl: "3600",
+                                upsert: false
+                            }
+                        );
+
+
+                if (error)
+                    throw error;
+
+
+                completed++;
+
+            } catch (error) {
+
+                failed++;
+
+                console.error(
+                    "Upload error:",
+                    error
+                );
+
+            }
+
+        }
+
     }
 
 
-    thumbnailCache.delete(
-      oldPath
+    const workers =
+        Math.min(
+            MAX_CONCURRENT_UPLOADS,
+            validFiles.length
+        );
+
+
+    await Promise.all(
+        Array.from(
+            {
+                length: workers
+            },
+            worker
+        )
     );
 
 
-    showUploadMessage(
-      `Berhasil rename menjadi ${safeName}.`,
-      "success"
-    );
+    uploadRunning = false;
+
+    uploadZone.style.pointerEvents =
+        "";
+
+
+    if (failed) {
+
+        showToast(
+            `${completed} berhasil, ${failed} gagal.`,
+            "error"
+        );
+
+    } else {
+
+        showToast(
+            `${completed} file berhasil diupload.`,
+            "success"
+        );
+
+    }
+
+
+    uploadStatus.textContent =
+        "";
 
 
     await loadFiles();
-
-  } catch (error) {
-
-    console.error(
-      "Rename error:",
-      error
-    );
-
-
-    showUploadMessage(
-      `Rename gagal: ${
-        error.message ||
-        "Storage Policy menolak operasi."
-      }`,
-      "error"
-    );
-
-  }
 }
 
 
-/* =====================================================
-   DELETE
+/* =========================================================
+   DOWNLOAD
+========================================================= */
 
-   UI langsung diperbarui,
-   tidak perlu menunggu refresh.
-===================================================== */
-
-async function deleteFile(
-  fileName
+async function downloadFile(
+    fileName
 ) {
 
-  if (!currentUser)
-    return;
+    if (!currentUser)
+        return;
 
 
-  if (
-    !confirm(
-      `Hapus file "${fileName}"?`
-    )
-  ) return;
+    try {
+
+        const filePath =
+            `${currentUser.id}/${fileName}`;
 
 
-  const path =
-    `${currentUser.id}/${fileName}`;
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(BUCKET)
+                .createSignedUrl(
+                    filePath,
+                    3600
+                );
 
 
-  try {
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .remove([
-          path
-        ]);
+        if (error)
+            throw error;
 
 
-    if (error)
-      throw error;
+        if (!data?.signedUrl)
+            throw new Error(
+                "URL download tidak tersedia."
+            );
 
 
-    /*
-      Hapus dari memory.
-    */
-
-    allFiles =
-      allFiles.filter(
-        file =>
-          file.name !==
-          fileName
-      );
-
-
-    /*
-      Hapus cache.
-    */
-
-    thumbnailCache.delete(
-      path
-    );
-
-
-    /*
-      Render ulang lokal.
-      Tidak request Supabase.
-    */
-
-    renderFiles(
-      getFilteredFiles()
-    );
-
-
-    showUploadMessage(
-      "File berhasil dihapus. ✅",
-      "success"
-    );
-
-  } catch (error) {
-
-    console.error(error);
-
-    alert(
-      "Gagal menghapus file: " +
-      error.message
-    );
-  }
-}
-
-
-/* =====================================================
-   SEARCH
-
-   100% LOCAL.
-   Tidak request Supabase.
-===================================================== */
-
-function getFilteredFiles() {
-
-  const keyword =
-    searchInput.value
-      .trim()
-      .toLowerCase();
-
-
-  if (!keyword)
-    return allFiles;
-
-
-  return allFiles.filter(
-    file =>
-      file.name
-        .toLowerCase()
-        .includes(keyword)
-  );
-}
-
-
-searchInput.addEventListener(
-  "input",
-  () => {
-
-    renderFiles(
-      getFilteredFiles()
-    );
-
-
-    /*
-      Thumbnail baru dimuat setelah
-      hasil search selesai dirender.
-    */
-
-    setTimeout(
-      loadThumbnailsBatch,
-      0
-    );
-
-  }
-);
-
-
-/* =====================================================
-   REFRESH
-===================================================== */
-
-document
-  .getElementById(
-    "refreshButton"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      const button =
-        document.getElementById(
-          "refreshButton"
+        window.open(
+            data.signedUrl,
+            "_blank"
         );
 
 
-      button.disabled =
-        true;
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            `Download gagal: ${error.message}`,
+            "error"
+        );
+
+    }
+}
 
 
-      try {
+/* =========================================================
+   RENAME
+========================================================= */
+
+async function renameFile(
+    oldName
+) {
+
+    if (!currentUser)
+        return;
+
+
+    const input =
+        prompt(
+            "Nama file baru:",
+            oldName
+        );
+
+
+    if (input === null)
+        return;
+
+
+    const newName =
+        input.trim();
+
+
+    if (!newName) {
+
+        showToast(
+            "Nama file tidak boleh kosong.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (newName === oldName)
+        return;
+
+
+    const safeName =
+        newName
+            .replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+            )
+            .replace(
+                /_+/g,
+                "_"
+            );
+
+
+    if (!safeName) {
+
+        showToast(
+            "Nama file tidak valid.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (safeName === oldName)
+        return;
+
+
+    const oldPath =
+        `${currentUser.id}/${oldName}`;
+
+    const newPath =
+        `${currentUser.id}/${safeName}`;
+
+
+    try {
+
+        showToast(
+            "Mengganti nama file..."
+        );
+
+
+        /*
+           MOVE adalah cara utama.
+           Policy UPDATE + SELECT sudah
+           disiapkan di SQL.
+        */
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(BUCKET)
+                .move(
+                    oldPath,
+                    newPath
+                );
+
+
+        if (error)
+            throw error;
+
+
+        thumbnailCache.delete(
+            oldName
+        );
+
+
+        showToast(
+            "Nama file berhasil diubah.",
+            "success"
+        );
+
 
         await loadFiles();
 
-      } finally {
 
-        button.disabled =
-          false;
+    } catch (error) {
 
-      }
-    }
-  );
-
-
-/* =====================================================
-   AUTH STATE
-===================================================== */
-
-supabaseClient
-  .auth
-  .onAuthStateChange(
-    async (
-      event,
-      session
-    ) => {
-
-      if (
-        session?.user
-      ) {
-
-        currentUser =
-          session.user;
-
-        await showStorage();
-
-      } else {
-
-        currentUser = null;
-
-        allFiles = [];
-
-        thumbnailCache.clear();
-
-        storagePage.classList.add(
-          "hidden"
+        console.error(
+            "Rename error:",
+            error
         );
 
-        authPage.classList.remove(
-          "hidden"
+
+        showToast(
+            `Rename gagal: ${error.message}`,
+            "error"
         );
 
-      }
+    }
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+async function deleteFile(
+    fileName
+) {
+
+    if (!currentUser)
+        return;
+
+
+    const confirmed =
+        confirm(
+            `Hapus "${fileName}"?`
+        );
+
+
+    if (!confirmed)
+        return;
+
+
+    try {
+
+        const filePath =
+            `${currentUser.id}/${fileName}`;
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(BUCKET)
+                .remove([
+                    filePath
+                ]);
+
+
+        if (error)
+            throw error;
+
+
+        thumbnailCache.delete(
+            fileName
+        );
+
+
+        showToast(
+            "File berhasil dihapus.",
+            "success"
+        );
+
+
+        await loadFiles();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            `Hapus gagal: ${error.message}`,
+            "error"
+        );
 
     }
-  );
+}
 
 
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
+/* =========================================================
+   SEARCH
+========================================================= */
 
-(async function init() {
+searchInput.addEventListener(
+    "input",
+    () => {
 
-  try {
-
-    const {
-      data
-    } =
-      await supabaseClient
-        .auth
-        .getUser();
+        const keyword =
+            searchInput.value
+                .trim()
+                .toLowerCase();
 
 
-    if (data?.user) {
+        if (!keyword) {
 
-      currentUser =
-        data.user;
+            renderFiles(
+                allFiles
+            );
 
-      await showStorage();
+            loadThumbnails(
+                allFiles
+            );
+
+            return;
+        }
+
+
+        const filtered =
+            allFiles.filter(
+                file =>
+                    file.name
+                        .toLowerCase()
+                        .includes(keyword)
+            );
+
+
+        renderFiles(
+            filtered
+        );
+
+
+        loadThumbnails(
+            filtered
+        );
 
     }
+);
 
-  } catch (error) {
 
-    console.error(
-      "Init error:",
-      error
+/* =========================================================
+   REFRESH
+========================================================= */
+
+document
+    .getElementById("refreshButton")
+    .addEventListener(
+        "click",
+        loadFiles
     );
 
-  }
 
-})();
+/* =========================================================
+   ENTER LOGIN
+========================================================= */
 
+document
+    .getElementById("loginPassword")
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+                login();
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        async (
+            event,
+            session
+        ) => {
+
+            if (
+                session &&
+                session.user
+            ) {
+
+                currentUser =
+                    session.user;
+
+                await showStoragePage();
+
+            } else {
+
+                currentUser =
+                    null;
+
+                allFiles = [];
+
+                thumbnailCache.clear();
+
+                storagePage
+                    .classList
+                    .add("hidden");
+
+                authPage
+                    .classList
+                    .remove("hidden");
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   INITIAL SESSION
+========================================================= */
+
+async function init() {
+
+    const {
+        data
+    } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+    if (
+        data?.session?.user
+    ) {
+
+        currentUser =
+            data.session.user;
+
+        await showStoragePage();
+
+    }
+
+}
+
+
+init();
 </script>
 
 </body>
