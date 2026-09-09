@@ -65,6 +65,7 @@ button:disabled {
     cursor: not-allowed;
 }
 
+
 /* =========================================================
    AUTH
 ========================================================= */
@@ -93,9 +94,12 @@ button:disabled {
 .auth-card {
     width: 100%;
     max-width: 410px;
+
     background: rgba(255,255,255,.94);
+
     border: 1px solid rgba(255,255,255,.8);
     border-radius: 28px;
+
     padding: 34px;
 
     box-shadow:
@@ -106,14 +110,17 @@ button:disabled {
     display: flex;
     align-items: center;
     gap: 13px;
+
     margin-bottom: 30px;
 }
 
 .brand-logo {
     width: 48px;
     height: 48px;
+
     display: grid;
     place-items: center;
+
     border-radius: 15px;
 
     background:
@@ -145,12 +152,14 @@ button:disabled {
 .auth-title {
     font-size: 26px;
     font-weight: 800;
+
     margin: 0 0 7px;
 }
 
 .auth-description {
     color: var(--muted);
     font-size: 14px;
+
     margin: 0 0 24px;
 }
 
@@ -160,20 +169,26 @@ button:disabled {
 
 .field label {
     display: block;
+
     font-size: 12px;
     font-weight: 700;
+
     color: #596276;
+
     margin-bottom: 7px;
 }
 
 .field input {
     width: 100%;
     height: 48px;
+
     padding: 0 14px;
 
     border: 1px solid var(--border);
     border-radius: 12px;
+
     background: #fafbfe;
+
     outline: none;
 
     transition: .18s;
@@ -202,6 +217,7 @@ button:disabled {
         );
 
     color: white;
+
     font-weight: 750;
 
     transition: .18s;
@@ -216,23 +232,32 @@ button:disabled {
 
 .auth-switch {
     text-align: center;
+
     color: var(--muted);
+
     font-size: 13px;
+
     margin-top: 19px;
 }
 
 .link-button {
     border: 0;
     background: none;
+
     color: var(--primary);
+
     font-weight: 750;
+
     padding: 0 3px;
 }
 
 .message {
     padding: 11px 13px;
+
     border-radius: 11px;
+
     font-size: 13px;
+
     margin-top: 14px;
 }
 
@@ -246,6 +271,7 @@ button:disabled {
     color: #15803d;
 }
 
+
 /* =========================================================
    APP
 ========================================================= */
@@ -253,6 +279,7 @@ button:disabled {
 .app {
     min-height: 100vh;
 }
+
 
 /* =========================================================
    HEADER
@@ -265,10 +292,12 @@ button:disabled {
     align-items: center;
 
     background: rgba(255,255,255,.9);
+
     border-bottom: 1px solid var(--border);
 
     position: sticky;
     top: 0;
+
     z-index: 20;
 
     backdrop-filter: blur(14px);
@@ -276,6 +305,7 @@ button:disabled {
 
 .header-inner {
     width: min(1180px, calc(100% - 32px));
+
     margin: auto;
 
     display: flex;
@@ -308,6 +338,7 @@ button:disabled {
         );
 
     color: white;
+
     font-size: 19px;
 }
 
@@ -318,6 +349,7 @@ button:disabled {
 
 .header-user {
     color: var(--muted);
+
     font-size: 11px;
 
     max-width: 260px;
@@ -329,7 +361,9 @@ button:disabled {
 
 .logout {
     border: 1px solid var(--border);
+
     background: white;
+
     color: #4b5563;
 
     padding: 9px 13px;
@@ -344,15 +378,19 @@ button:disabled {
     background: #f8fafc;
 }
 
+
 /* =========================================================
    MAIN
 ========================================================= */
 
 .main {
     width: min(1180px, calc(100% - 32px));
+
     margin: auto;
+
     padding: 30px 0 60px;
 }
+
 
 /* =========================================================
    NAVIGATION TABS
@@ -360,13 +398,17 @@ button:disabled {
 
 .page-tabs {
     display: flex;
+
     gap: 8px;
+
     margin-bottom: 25px;
 
     padding: 5px;
 
     background: white;
+
     border: 1px solid var(--border);
+
     border-radius: 14px;
 
     width: fit-content;
@@ -377,6 +419,7 @@ button:disabled {
 
 .page-tab {
     border: 0;
+
     background: transparent;
 
     padding: 9px 15px;
@@ -393,13 +436,16 @@ button:disabled {
 
 .page-tab:hover {
     color: var(--primary);
+
     background: #f8f8ff;
 }
 
 .page-tab.active {
     background: #eef2ff;
+
     color: #4f46e5;
 }
+
 
 /* =========================================================
    HERO
@@ -407,10 +453,12 @@ button:disabled {
 
 .hero {
     display: flex;
+
     align-items: flex-end;
     justify-content: space-between;
 
     gap: 20px;
+
     margin-bottom: 24px;
 }
 
@@ -418,12 +466,15 @@ button:disabled {
     margin: 0;
 
     font-size: clamp(25px, 4vw, 34px);
+
     letter-spacing: -1px;
 }
 
 .hero p {
     margin: 7px 0 0;
+
     color: var(--muted);
+
     font-size: 14px;
 }
 
@@ -435,11 +486,13 @@ button:disabled {
     border-radius: 999px;
 
     background: #eef2ff;
+
     color: #4f46e5;
 
     font-size: 12px;
     font-weight: 750;
 }
+
 
 /* =========================================================
    UPLOAD
@@ -447,10 +500,13 @@ button:disabled {
 
 .upload-card {
     background: var(--card);
+
     border: 1px solid var(--border);
+
     border-radius: var(--radius);
 
     padding: 18px;
+
     margin-bottom: 22px;
 
     box-shadow:
@@ -461,23 +517,27 @@ button:disabled {
     min-height: 150px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     text-align: center;
 
     border: 1.5px dashed #cdd3e0;
+
     border-radius: 14px;
 
     background: #fafbff;
 
     transition: .18s;
+
     cursor: pointer;
 }
 
 .upload-zone:hover,
 .upload-zone.dragging {
     border-color: var(--primary);
+
     background: #f5f5ff;
 }
 
@@ -493,6 +553,7 @@ button:disabled {
     border-radius: 14px;
 
     background: #eef2ff;
+
     color: var(--primary);
 
     font-size: 22px;
@@ -505,22 +566,30 @@ button:disabled {
 
 .upload-subtitle {
     color: var(--muted);
+
     font-size: 12px;
+
     margin-top: 4px;
 }
 
 .upload-limit {
     color: #9aa2b2;
+
     font-size: 11px;
+
     margin-top: 9px;
 }
 
 .upload-status {
     margin-top: 12px;
+
     font-size: 12px;
+
     color: var(--muted);
+
     min-height: 17px;
 }
+
 
 /* =========================================================
    TOOLBAR
@@ -528,13 +597,17 @@ button:disabled {
 
 .toolbar {
     display: flex;
+
     align-items: center;
+
     gap: 10px;
+
     margin-bottom: 17px;
 }
 
 .search-box {
     flex: 1;
+
     position: relative;
 }
 
@@ -547,6 +620,7 @@ button:disabled {
     transform: translateY(-50%);
 
     color: #9aa2b2;
+
     font-size: 15px;
 }
 
@@ -557,9 +631,11 @@ button:disabled {
     padding: 0 14px 0 39px;
 
     border: 1px solid var(--border);
+
     border-radius: 12px;
 
     background: white;
+
     outline: none;
 
     font-size: 13px;
@@ -577,19 +653,24 @@ button:disabled {
     height: 44px;
 
     border: 1px solid var(--border);
+
     border-radius: 12px;
 
     background: white;
+
     color: #596276;
 
     font-size: 17px;
+
     transition: .18s;
 }
 
 .refresh-button:hover {
     color: var(--primary);
+
     background: #fafaff;
 }
+
 
 /* =========================================================
    FILE GRID
@@ -608,6 +689,7 @@ button:disabled {
     background: white;
 
     border: 1px solid var(--border);
+
     border-radius: 16px;
 
     overflow: hidden;
@@ -618,6 +700,7 @@ button:disabled {
         border-color .18s;
 
     content-visibility: auto;
+
     contain-intrinsic-size: 260px;
 }
 
@@ -629,6 +712,7 @@ button:disabled {
     box-shadow:
         0 14px 30px rgba(25,32,55,.08);
 }
+
 
 /* =========================================================
    THUMBNAIL
@@ -645,10 +729,12 @@ button:disabled {
         );
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     position: relative;
+
     overflow: hidden;
 }
 
@@ -694,10 +780,13 @@ button:disabled {
 
 .file-name {
     font-size: 13px;
+
     font-weight: 750;
 
     overflow: hidden;
+
     text-overflow: ellipsis;
+
     white-space: nowrap;
 
     color: #20283a;
@@ -707,10 +796,13 @@ button:disabled {
     margin-top: 5px;
 
     color: #929aab;
+
     font-size: 11px;
 
     overflow: hidden;
+
     text-overflow: ellipsis;
+
     white-space: nowrap;
 }
 
@@ -733,6 +825,7 @@ button:disabled {
     border: 1px solid var(--border);
 
     background: #fafbfc;
+
     color: #596276;
 
     font-size: 11px;
@@ -747,18 +840,22 @@ button:disabled {
 
 .action.download:hover {
     color: var(--primary);
+
     border-color: #cdd1ff;
 }
 
 .action.rename:hover {
     color: #d97706;
+
     border-color: #fde68a;
 }
 
 .action.delete:hover {
     color: var(--danger);
+
     border-color: #fecaca;
 }
+
 
 /* =========================================================
    NOTES
@@ -782,64 +879,87 @@ button:disabled {
 
 .notes-hero {
     display: flex;
+
     align-items: flex-end;
     justify-content: space-between;
+
     gap: 20px;
+
     margin-bottom: 24px;
 }
 
 .notes-hero h1 {
     margin: 0;
+
     font-size: clamp(25px, 4vw, 34px);
+
     letter-spacing: -1px;
 }
 
 .notes-hero p {
     margin: 7px 0 0;
+
     color: var(--muted);
+
     font-size: 14px;
 }
 
 .notes-count {
     white-space: nowrap;
+
     padding: 8px 12px;
+
     border-radius: 999px;
+
     background: #eef2ff;
+
     color: #4f46e5;
+
     font-size: 12px;
     font-weight: 750;
 }
 
 .notes-toolbar {
     display: flex;
+
     align-items: center;
+
     gap: 10px;
+
     margin-bottom: 17px;
 }
 
 .note-search {
     flex: 1;
+
     position: relative;
 }
 
 .note-search span {
     position: absolute;
+
     left: 14px;
     top: 50%;
+
     transform: translateY(-50%);
+
     color: #9aa2b2;
+
     font-size: 15px;
 }
 
 .note-search input {
     width: 100%;
     height: 44px;
+
     padding: 0 14px 0 39px;
 
     border: 1px solid var(--border);
+
     border-radius: 12px;
 
     background: white;
+
     outline: none;
 
     font-size: 13px;
@@ -847,15 +967,18 @@ button:disabled {
 
 .note-search input:focus {
     border-color: #b9bdfc;
+
     box-shadow:
         0 0 0 4px rgba(99,102,241,.07);
 }
 
 .add-note-button {
     height: 44px;
+
     padding: 0 16px;
 
     border: 0;
+
     border-radius: 12px;
 
     background:
@@ -866,6 +989,7 @@ button:disabled {
         );
 
     color: white;
+
     font-size: 12px;
     font-weight: 750;
 
@@ -890,7 +1014,9 @@ button:disabled {
 
 .note-card {
     background: white;
+
     border: 1px solid var(--border);
+
     border-radius: 16px;
 
     padding: 17px;
@@ -914,11 +1040,15 @@ button:disabled {
 
 .note-card-title {
     font-size: 15px;
+
     font-weight: 800;
+
     color: #20283a;
 
     overflow: hidden;
+
     text-overflow: ellipsis;
+
     white-space: nowrap;
 
     padding-right: 5px;
@@ -926,7 +1056,9 @@ button:disabled {
 
 .note-card-date {
     margin-top: 5px;
+
     color: #929aab;
+
     font-size: 10px;
 }
 
@@ -934,15 +1066,21 @@ button:disabled {
     margin-top: 13px;
 
     color: #596276;
+
     font-size: 12px;
+
     line-height: 1.65;
 
     white-space: pre-wrap;
+
     overflow-wrap: anywhere;
 
     display: -webkit-box;
+
     -webkit-line-clamp: 7;
+
     -webkit-box-orient: vertical;
+
     overflow: hidden;
 
     min-height: 23px;
@@ -950,7 +1088,9 @@ button:disabled {
 
 .note-actions {
     display: flex;
+
     gap: 7px;
+
     margin-top: 15px;
 }
 
@@ -964,9 +1104,11 @@ button:disabled {
     border: 1px solid var(--border);
 
     background: #fafbfc;
+
     color: #596276;
 
     font-size: 11px;
+
     font-weight: 700;
 
     transition: .15s;
@@ -978,13 +1120,16 @@ button:disabled {
 
 .note-action.edit:hover {
     color: var(--primary);
+
     border-color: #cdd1ff;
 }
 
 .note-action.delete:hover {
     color: var(--danger);
+
     border-color: #fecaca;
 }
+
 
 /* =========================================================
    NOTE MODAL
@@ -992,11 +1137,13 @@ button:disabled {
 
 .modal-overlay {
     position: fixed;
+
     inset: 0;
 
     z-index: 80;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -1024,7 +1171,9 @@ button:disabled {
 
 .note-modal-header {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 15px;
@@ -1036,6 +1185,7 @@ button:disabled {
     margin: 0;
 
     font-size: 19px;
+
     font-weight: 800;
 }
 
@@ -1044,9 +1194,11 @@ button:disabled {
     height: 34px;
 
     border: 1px solid var(--border);
+
     border-radius: 9px;
 
     background: white;
+
     color: #596276;
 
     font-size: 17px;
@@ -1064,6 +1216,7 @@ button:disabled {
     display: block;
 
     font-size: 12px;
+
     font-weight: 750;
 
     color: #596276;
@@ -1076,6 +1229,7 @@ button:disabled {
     width: 100%;
 
     border: 1px solid var(--border);
+
     border-radius: 12px;
 
     background: #fafbfe;
@@ -1095,13 +1249,16 @@ button:disabled {
 
 .note-form-field textarea {
     min-height: 190px;
+
     resize: vertical;
+
     line-height: 1.6;
 }
 
 .note-form-field input:focus,
 .note-form-field textarea:focus {
     border-color: var(--primary);
+
     background: white;
 
     box-shadow:
@@ -1110,7 +1267,9 @@ button:disabled {
 
 .note-modal-actions {
     display: flex;
+
     justify-content: flex-end;
+
     gap: 9px;
 
     margin-top: 18px;
@@ -1124,12 +1283,15 @@ button:disabled {
     border-radius: 10px;
 
     font-size: 12px;
+
     font-weight: 750;
 }
 
 .modal-cancel {
     border: 1px solid var(--border);
+
     background: white;
+
     color: #596276;
 }
 
@@ -1139,6 +1301,7 @@ button:disabled {
 
 .modal-save {
     border: 0;
+
     background:
         linear-gradient(
             135deg,
@@ -1151,6 +1314,7 @@ button:disabled {
     box-shadow:
         0 7px 18px rgba(79,70,229,.18);
 }
+
 
 /* =========================================================
    EMPTY
@@ -1166,25 +1330,32 @@ button:disabled {
     background: white;
 
     border: 1px solid var(--border);
+
     border-radius: 18px;
 }
 
 .empty-icon {
     font-size: 38px;
+
     margin-bottom: 10px;
+
     opacity: .8;
 }
 
 .empty-title {
     font-size: 15px;
+
     font-weight: 800;
 }
 
 .empty-text {
     color: var(--muted);
+
     font-size: 12px;
+
     margin-top: 5px;
 }
+
 
 /* =========================================================
    LOADING
@@ -1198,6 +1369,7 @@ button:disabled {
     text-align: center;
 
     color: var(--muted);
+
     font-size: 13px;
 }
 
@@ -1208,6 +1380,7 @@ button:disabled {
     margin: 0 auto 10px;
 
     border: 2px solid #e5e7eb;
+
     border-top-color: var(--primary);
 
     border-radius: 50%;
@@ -1222,6 +1395,7 @@ button:disabled {
     }
 }
 
+
 /* =========================================================
    TOAST
 ========================================================= */
@@ -1235,6 +1409,7 @@ button:disabled {
     z-index: 100;
 
     min-width: 250px;
+
     max-width: calc(100% - 40px);
 
     padding: 13px 15px;
@@ -1242,6 +1417,7 @@ button:disabled {
     border-radius: 12px;
 
     background: #172033;
+
     color: white;
 
     box-shadow:
@@ -1250,6 +1426,7 @@ button:disabled {
     font-size: 12px;
 
     transform: translateY(20px);
+
     opacity: 0;
 
     pointer-events: none;
@@ -1259,6 +1436,7 @@ button:disabled {
 
 .toast.show {
     transform: translateY(0);
+
     opacity: 1;
 }
 
@@ -1269,6 +1447,7 @@ button:disabled {
 .toast.error {
     background: #b91c1c;
 }
+
 
 /* =========================================================
    MOBILE
@@ -1290,6 +1469,7 @@ button:disabled {
 
     .main {
         width: min(100% - 22px, 1180px);
+
         padding-top: 22px;
     }
 
@@ -1304,7 +1484,9 @@ button:disabled {
     .hero,
     .notes-hero {
         align-items: flex-start;
+
         flex-direction: column;
+
         gap: 10px;
     }
 
@@ -1332,11 +1514,13 @@ button:disabled {
 
     .file-actions {
         padding: 0 11px 11px;
+
         gap: 5px;
     }
 
     .action {
         height: 32px;
+
         font-size: 10px;
     }
 
@@ -1350,9 +1534,11 @@ button:disabled {
 
     .auth-card {
         padding: 27px 22px;
+
         border-radius: 23px;
     }
 }
+
 
 @media (max-width: 390px) {
 
@@ -1379,7 +1565,9 @@ button:disabled {
 </style>
 </head>
 
+
 <body>
+
 
 <!-- =======================================================
      AUTH PAGE
@@ -1396,6 +1584,7 @@ button:disabled {
             </div>
 
             <div>
+
                 <div class="brand-title">
                     Ju5tFun Cloud
                 </div>
@@ -1403,9 +1592,11 @@ button:disabled {
                 <div class="brand-subtitle">
                     Personal cloud storage
                 </div>
+
             </div>
 
         </div>
+
 
         <!-- LOGIN -->
 
@@ -1419,9 +1610,12 @@ button:disabled {
                 Login untuk mengakses file dan catatan kamu.
             </p>
 
+
             <div class="field">
 
-                <label>Email</label>
+                <label for="loginEmail">
+                    Email
+                </label>
 
                 <input
                     id="loginEmail"
@@ -1432,9 +1626,12 @@ button:disabled {
 
             </div>
 
+
             <div class="field">
 
-                <label>Password</label>
+                <label for="loginPassword">
+                    Password
+                </label>
 
                 <input
                     id="loginPassword"
@@ -1445,17 +1642,21 @@ button:disabled {
 
             </div>
 
+
             <button
                 id="loginButton"
                 class="primary-button"
+                type="button"
             >
                 Login
             </button>
+
 
             <div
                 id="loginMessage"
                 class="message hidden"
             ></div>
+
 
             <div class="auth-switch">
 
@@ -1464,6 +1665,7 @@ button:disabled {
                 <button
                     id="showRegister"
                     class="link-button"
+                    type="button"
                 >
                     Daftar
                 </button>
@@ -1471,6 +1673,7 @@ button:disabled {
             </div>
 
         </div>
+
 
         <!-- REGISTER -->
 
@@ -1487,9 +1690,12 @@ button:disabled {
                 Buat akun baru untuk mulai menyimpan file dan catatan.
             </p>
 
+
             <div class="field">
 
-                <label>Email</label>
+                <label for="registerEmail">
+                    Email
+                </label>
 
                 <input
                     id="registerEmail"
@@ -1500,9 +1706,12 @@ button:disabled {
 
             </div>
 
+
             <div class="field">
 
-                <label>Password</label>
+                <label for="registerPassword">
+                    Password
+                </label>
 
                 <input
                     id="registerPassword"
@@ -1513,17 +1722,21 @@ button:disabled {
 
             </div>
 
+
             <button
                 id="registerButton"
                 class="primary-button"
+                type="button"
             >
                 Buat Akun
             </button>
+
 
             <div
                 id="registerMessage"
                 class="message hidden"
             ></div>
+
 
             <div class="auth-switch">
 
@@ -1532,6 +1745,7 @@ button:disabled {
                 <button
                     id="showLogin"
                     class="link-button"
+                    type="button"
                 >
                     Login
                 </button>
@@ -1545,6 +1759,7 @@ button:disabled {
 </section>
 
 
+
 <!-- =======================================================
      STORAGE PAGE
 ======================================================= -->
@@ -1553,6 +1768,9 @@ button:disabled {
     id="storagePage"
     class="app hidden"
 >
+
+
+    <!-- HEADER -->
 
     <header class="header">
 
@@ -1579,9 +1797,11 @@ button:disabled {
 
             </div>
 
+
             <button
                 id="logoutButton"
                 class="logout"
+                type="button"
             >
                 Logout
             </button>
@@ -1591,17 +1811,20 @@ button:disabled {
     </header>
 
 
+
+    <!-- MAIN -->
+
     <main class="main">
 
-        <!-- =================================================
-             PAGE TABS
-        ================================================== -->
+
+        <!-- PAGE TABS -->
 
         <div class="page-tabs">
 
             <button
                 id="filesTab"
                 class="page-tab active"
+                type="button"
             >
                 ☁️ File Saya
             </button>
@@ -1609,11 +1832,13 @@ button:disabled {
             <button
                 id="notesTab"
                 class="page-tab"
+                type="button"
             >
                 📝 Notes
             </button>
 
         </div>
+
 
 
         <!-- =================================================
@@ -1624,6 +1849,7 @@ button:disabled {
             id="filesPage"
             class="files-page"
         >
+
 
             <div class="hero">
 
@@ -1639,6 +1865,7 @@ button:disabled {
 
                 </div>
 
+
                 <div
                     id="fileCount"
                     class="file-count"
@@ -1647,6 +1874,7 @@ button:disabled {
                 </div>
 
             </div>
+
 
 
             <!-- UPLOAD -->
@@ -1682,12 +1910,14 @@ button:disabled {
 
                 </label>
 
+
                 <input
                     id="fileInput"
                     type="file"
                     multiple
                     hidden
                 >
+
 
                 <div
                     id="uploadStatus"
@@ -1697,13 +1927,16 @@ button:disabled {
             </div>
 
 
+
             <!-- TOOLBAR -->
 
             <div class="toolbar">
 
                 <div class="search-box">
 
-                    <span>⌕</span>
+                    <span>
+                        ⌕
+                    </span>
 
                     <input
                         id="searchInput"
@@ -1714,15 +1947,18 @@ button:disabled {
 
                 </div>
 
+
                 <button
                     id="refreshButton"
                     class="refresh-button"
                     title="Refresh"
+                    type="button"
                 >
                     ↻
                 </button>
 
             </div>
+
 
 
             <!-- FILE GRID -->
@@ -1735,6 +1971,7 @@ button:disabled {
         </div>
 
 
+
         <!-- =================================================
              NOTES PAGE
         ================================================== -->
@@ -1743,6 +1980,7 @@ button:disabled {
             id="notesPage"
             class="notes-page"
         >
+
 
             <div class="notes-hero">
 
@@ -1758,6 +1996,7 @@ button:disabled {
 
                 </div>
 
+
                 <div
                     id="notesCount"
                     class="notes-count"
@@ -1768,13 +2007,16 @@ button:disabled {
             </div>
 
 
+
             <!-- NOTES TOOLBAR -->
 
             <div class="notes-toolbar">
 
                 <div class="note-search">
 
-                    <span>⌕</span>
+                    <span>
+                        ⌕
+                    </span>
 
                     <input
                         id="noteSearchInput"
@@ -1785,22 +2027,27 @@ button:disabled {
 
                 </div>
 
+
                 <button
                     id="addNoteButton"
                     class="add-note-button"
+                    type="button"
                 >
                     + Tambah Catatan
                 </button>
+
 
                 <button
                     id="refreshNotesButton"
                     class="refresh-button"
                     title="Refresh catatan"
+                    type="button"
                 >
                     ↻
                 </button>
 
             </div>
+
 
 
             <!-- NOTES GRID -->
@@ -1814,100 +2061,114 @@ button:disabled {
 
     </main>
 
-</section>
 
 
-<!-- =======================================================
-     NOTE MODAL
-======================================================= -->
+    <!-- =================================================
+         NOTE MODAL
+         PENTING:
+         MODAL BERADA DI DALAM STORAGE PAGE
+    ================================================== -->
 
-div
-    id="noteModalOverlay"
-    class="modal-overlay hidden"
->
+    <div
+        id="noteModalOverlay"
+        class="modal-overlay hidden"
+    >
 
-    <div class="note-modal">
-
-        <div class="note-modal-header">
-
-            <h2
-                id="noteModalTitle"
-                class="note-modal-title"
-            >
-                Tambah Catatan
-            </h2>
-
-            <button
-                id="closeNoteModal"
-                class="modal-close"
-                type="button"
-            >
-                ×
-            </button>
-
-        </div>
+        <div class="note-modal">
 
 
-        <div class="note-form-field">
+            <div class="note-modal-header">
 
-            <label for="noteTitleInput">
-                Judul
-            </label>
-
-            <input
-                id="noteTitleInput"
-                type="text"
-                maxlength="200"
-                placeholder="Contoh: Catatan Penting"
-            >
-
-        </div>
+                <h2
+                    id="noteModalTitle"
+                    class="note-modal-title"
+                >
+                    Tambah Catatan
+                </h2>
 
 
-        <div class="note-form-field">
+                <button
+                    id="closeNoteModal"
+                    class="modal-close"
+                    type="button"
+                    aria-label="Tutup"
+                >
+                    ×
+                </button>
 
-            <label for="noteContentInput">
-                Isi Catatan
-            </label>
-
-            <textarea
-                id="noteContentInput"
-                maxlength="10000"
-                placeholder="Tulis catatan kamu di sini..."
-            ></textarea>
-
-        </div>
+            </div>
 
 
-        <div class="note-modal-actions">
 
-            <button
-                id="cancelNoteButton"
-                class="modal-button modal-cancel"
-                type="button"
-            >
-                Batal
-            </button>
+            <div class="note-form-field">
 
-            <button
-                id="saveNoteButton"
-                class="modal-button modal-save"
-                type="button"
-            >
-                Simpan
-            </button>
+                <label for="noteTitleInput">
+                    Judul
+                </label>
+
+                <input
+                    id="noteTitleInput"
+                    type="text"
+                    maxlength="200"
+                    placeholder="Contoh: Catatan Penting"
+                >
+
+            </div>
+
+
+
+            <div class="note-form-field">
+
+                <label for="noteContentInput">
+                    Isi Catatan
+                </label>
+
+                <textarea
+                    id="noteContentInput"
+                    maxlength="10000"
+                    placeholder="Tulis catatan kamu di sini..."
+                ></textarea>
+
+            </div>
+
+
+
+            <div class="note-modal-actions">
+
+                <button
+                    id="cancelNoteButton"
+                    class="modal-button modal-cancel"
+                    type="button"
+                >
+                    Batal
+                </button>
+
+
+                <button
+                    id="saveNoteButton"
+                    class="modal-button modal-save"
+                    type="button"
+                >
+                    Simpan
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+</section>
 
+
+
+<!-- TOAST -->
 
 <div
     id="toast"
     class="toast"
 ></div>
+
 
 
 <script>
@@ -2376,7 +2637,10 @@ async function login() {
             .getElementById("loginButton");
 
     button.disabled = true;
-    button.textContent = "Login...";
+
+    button.textContent =
+        "Login...";
+
 
     const {
         error
@@ -2388,8 +2652,12 @@ async function login() {
                 password
             });
 
+
     button.disabled = false;
-    button.textContent = "Login";
+
+    button.textContent =
+        "Login";
+
 
     if (error) {
 
@@ -2400,6 +2668,7 @@ async function login() {
 
         return;
     }
+
 
     message.className =
         "message hidden";
@@ -2435,6 +2704,7 @@ async function register() {
         document
             .getElementById("registerMessage");
 
+
     if (!email || !password) {
 
         showAuthMessage(
@@ -2444,6 +2714,7 @@ async function register() {
 
         return;
     }
+
 
     if (password.length < 6) {
 
@@ -2455,13 +2726,16 @@ async function register() {
         return;
     }
 
+
     const button =
         document
             .getElementById("registerButton");
 
     button.disabled = true;
+
     button.textContent =
         "Membuat akun...";
+
 
     const {
         data,
@@ -2474,9 +2748,12 @@ async function register() {
                 password
             });
 
+
     button.disabled = false;
+
     button.textContent =
         "Buat Akun";
+
 
     if (error) {
 
@@ -2487,6 +2764,7 @@ async function register() {
 
         return;
     }
+
 
     if (!data.session) {
 
@@ -2623,6 +2901,9 @@ async function showNotesPage() {
 
 async function showStoragePage() {
 
+    if (!currentUser)
+        return;
+
     authPage.classList.add(
         "hidden"
     );
@@ -2667,6 +2948,7 @@ async function loadFiles() {
         </div>
     `;
 
+
     try {
 
         const {
@@ -2680,6 +2962,7 @@ async function loadFiles() {
                     currentUser.id,
                     {
                         limit: 1000,
+
                         sortBy: {
                             column: "created_at",
                             order: "desc"
@@ -2687,8 +2970,10 @@ async function loadFiles() {
                     }
                 );
 
+
         if (error)
             throw error;
+
 
         allFiles =
             (data || [])
@@ -2697,12 +2982,15 @@ async function loadFiles() {
                         file.name
                 );
 
+
         fileCount.textContent =
             `${allFiles.length} file`;
+
 
         renderFiles(
             allFiles
         );
+
 
     } catch (error) {
 
@@ -2726,6 +3014,7 @@ async function loadFiles() {
             </div>
         `;
 
+
     } finally {
 
         loadingFiles = false;
@@ -2745,6 +3034,7 @@ function renderFiles(files) {
     fileGrid.innerHTML = "";
 
     cardMap.clear();
+
 
     if (!files.length) {
 
@@ -2769,10 +3059,12 @@ function renderFiles(files) {
         return;
     }
 
+
     const fragment =
         document.createDocumentFragment();
 
     const imageCards = [];
+
 
     files.forEach(
         file => {
@@ -2788,28 +3080,34 @@ function renderFiles(files) {
             card.dataset.fileName =
                 file.name;
 
+
             cardMap.set(
                 file.name,
                 card
             );
+
 
             const name =
                 escapeHtml(
                     file.name
                 );
 
+
             const size =
                 formatSize(
                     file.metadata?.size
                 );
+
 
             const date =
                 formatDate(
                     file.created_at
                 );
 
+
             const image =
                 isImage(file);
+
 
             card.innerHTML = `
 
@@ -2823,6 +3121,7 @@ function renderFiles(files) {
                     </div>
 
                 </div>
+
 
                 <div class="file-info">
 
@@ -2839,31 +3138,38 @@ function renderFiles(files) {
 
                 </div>
 
+
                 <div class="file-actions">
 
                     <button
                         class="action download"
                         data-download
+                        type="button"
                     >
                         Download
                     </button>
 
+
                     <button
                         class="action rename"
                         data-rename
+                        type="button"
                     >
                         Rename
                     </button>
 
+
                     <button
                         class="action delete"
                         data-delete
+                        type="button"
                     >
                         Hapus
                     </button>
 
                 </div>
             `;
+
 
             card
                 .querySelector(
@@ -2875,6 +3181,7 @@ function renderFiles(files) {
                         file.name
                     );
 
+
             card
                 .querySelector(
                     "[data-rename]"
@@ -2884,6 +3191,7 @@ function renderFiles(files) {
                     renameFile(
                         file.name
                     );
+
 
             card
                 .querySelector(
@@ -2895,9 +3203,11 @@ function renderFiles(files) {
                         file.name
                     );
 
+
             fragment.appendChild(
                 card
             );
+
 
             if (image) {
 
@@ -2911,9 +3221,11 @@ function renderFiles(files) {
         }
     );
 
+
     fileGrid.appendChild(
         fragment
     );
+
 
     setupThumbnailObserver(
         imageCards
@@ -2932,7 +3244,9 @@ function setupThumbnailObserver(
     if (!imageCards.length)
         return;
 
+
     thumbnailQueue = [];
+
 
     const imageMap =
         new Map(
@@ -2943,6 +3257,7 @@ function setupThumbnailObserver(
                 ]
             )
         );
+
 
     thumbnailObserver =
         new IntersectionObserver(
@@ -2956,19 +3271,23 @@ function setupThumbnailObserver(
                         )
                             return;
 
+
                         const fileName =
                             entry
                                 .target
                                 .dataset
                                 .fileName;
 
+
                         const item =
                             imageMap.get(
                                 fileName
                             );
 
+
                         if (!item)
                             return;
+
 
                         if (
                             item.card.dataset
@@ -2977,13 +3296,16 @@ function setupThumbnailObserver(
                         )
                             return;
 
+
                         item.card.dataset
                             .thumbnailQueued =
                             "1";
 
+
                         thumbnailQueue.push(
                             item
                         );
+
 
                         thumbnailObserver
                             .unobserve(
@@ -2993,16 +3315,20 @@ function setupThumbnailObserver(
                     }
                 );
 
+
                 processThumbnailQueue();
 
             },
             {
                 root: null,
+
                 rootMargin:
                     "400px 0px",
+
                 threshold: 0
             }
         );
+
 
     imageCards.forEach(
         item => {
@@ -3024,6 +3350,7 @@ function setupThumbnailObserver(
                 return;
             }
 
+
             thumbnailObserver.observe(
                 item.card
             );
@@ -3043,6 +3370,7 @@ async function getThumbnailUrl(
 
     const filePath =
         `${currentUser.id}/${file.name}`;
+
 
     const {
         data,
@@ -3071,6 +3399,7 @@ async function getThumbnailUrl(
                 }
             );
 
+
     if (
         !error &&
         data?.signedUrl
@@ -3080,11 +3409,13 @@ async function getThumbnailUrl(
 
     }
 
+
     console.warn(
         "Image transformation gagal untuk:",
         file.name,
         error
     );
+
 
     const fallback =
         await supabaseClient
@@ -3094,6 +3425,7 @@ async function getThumbnailUrl(
                 filePath,
                 THUMB_EXPIRES
             );
+
 
     if (
         fallback.error ||
@@ -3108,6 +3440,7 @@ async function getThumbnailUrl(
         );
 
     }
+
 
     return fallback.data.signedUrl;
 }
@@ -3125,13 +3458,16 @@ async function processThumbnailQueue() {
     if (!thumbnailQueue.length)
         return;
 
+
     thumbnailLoading = true;
+
 
     const batch =
         thumbnailQueue.splice(
             0,
             6
         );
+
 
     try {
 
@@ -3144,6 +3480,7 @@ async function processThumbnailQueue() {
                         !item?.card
                     )
                         return;
+
 
                     if (
                         thumbnailCache.has(
@@ -3162,6 +3499,7 @@ async function processThumbnailQueue() {
                         return;
                     }
 
+
                     try {
 
                         const url =
@@ -3169,19 +3507,23 @@ async function processThumbnailQueue() {
                                 item.file
                             );
 
+
                         if (!url)
                             return;
+
 
                         thumbnailCache.set(
                             item.file.name,
                             url
                         );
 
+
                         applyThumbnail(
                             item.file,
                             item.card,
                             url
                         );
+
 
                     } catch (error) {
 
@@ -3197,9 +3539,11 @@ async function processThumbnailQueue() {
             )
         );
 
+
     } finally {
 
         thumbnailLoading = false;
+
 
         if (
             thumbnailQueue.length
@@ -3229,23 +3573,28 @@ function applyThumbnail(
     if (!card?.isConnected)
         return;
 
+
     const preview =
         card.querySelector(
             "[data-preview]"
         );
 
+
     if (!preview)
         return;
+
 
     if (
         preview.querySelector("img")
     )
         return;
 
+
     const img =
         document.createElement(
             "img"
         );
+
 
     img.loading =
         "lazy";
@@ -3262,11 +3611,13 @@ function applyThumbnail(
     img.src =
         url;
 
+
     img.onload =
         () => {
 
             if (!card.isConnected)
                 return;
+
 
             preview.innerHTML = "";
 
@@ -3280,6 +3631,7 @@ function applyThumbnail(
 
         };
 
+
     img.onerror =
         () => {
 
@@ -3289,6 +3641,7 @@ function applyThumbnail(
             );
 
         };
+
 
     preview.appendChild(
         img
@@ -3310,6 +3663,7 @@ function destroyThumbnailObserver() {
             null;
     }
 
+
     thumbnailQueue = [];
 
     thumbnailLoading = false;
@@ -3329,9 +3683,11 @@ fileInput.addEventListener(
                 event.target.files || []
             );
 
+
         await uploadFiles(
             files
         );
+
 
         fileInput.value = "";
 
@@ -3398,6 +3754,7 @@ uploadZone.addEventListener(
                 event.dataTransfer.files || []
             );
 
+
         await uploadFiles(
             files
         );
@@ -3415,6 +3772,7 @@ async function uploadFiles(files) {
     if (!currentUser)
         return;
 
+
     if (uploadRunning) {
 
         showToast(
@@ -3425,8 +3783,10 @@ async function uploadFiles(files) {
         return;
     }
 
+
     if (!files.length)
         return;
+
 
     if (
         files.length >
@@ -3441,12 +3801,14 @@ async function uploadFiles(files) {
         return;
     }
 
+
     const validFiles =
         files.filter(
             file =>
                 file.size <=
                 MAX_FILE_SIZE
         );
+
 
     if (
         validFiles.length !==
@@ -3460,17 +3822,23 @@ async function uploadFiles(files) {
 
     }
 
+
     if (!validFiles.length)
         return;
+
 
     uploadRunning = true;
 
     uploadZone.style.pointerEvents =
         "none";
 
+
     let completed = 0;
+
     let failed = 0;
+
     let cursor = 0;
+
 
     uploadStatus.textContent =
         `Mempersiapkan ${validFiles.length} file...`;
@@ -3483,19 +3851,23 @@ async function uploadFiles(files) {
             const index =
                 cursor++;
 
+
             if (
                 index >=
                 validFiles.length
             )
                 break;
 
+
             const file =
                 validFiles[index];
+
 
             try {
 
                 uploadStatus.textContent =
                     `Mengupload ${completed + failed + 1}/${validFiles.length}...`;
+
 
                 const safeName =
                     file.name
@@ -3508,16 +3880,20 @@ async function uploadFiles(files) {
                             "_"
                         );
 
+
                 const random =
                     Math.random()
                         .toString(36)
                         .slice(2, 8);
 
+
                 const fileName =
                     `${Date.now()}_${random}_${safeName}`;
 
+
                 const filePath =
                     `${currentUser.id}/${fileName}`;
+
 
                 const {
                     error
@@ -3537,14 +3913,18 @@ async function uploadFiles(files) {
                             }
                         );
 
+
                 if (error)
                     throw error;
 
+
                 completed++;
+
 
             } catch (error) {
 
                 failed++;
+
 
                 console.error(
                     "Upload error:",
@@ -3564,6 +3944,7 @@ async function uploadFiles(files) {
             validFiles.length
         );
 
+
     await Promise.all(
         Array.from(
             {
@@ -3574,10 +3955,12 @@ async function uploadFiles(files) {
         )
     );
 
+
     uploadRunning = false;
 
     uploadZone.style.pointerEvents =
         "";
+
 
     if (failed) {
 
@@ -3595,7 +3978,9 @@ async function uploadFiles(files) {
 
     }
 
+
     uploadStatus.textContent = "";
+
 
     await loadFiles();
 }
@@ -3612,10 +3997,12 @@ async function downloadFile(
     if (!currentUser)
         return;
 
+
     try {
 
         const filePath =
             `${currentUser.id}/${fileName}`;
+
 
         const {
             data,
@@ -3629,8 +4016,10 @@ async function downloadFile(
                     3600
                 );
 
+
         if (error)
             throw error;
+
 
         if (
             !data?.signedUrl
@@ -3639,14 +4028,17 @@ async function downloadFile(
                 "URL download tidak tersedia."
             );
 
+
         window.open(
             data.signedUrl,
             "_blank"
         );
 
+
     } catch (error) {
 
         console.error(error);
+
 
         showToast(
             `Download gagal: ${error.message}`,
@@ -3668,17 +4060,21 @@ async function renameFile(
     if (!currentUser)
         return;
 
+
     const input =
         prompt(
             "Nama file baru:",
             oldName
         );
 
+
     if (input === null)
         return;
 
+
     const newName =
         input.trim();
+
 
     if (!newName) {
 
@@ -3690,8 +4086,10 @@ async function renameFile(
         return;
     }
 
+
     if (newName === oldName)
         return;
+
 
     const safeName =
         newName
@@ -3704,6 +4102,7 @@ async function renameFile(
                 "_"
             );
 
+
     if (!safeName) {
 
         showToast(
@@ -3714,20 +4113,25 @@ async function renameFile(
         return;
     }
 
+
     if (safeName === oldName)
         return;
+
 
     const oldPath =
         `${currentUser.id}/${oldName}`;
 
+
     const newPath =
         `${currentUser.id}/${safeName}`;
+
 
     try {
 
         showToast(
             "Mengganti nama file..."
         );
+
 
         const {
             error
@@ -3740,19 +4144,24 @@ async function renameFile(
                     newPath
                 );
 
+
         if (error)
             throw error;
+
 
         thumbnailCache.delete(
             oldName
         );
+
 
         showToast(
             "Nama file berhasil diubah.",
             "success"
         );
 
+
         await loadFiles();
+
 
     } catch (error) {
 
@@ -3760,6 +4169,7 @@ async function renameFile(
             "Rename error:",
             error
         );
+
 
         showToast(
             `Rename gagal: ${error.message}`,
@@ -3781,18 +4191,22 @@ async function deleteFile(
     if (!currentUser)
         return;
 
+
     const confirmed =
         confirm(
             `Hapus "${fileName}"?`
         );
 
+
     if (!confirmed)
         return;
+
 
     try {
 
         const filePath =
             `${currentUser.id}/${fileName}`;
+
 
         const {
             error
@@ -3804,23 +4218,29 @@ async function deleteFile(
                     filePath
                 ]);
 
+
         if (error)
             throw error;
+
 
         thumbnailCache.delete(
             fileName
         );
+
 
         showToast(
             "File berhasil dihapus.",
             "success"
         );
 
+
         await loadFiles();
+
 
     } catch (error) {
 
         console.error(error);
+
 
         showToast(
             `Hapus gagal: ${error.message}`,
@@ -3837,6 +4257,7 @@ async function deleteFile(
 
 let searchTimer = null;
 
+
 searchInput.addEventListener(
     "input",
     () => {
@@ -3844,6 +4265,7 @@ searchInput.addEventListener(
         clearTimeout(
             searchTimer
         );
+
 
         searchTimer =
             setTimeout(
@@ -3854,6 +4276,7 @@ searchInput.addEventListener(
                             .trim()
                             .toLowerCase();
 
+
                     if (!keyword) {
 
                         renderFiles(
@@ -3862,6 +4285,7 @@ searchInput.addEventListener(
 
                         return;
                     }
+
 
                     const filtered =
                         allFiles.filter(
@@ -3872,6 +4296,7 @@ searchInput.addEventListener(
                                         keyword
                                     )
                         );
+
 
                     renderFiles(
                         filtered
@@ -3898,9 +4323,7 @@ document
 
 
 /* =========================================================
-   =========================================================
    NOTES SYSTEM
-   =========================================================
 ========================================================= */
 
 
@@ -3913,10 +4336,13 @@ async function loadNotes() {
     if (!currentUser)
         return;
 
+
     if (loadingNotes)
         return;
 
+
     loadingNotes = true;
+
 
     notesGrid.innerHTML = `
         <div class="loading">
@@ -3924,6 +4350,7 @@ async function loadNotes() {
             Memuat catatan...
         </div>
     `;
+
 
     try {
 
@@ -3947,17 +4374,22 @@ async function loadNotes() {
                     }
                 );
 
+
         if (error)
             throw error;
+
 
         allNotes =
             data || [];
 
+
         updateNotesCount();
+
 
         renderNotes(
             allNotes
         );
+
 
     } catch (error) {
 
@@ -3965,6 +4397,7 @@ async function loadNotes() {
             "Load notes error:",
             error
         );
+
 
         notesGrid.innerHTML = `
             <div class="empty">
@@ -3984,6 +4417,7 @@ async function loadNotes() {
             </div>
         `;
 
+
     } finally {
 
         loadingNotes = false;
@@ -4001,8 +4435,9 @@ function updateNotesCount() {
     const count =
         allNotes.length;
 
+
     notesCount.textContent =
-        `${count} ${count === 1 ? "catatan" : "catatan"}`;
+        `${count} catatan`;
 }
 
 
@@ -4013,6 +4448,7 @@ function updateNotesCount() {
 function renderNotes(notes) {
 
     notesGrid.innerHTML = "";
+
 
     if (!notes.length) {
 
@@ -4038,8 +4474,10 @@ function renderNotes(notes) {
         return;
     }
 
+
     const fragment =
         document.createDocumentFragment();
+
 
     notes.forEach(
         note => {
@@ -4049,28 +4487,34 @@ function renderNotes(notes) {
                     "article"
                 );
 
+
             card.className =
                 "note-card";
+
 
             const title =
                 note.title?.trim()
                     ||
                 "Tanpa judul";
 
+
             const content =
                 note.content?.trim()
                     ||
                 "Tidak ada isi catatan.";
+
 
             const safeTitle =
                 escapeHtml(
                     title
                 );
 
+
             const safeContent =
                 escapeHtml(
                     content
                 );
+
 
             card.innerHTML = `
 
@@ -4081,6 +4525,7 @@ function renderNotes(notes) {
                     ${safeTitle}
                 </div>
 
+
                 <div class="note-card-date">
                     Diubah ${escapeHtml(
                         formatDateTime(
@@ -4089,28 +4534,34 @@ function renderNotes(notes) {
                     )}
                 </div>
 
+
                 <div class="note-card-content">
                     ${safeContent}
                 </div>
+
 
                 <div class="note-actions">
 
                     <button
                         class="note-action edit"
                         data-edit-note
+                        type="button"
                     >
                         Edit
                     </button>
 
+
                     <button
                         class="note-action delete"
                         data-delete-note
+                        type="button"
                     >
                         Hapus
                     </button>
 
                 </div>
             `;
+
 
             card
                 .querySelector(
@@ -4122,6 +4573,7 @@ function renderNotes(notes) {
                         note
                     );
 
+
             card
                 .querySelector(
                     "[data-delete-note]"
@@ -4132,12 +4584,14 @@ function renderNotes(notes) {
                         note.id
                     );
 
+
             fragment.appendChild(
                 card
             );
 
         }
     );
+
 
     notesGrid.appendChild(
         fragment
@@ -4151,31 +4605,36 @@ function renderNotes(notes) {
 
 addNoteButton.addEventListener(
     "click",
-    () => {
-
-        openAddNote();
-
-    }
+    openAddNote
 );
 
 
 function openAddNote() {
 
+    if (!currentUser)
+        return;
+
+
     editingNoteId = null;
+
 
     noteModalTitle.textContent =
         "Tambah Catatan";
+
 
     noteTitleInput.value = "";
 
     noteContentInput.value = "";
 
+
     saveNoteButton.textContent =
         "Simpan";
+
 
     noteModalOverlay.classList.remove(
         "hidden"
     );
+
 
     setTimeout(
         () => {
@@ -4192,24 +4651,34 @@ function openAddNote() {
 
 function openEditNote(note) {
 
+    if (!currentUser)
+        return;
+
+
     editingNoteId =
         note.id;
+
 
     noteModalTitle.textContent =
         "Edit Catatan";
 
+
     noteTitleInput.value =
         note.title || "";
+
 
     noteContentInput.value =
         note.content || "";
 
+
     saveNoteButton.textContent =
         "Simpan Perubahan";
+
 
     noteModalOverlay.classList.remove(
         "hidden"
     );
+
 
     setTimeout(
         () => {
@@ -4228,13 +4697,22 @@ function closeNoteModalWindow() {
 
     editingNoteId = null;
 
-    noteModalOverlay.classList.add(
-        "hidden"
-    );
 
-    noteTitleInput.value = "";
+    if (noteModalOverlay) {
 
-    noteContentInput.value = "";
+        noteModalOverlay.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    if (noteTitleInput)
+        noteTitleInput.value = "";
+
+
+    if (noteContentInput)
+        noteContentInput.value = "";
 }
 
 
@@ -4250,9 +4728,9 @@ cancelNoteButton.addEventListener(
 );
 
 
-/*
-   Klik area gelap untuk menutup modal.
-*/
+/* =========================================================
+   CLICK OUTSIDE MODAL
+========================================================= */
 
 noteModalOverlay.addEventListener(
     "click",
@@ -4271,9 +4749,9 @@ noteModalOverlay.addEventListener(
 );
 
 
-/*
-   Escape untuk menutup modal.
-*/
+/* =========================================================
+   ESCAPE MODAL
+========================================================= */
 
 document.addEventListener(
     "keydown",
@@ -4309,13 +4787,16 @@ async function saveNote() {
     if (!currentUser)
         return;
 
+
     const title =
         noteTitleInput.value
             .trim();
 
+
     const content =
         noteContentInput.value
             .trim();
+
 
     if (!title && !content) {
 
@@ -4327,24 +4808,26 @@ async function saveNote() {
         return;
     }
 
+
     const originalText =
         saveNoteButton.textContent;
 
+
     saveNoteButton.disabled =
         true;
+
 
     saveNoteButton.textContent =
         editingNoteId
             ? "Menyimpan..."
             : "Membuat...";
 
+
     try {
 
         if (editingNoteId) {
 
-            /*
-               UPDATE NOTE
-            */
+            /* UPDATE */
 
             const {
                 error
@@ -4371,22 +4854,20 @@ async function saveNote() {
                         currentUser.id
                     );
 
+
             if (error)
                 throw error;
+
 
             showToast(
                 "Catatan berhasil diperbarui.",
                 "success"
             );
 
+
         } else {
 
-            /*
-               INSERT NOTE
-
-               user_id diisi dengan ID
-               akun yang sedang login.
-            */
+            /* INSERT */
 
             const {
                 error
@@ -4404,8 +4885,10 @@ async function saveNote() {
                             content
                     });
 
+
             if (error)
                 throw error;
+
 
             showToast(
                 "Catatan berhasil dibuat.",
@@ -4414,9 +4897,12 @@ async function saveNote() {
 
         }
 
+
         closeNoteModalWindow();
 
+
         await loadNotes();
+
 
     } catch (error) {
 
@@ -4425,15 +4911,18 @@ async function saveNote() {
             error
         );
 
+
         showToast(
             `Gagal menyimpan catatan: ${error.message}`,
             "error"
         );
 
+
     } finally {
 
         saveNoteButton.disabled =
             false;
+
 
         saveNoteButton.textContent =
             originalText;
@@ -4453,24 +4942,29 @@ async function deleteNote(
     if (!currentUser)
         return;
 
+
     const note =
         allNotes.find(
             item =>
                 item.id === noteId
         );
 
+
     const title =
         note?.title?.trim()
             ||
         "catatan ini";
+
 
     const confirmed =
         confirm(
             `Hapus "${title}"?`
         );
 
+
     if (!confirmed)
         return;
+
 
     try {
 
@@ -4489,15 +4983,19 @@ async function deleteNote(
                     currentUser.id
                 );
 
+
         if (error)
             throw error;
+
 
         showToast(
             "Catatan berhasil dihapus.",
             "success"
         );
 
+
         await loadNotes();
+
 
     } catch (error) {
 
@@ -4505,6 +5003,7 @@ async function deleteNote(
             "Delete note error:",
             error
         );
+
 
         showToast(
             `Gagal menghapus catatan: ${error.message}`,
@@ -4521,6 +5020,7 @@ async function deleteNote(
 
 let noteSearchTimer = null;
 
+
 noteSearchInput.addEventListener(
     "input",
     () => {
@@ -4528,6 +5028,7 @@ noteSearchInput.addEventListener(
         clearTimeout(
             noteSearchTimer
         );
+
 
         noteSearchTimer =
             setTimeout(
@@ -4538,6 +5039,7 @@ noteSearchInput.addEventListener(
                             .trim()
                             .toLowerCase();
 
+
                     if (!keyword) {
 
                         renderNotes(
@@ -4546,6 +5048,7 @@ noteSearchInput.addEventListener(
 
                         return;
                     }
+
 
                     const filtered =
                         allNotes.filter(
@@ -4558,12 +5061,14 @@ noteSearchInput.addEventListener(
                                     )
                                     .toLowerCase();
 
+
                                 const content =
                                     (
                                         note.content ||
                                         ""
                                     )
                                     .toLowerCase();
+
 
                                 return (
                                     title.includes(
@@ -4576,6 +5081,7 @@ noteSearchInput.addEventListener(
 
                             }
                         );
+
 
                     renderNotes(
                         filtered
@@ -4600,7 +5106,7 @@ refreshNotesButton.addEventListener(
 
 
 /* =========================================================
-   ENTER / CTRL+ENTER NOTE
+   NOTE TITLE ENTER
 ========================================================= */
 
 noteTitleInput.addEventListener(
@@ -4632,8 +5138,7 @@ document
         event => {
 
             if (
-                event.key ===
-                "Enter"
+                event.key === "Enter"
             ) {
 
                 login();
@@ -4646,6 +5151,7 @@ document
 
 /* =========================================================
    AUTH STATE
+   FIXED
 ========================================================= */
 
 supabaseClient
@@ -4656,50 +5162,62 @@ supabaseClient
             session
         ) => {
 
-            if (
-                session?.user
-            ) {
+            if (session?.user) {
+
+                /*
+                   USER LOGIN
+                */
 
                 currentUser =
                     session.user;
 
-                if (
-                    !authInitialized
-                ) {
 
-                    authInitialized =
-                        true;
+                authInitialized =
+                    true;
 
-                    await showStoragePage();
 
-                }
+                await showStoragePage();
+
 
             } else {
 
+                /*
+                   USER LOGOUT
+                */
+
                 currentUser =
                     null;
+
 
                 allFiles = [];
 
                 allNotes = [];
 
+
                 thumbnailCache.clear();
+
 
                 destroyThumbnailObserver();
 
+
                 cardMap.clear();
+
 
                 notesGrid.innerHTML = "";
 
+
                 closeNoteModalWindow();
+
 
                 storagePage
                     .classList
                     .add("hidden");
 
+
                 authPage
                     .classList
                     .remove("hidden");
+
 
                 authInitialized =
                     true;
@@ -4723,18 +5241,34 @@ async function init() {
             .auth
             .getSession();
 
+
     if (
-        data?.session?.user &&
-        !authInitialized
+        data?.session?.user
     ) {
 
         currentUser =
             data.session.user;
 
+
         authInitialized =
             true;
 
+
         await showStoragePage();
+
+    } else {
+
+        currentUser = null;
+
+        authInitialized = true;
+
+        storagePage
+            .classList
+            .add("hidden");
+
+        authPage
+            .classList
+            .remove("hidden");
 
     }
 
