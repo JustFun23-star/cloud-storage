@@ -8,18 +8,795 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(
+          135deg,
+          #f8fafc 0%,
+          #eef2ff 50%,
+          #f8fafc 100%
+        );
+      color: #1e293b;
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    /* ================================
+       STORAGE PAGE
+    ================================= */
+
+    #storagePage {
+      min-height: 100vh;
+    }
+
+    /* ================================
+       HEADER
+    ================================= */
+
+    .main-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      padding: 16px 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 13px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #4f46e5
+        );
+
+      color: white;
+      font-size: 22px;
+
+      box-shadow:
+        0 8px 20px
+        rgba(37, 99, 235, 0.25);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    .brand-email {
+      margin-top: 3px;
+
+      font-size: 12px;
+      color: #64748b;
+
+      max-width: 400px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .logout-btn {
+      border: none;
+      cursor: pointer;
+
+      padding: 10px 15px;
+
+      border-radius: 10px;
+
+      background: #fee2e2;
+      color: #dc2626;
+
+      font-weight: 700;
+      font-size: 13px;
+
+      transition: 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #fecaca;
+      transform: translateY(-1px);
+    }
+
+    /* ================================
+       MAIN
+    ================================= */
+
+    .main-container {
+      max-width: 1100px;
+      margin: auto;
+
+      padding:
+        28px 20px
+        50px;
+    }
+
+    /* ================================
+       UPLOAD CARD
+    ================================= */
+
+    .upload-card {
+      background: rgba(255,255,255,0.94);
+
+      border: 1px solid #e2e8f0;
+
+      border-radius: 20px;
+
+      padding: 22px;
+
+      box-shadow:
+        0 10px 35px
+        rgba(15, 23, 42, 0.06);
+
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+
+      color: #0f172a;
+
+      margin-bottom: 5px;
+    }
+
+    .section-description {
+      font-size: 13px;
+      color: #64748b;
+
+      margin-bottom: 17px;
+    }
+
+    .upload-label {
+      display: block;
+
+      border: 2px dashed #cbd5e1;
+
+      border-radius: 16px;
+
+      padding: 32px 20px;
+
+      text-align: center;
+
+      cursor: pointer;
+
+      background:
+        linear-gradient(
+          180deg,
+          #ffffff,
+          #f8fafc
+        );
+
+      transition:
+        border-color .2s,
+        background .2s,
+        transform .2s;
+    }
+
+    .upload-label:hover {
+      border-color: #3b82f6;
+
+      background: #eff6ff;
+
+      transform: translateY(-1px);
+    }
+
+    .upload-icon {
+      width: 58px;
+      height: 58px;
+
+      margin: auto auto 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 16px;
+
+      background: #dbeafe;
+
+      font-size: 28px;
+    }
+
+    .upload-main-text {
+      font-size: 15px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .upload-sub-text {
+      font-size: 12px;
+      color: #94a3b8;
+
+      margin-top: 5px;
+    }
+
+    /* ================================
+       STATUS
+    ================================= */
+
+    #uploadStatus {
+      border-radius: 12px;
+
+      margin-top: 15px;
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ================================
+       SEARCH
+    ================================= */
+
+    .search-card {
+      background: rgba(255,255,255,0.94);
+
+      border: 1px solid #e2e8f0;
+
+      border-radius: 16px;
+
+      padding: 12px;
+
+      margin-bottom: 22px;
+
+      box-shadow:
+        0 6px 25px
+        rgba(15, 23, 42, 0.04);
+    }
+
+    .search-wrapper {
+      display: flex;
+      gap: 9px;
+    }
+
+    .search-input {
+      flex: 1;
+
+      min-width: 0;
+
+      border: 1px solid #e2e8f0;
+
+      background: #f8fafc;
+
+      border-radius: 11px;
+
+      padding: 12px 14px;
+
+      outline: none;
+
+      font-size: 14px;
+
+      transition: .2s;
+    }
+
+    .search-input:focus {
+      border-color: #60a5fa;
+
+      background: white;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(59,130,246,.1);
+    }
+
+    .refresh-btn {
+      width: 46px;
+
+      border: none;
+
+      border-radius: 11px;
+
+      cursor: pointer;
+
+      background: #0f172a;
+
+      color: white;
+
+      font-size: 20px;
+
+      transition: .2s;
+    }
+
+    .refresh-btn:hover {
+      background: #1e293b;
+
+      transform: rotate(20deg);
+    }
+
+    /* ================================
+       FILE HEADER
+    ================================= */
+
+    .files-header {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 12px;
+
+      padding: 0 3px;
+    }
+
+    .files-title {
+      font-size: 17px;
+      font-weight: 800;
+
+      color: #0f172a;
+    }
+
+    .files-count {
+      font-size: 12px;
+
+      color: #64748b;
+
+      background: #e2e8f0;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+    }
+
+    /* ================================
+       FILE LIST
+    ================================= */
+
+    #fileList {
+      display: flex;
+      flex-direction: column;
+
+      gap: 10px;
+    }
+
+    .file-card {
+      width: 100%;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 15px;
+
+      padding: 13px;
+
+      background: rgba(255,255,255,.96);
+
+      border: 1px solid #e2e8f0;
+
+      border-radius: 16px;
+
+      box-shadow:
+        0 5px 20px
+        rgba(15,23,42,.04);
+
+      transition:
+        transform .2s,
+        box-shadow .2s,
+        border-color .2s;
+    }
+
+    .file-card:hover {
+      transform: translateY(-2px);
+
+      border-color: #bfdbfe;
+
+      box-shadow:
+        0 10px 28px
+        rgba(15,23,42,.08);
+    }
+
+    /* ================================
+       THUMBNAIL
+    ================================= */
+
+    .file-thumbnail {
+      width: 120px;
+      height: 90px;
+
+      flex: 0 0 120px;
+
+      border-radius: 12px;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          #eff6ff,
+          #e0e7ff
+        );
+
+      border: 1px solid #dbeafe;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: relative;
+    }
+
+    .file-thumbnail img {
+      width: 100%;
+      height: 100%;
+
+      display: block;
+
+      object-fit: cover;
+
+      opacity: 0;
+
+      transition:
+        opacity .25s;
+    }
+
+    .file-thumbnail img.loaded {
+      opacity: 1;
+    }
+
+    .file-icon {
+      font-size: 35px;
+
+      user-select: none;
+    }
+
+    /* ================================
+       FILE INFORMATION
+    ================================= */
+
+    .file-info {
+      flex: 1;
+
+      min-width: 0;
+    }
+
+    .file-name {
+      color: #0f172a;
+
+      font-size: 14px;
+
+      font-weight: 750;
+
+      line-height: 1.4;
+
+      word-break: break-word;
+
+      margin-bottom: 5px;
+    }
+
+    .file-meta {
+      color: #94a3b8;
+
+      font-size: 11px;
+
+      line-height: 1.5;
+    }
+
+    /* ================================
+       ACTION BUTTONS
+    ================================= */
+
+    .file-actions {
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: flex-end;
+
+      gap: 7px;
+
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      border: none;
+
+      cursor: pointer;
+
+      padding: 9px 11px;
+
+      border-radius: 9px;
+
+      font-size: 12px;
+
+      font-weight: 750;
+
+      white-space: nowrap;
+
+      transition:
+        transform .15s,
+        opacity .15s;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+
+      opacity: .9;
+    }
+
+    .rename-btn {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .download-btn {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .delete-btn {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    /* ================================
+       EMPTY STATE
+    ================================= */
+
+    .empty-state {
+      background: white;
+
+      border: 1px solid #e2e8f0;
+
+      border-radius: 18px;
+
+      padding: 45px 20px;
+
+      text-align: center;
+
+      box-shadow:
+        0 5px 20px
+        rgba(15,23,42,.04);
+    }
+
+    .empty-icon {
+      font-size: 45px;
+
+      margin-bottom: 8px;
+    }
+
+    .empty-title {
+      font-size: 15px;
+
+      font-weight: 800;
+
+      color: #334155;
+    }
+
+    .empty-text {
+      font-size: 12px;
+
+      color: #94a3b8;
+
+      margin-top: 5px;
+    }
+
+    /* ================================
+       LOADING
+    ================================= */
+
+    .loading-card {
+      background: white;
+
+      border: 1px solid #e2e8f0;
+
+      border-radius: 16px;
+
+      padding: 25px;
+
+      text-align: center;
+
+      color: #94a3b8;
+
+      font-size: 13px;
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+
+      margin: 0 auto 9px;
+
+      border: 3px solid #dbeafe;
+
+      border-top-color: #2563eb;
+
+      border-radius: 50%;
+
+      animation:
+        spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ================================
+       MOBILE
+    ================================= */
+
+    @media (max-width: 700px) {
+
+      .main-container {
+        padding:
+          20px 12px
+          35px;
+      }
+
+      .header-inner {
+        padding:
+          12px;
+      }
+
+      .brand-icon {
+        width: 39px;
+        height: 39px;
+
+        font-size: 19px;
+      }
+
+      .brand-title {
+        font-size: 15px;
+      }
+
+      .brand-email {
+        max-width: 180px;
+      }
+
+      .logout-btn {
+        padding: 8px 10px;
+      }
+
+      .upload-card {
+        padding: 16px;
+      }
+
+      .upload-label {
+        padding: 25px 15px;
+      }
+
+      .file-card {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+
+        gap: 12px;
+      }
+
+      .file-thumbnail {
+        width: 90px;
+        height: 72px;
+
+        flex-basis: 90px;
+      }
+
+      .file-info {
+        padding-top: 2px;
+      }
+
+      .file-actions {
+        width: 100%;
+
+        padding-left: 102px;
+
+        justify-content: flex-start;
+      }
+
+      .action-btn {
+        flex: 0 0 auto;
+
+        padding: 8px 10px;
+      }
+
+    }
+
+    /* ================================
+       VERY SMALL SCREEN
+    ================================= */
+
+    @media (max-width: 420px) {
+
+      .brand-email {
+        max-width: 125px;
+      }
+
+      .file-thumbnail {
+        width: 75px;
+        height: 62px;
+
+        flex-basis: 75px;
+      }
+
+      .file-actions {
+        padding-left: 0;
+
+        justify-content: stretch;
+      }
+
+      .file-actions .action-btn {
+        flex: 1;
+      }
+
+      .file-name {
+        font-size: 13px;
+      }
+
+    }
+
+  </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
 
-  <!-- ================= LOGIN / REGISTER ================= -->
+<body>
 
-  <div id="authPage" class="min-h-screen flex items-center justify-center p-4">
+  <!-- =====================================================
+       LOGIN / REGISTER
+  ====================================================== -->
 
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-lg p-7">
+  <div
+    id="authPage"
+    class="min-h-screen flex items-center justify-center p-4"
+  >
+
+    <div
+      class="bg-white w-full max-w-md rounded-2xl shadow-lg p-7"
+    >
 
       <div class="text-center mb-6">
-        <div class="text-5xl mb-3">☁️</div>
+
+        <div class="text-5xl mb-3">
+          ☁️
+        </div>
 
         <h1 class="text-2xl font-bold text-gray-800">
           My Cloud Storage
@@ -28,7 +805,9 @@
         <p class="text-gray-500 mt-1">
           Simpan file kamu dengan aman
         </p>
+
       </div>
+
 
       <!-- LOGIN -->
 
@@ -60,20 +839,27 @@
         </button>
 
         <p class="text-center text-sm text-gray-500 mt-5">
+
           Belum punya akun?
+
           <button
             id="showRegister"
             class="text-blue-600 font-semibold"
           >
             Daftar
           </button>
+
         </p>
 
       </div>
 
+
       <!-- REGISTER -->
 
-      <div id="registerForm" class="hidden">
+      <div
+        id="registerForm"
+        class="hidden"
+      >
 
         <h2 class="text-xl font-semibold mb-4">
           Buat Akun
@@ -101,18 +887,20 @@
         </button>
 
         <p class="text-center text-sm text-gray-500 mt-5">
+
           Sudah punya akun?
+
           <button
             id="showLogin"
             class="text-blue-600 font-semibold"
           >
             Login
           </button>
+
         </p>
 
       </div>
 
-      <!-- AUTH MESSAGE -->
 
       <div
         id="authMessage"
@@ -120,40 +908,53 @@
       ></div>
 
     </div>
+
   </div>
 
 
-  <!-- ================= STORAGE PAGE ================= -->
+  <!-- =====================================================
+       STORAGE
+  ====================================================== -->
 
-  <div id="storagePage" class="hidden min-h-screen">
+  <div
+    id="storagePage"
+    class="hidden"
+  >
 
     <!-- HEADER -->
 
-    <header class="bg-white shadow-sm">
+    <header class="main-header">
 
-      <div class="max-w-5xl mx-auto px-4 py-4">
+      <div class="header-inner">
 
-        <div class="flex items-center justify-between gap-3">
+        <div class="brand">
 
-          <div>
-            <h1 class="text-xl md:text-2xl font-bold text-gray-800">
-              ☁️ My Cloud Storage
-            </h1>
-
-            <p
-              id="userEmail"
-              class="text-sm text-gray-500 break-all"
-            ></p>
+          <div class="brand-icon">
+            ☁️
           </div>
 
-          <button
-            id="logoutButton"
-            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold"
-          >
-            Logout
-          </button>
+          <div>
+
+            <div class="brand-title">
+              My Cloud Storage
+            </div>
+
+            <div
+              id="userEmail"
+              class="brand-email"
+            ></div>
+
+          </div>
 
         </div>
+
+
+        <button
+          id="logoutButton"
+          class="logout-btn"
+        >
+          Logout
+        </button>
 
       </div>
 
@@ -162,37 +963,45 @@
 
     <!-- MAIN -->
 
-    <main class="max-w-5xl mx-auto px-4 py-6">
+    <main class="main-container">
 
-      <!-- UPLOAD AREA -->
 
-      <div class="bg-white rounded-2xl shadow-sm p-5 mb-6">
+      <!-- =================================================
+           UPLOAD
+      ================================================== -->
 
-        <h2 class="text-lg font-bold text-gray-800 mb-2">
+      <section class="upload-card">
+
+        <div class="section-title">
           Upload File
-        </h2>
+        </div>
 
-        <p class="text-sm text-gray-500 mb-4">
-          Maksimal <b>10 file sekaligus</b> • Maksimal ukuran
-          satu file <b>100 MB</b>
-        </p>
+        <div class="section-description">
+          Maksimal
+          <b>10 file sekaligus</b>
+          • maksimal
+          <b>100 MB per file</b>
+        </div>
+
 
         <label
+          id="uploadLabel"
           for="fileInput"
-          class="block border-2 border-dashed border-gray-300 hover:border-blue-500 rounded-xl p-8 text-center cursor-pointer transition"
+          class="upload-label"
         >
 
-          <div class="text-4xl mb-2">
+          <div class="upload-icon">
             📤
           </div>
 
-          <div class="font-semibold text-gray-700">
+          <div class="upload-main-text">
             Klik untuk memilih banyak file
           </div>
 
-          <div class="text-sm text-gray-400 mt-1">
+          <div class="upload-sub-text">
             atau drag & drop maksimal 10 file di sini
           </div>
+
 
           <input
             id="fileInput"
@@ -203,85 +1012,88 @@
 
         </label>
 
-        <!-- UPLOAD STATUS -->
 
         <div
           id="uploadStatus"
-          class="hidden mt-4 p-3 rounded-lg text-sm"
+          class="hidden p-3"
         ></div>
 
-      </div>
+      </section>
 
 
-      <!-- SEARCH -->
+      <!-- =================================================
+           SEARCH
+      ================================================== -->
 
-      <div class="bg-white rounded-2xl shadow-sm p-4 mb-5">
+      <section class="search-card">
 
-        <div class="flex gap-2">
+        <div class="search-wrapper">
 
           <input
             id="searchInput"
             type="text"
             placeholder="🔎 Cari file..."
-            class="flex-1 border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="search-input"
           />
 
           <button
             id="refreshButton"
-            class="bg-gray-700 hover:bg-gray-800 text-white px-4 rounded-lg"
+            class="refresh-btn"
+            title="Refresh"
           >
             ↻
           </button>
 
         </div>
 
-      </div>
+      </section>
 
 
-      <!-- FILE INFO -->
+      <!-- =================================================
+           FILE HEADER
+      ================================================== -->
 
-      <div class="flex justify-between items-center mb-3">
+      <div class="files-header">
 
-        <h2 class="text-lg font-bold text-gray-800">
+        <div class="files-title">
           File Saya
-        </h2>
+        </div>
 
-        <span
+        <div
           id="fileCount"
-          class="text-sm text-gray-500"
+          class="files-count"
         >
           0 file
-        </span>
+        </div>
 
       </div>
 
 
-      <!-- FILE LIST -->
+      <!-- =================================================
+           FILE LIST
+      ================================================== -->
 
-      <div
-        id="fileList"
-        class="space-y-3"
-      ></div>
+      <div id="fileList"></div>
 
 
       <!-- EMPTY -->
 
       <div
         id="emptyState"
-        class="hidden bg-white rounded-2xl p-10 text-center"
+        class="empty-state hidden"
       >
 
-        <div class="text-5xl mb-3">
+        <div class="empty-icon">
           📂
         </div>
 
-        <h3 class="font-semibold text-gray-700">
+        <div class="empty-title">
           Belum ada file
-        </h3>
+        </div>
 
-        <p class="text-sm text-gray-400 mt-1">
+        <div class="empty-text">
           Upload file pertama kamu.
-        </p>
+        </div>
 
       </div>
 
@@ -293,7 +1105,7 @@
 <script>
 
   /* =====================================================
-     SUPABASE CONFIG
+     SUPABASE
   ===================================================== */
 
   const SUPABASE_URL =
@@ -304,6 +1116,7 @@
 
   const BUCKET =
     "file-storage";
+
 
   const supabaseClient =
     window.supabase.createClient(
@@ -319,15 +1132,21 @@
   const MAX_FILE_SIZE =
     100 * 1024 * 1024;
 
-  const MAX_FILES_PER_UPLOAD = 10;
+  const MAX_FILES_PER_UPLOAD =
+    10;
 
-  const MAX_CONCURRENT_UPLOADS = 10;
+  const MAX_CONCURRENT_UPLOADS =
+    10;
 
-  let currentUser = null;
 
-  let allFiles = [];
+  let currentUser =
+    null;
 
-  let isUploading = false;
+  let allFiles =
+    [];
+
+  let isUploading =
+    false;
 
 
   /* =====================================================
@@ -335,37 +1154,64 @@
   ===================================================== */
 
   const authPage =
-    document.getElementById("authPage");
+    document.getElementById(
+      "authPage"
+    );
 
   const storagePage =
-    document.getElementById("storagePage");
+    document.getElementById(
+      "storagePage"
+    );
 
   const loginForm =
-    document.getElementById("loginForm");
+    document.getElementById(
+      "loginForm"
+    );
 
   const registerForm =
-    document.getElementById("registerForm");
+    document.getElementById(
+      "registerForm"
+    );
 
   const authMessage =
-    document.getElementById("authMessage");
+    document.getElementById(
+      "authMessage"
+    );
 
   const fileInput =
-    document.getElementById("fileInput");
+    document.getElementById(
+      "fileInput"
+    );
 
   const fileList =
-    document.getElementById("fileList");
+    document.getElementById(
+      "fileList"
+    );
 
   const emptyState =
-    document.getElementById("emptyState");
+    document.getElementById(
+      "emptyState"
+    );
 
   const fileCount =
-    document.getElementById("fileCount");
+    document.getElementById(
+      "fileCount"
+    );
 
   const searchInput =
-    document.getElementById("searchInput");
+    document.getElementById(
+      "searchInput"
+    );
 
   const uploadStatus =
-    document.getElementById("uploadStatus");
+    document.getElementById(
+      "uploadStatus"
+    );
+
+  const uploadLabel =
+    document.getElementById(
+      "uploadLabel"
+    );
 
 
   /* =====================================================
@@ -388,7 +1234,10 @@
       "text-green-700"
     );
 
-    if (type === "success") {
+
+    if (
+      type === "success"
+    ) {
 
       authMessage.classList.add(
         "bg-green-100",
@@ -429,14 +1278,19 @@
       "text-blue-700"
     );
 
-    if (type === "success") {
+
+    if (
+      type === "success"
+    ) {
 
       uploadStatus.classList.add(
         "bg-green-100",
         "text-green-700"
       );
 
-    } else if (type === "loading") {
+    } else if (
+      type === "loading"
+    ) {
 
       uploadStatus.classList.add(
         "bg-blue-100",
@@ -456,11 +1310,13 @@
 
 
   /* =====================================================
-     SWITCH LOGIN / REGISTER
+     LOGIN / REGISTER SWITCH
   ===================================================== */
 
   document
-    .getElementById("showRegister")
+    .getElementById(
+      "showRegister"
+    )
     .addEventListener(
       "click",
       () => {
@@ -482,7 +1338,9 @@
 
 
   document
-    .getElementById("showLogin")
+    .getElementById(
+      "showLogin"
+    )
     .addEventListener(
       "click",
       () => {
@@ -508,7 +1366,9 @@
   ===================================================== */
 
   document
-    .getElementById("registerButton")
+    .getElementById(
+      "registerButton"
+    )
     .addEventListener(
       "click",
       async () => {
@@ -521,6 +1381,7 @@
             .value
             .trim();
 
+
         const password =
           document
             .getElementById(
@@ -528,7 +1389,11 @@
             )
             .value;
 
-        if (!email || !password) {
+
+        if (
+          !email ||
+          !password
+        ) {
 
           showAuthMessage(
             "Email dan password wajib diisi."
@@ -538,7 +1403,10 @@
 
         }
 
-        if (password.length < 6) {
+
+        if (
+          password.length < 6
+        ) {
 
           showAuthMessage(
             "Password minimal 6 karakter."
@@ -548,13 +1416,17 @@
 
         }
 
+
         const {
           error
         } =
-          await supabaseClient.auth.signUp({
-            email,
-            password
-          });
+          await supabaseClient
+            .auth
+            .signUp({
+              email,
+              password
+            });
+
 
         if (error) {
 
@@ -565,6 +1437,7 @@
           return;
 
         }
+
 
         showAuthMessage(
           "Pendaftaran berhasil. Silakan cek email untuk verifikasi.",
@@ -580,7 +1453,9 @@
   ===================================================== */
 
   document
-    .getElementById("loginButton")
+    .getElementById(
+      "loginButton"
+    )
     .addEventListener(
       "click",
       async () => {
@@ -593,6 +1468,7 @@
             .value
             .trim();
 
+
         const password =
           document
             .getElementById(
@@ -600,7 +1476,11 @@
             )
             .value;
 
-        if (!email || !password) {
+
+        if (
+          !email ||
+          !password
+        ) {
 
           showAuthMessage(
             "Email dan password wajib diisi."
@@ -610,13 +1490,17 @@
 
         }
 
+
         const {
           error
         } =
-          await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-          });
+          await supabaseClient
+            .auth
+            .signInWithPassword({
+              email,
+              password
+            });
+
 
         if (error) {
 
@@ -637,7 +1521,9 @@
   ===================================================== */
 
   document
-    .getElementById("logoutButton")
+    .getElementById(
+      "logoutButton"
+    )
     .addEventListener(
       "click",
       async () => {
@@ -663,6 +1549,7 @@
         .auth
         .getSession();
 
+
     if (
       data &&
       data.session &&
@@ -676,7 +1563,8 @@
 
     } else {
 
-      currentUser = null;
+      currentUser =
+        null;
 
       storagePage.classList.add(
         "hidden"
@@ -692,7 +1580,7 @@
 
 
   /* =====================================================
-     SHOW STORAGE PAGE
+     SHOW STORAGE
   ===================================================== */
 
   async function showStoragePage() {
@@ -705,10 +1593,14 @@
       "hidden"
     );
 
+
     document
-      .getElementById("userEmail")
+      .getElementById(
+        "userEmail"
+      )
       .textContent =
         currentUser.email || "";
+
 
     await loadFiles();
 
@@ -719,11 +1611,14 @@
      FORMAT SIZE
   ===================================================== */
 
-  function formatSize(bytes) {
+  function formatSize(
+    bytes
+  ) {
 
     if (!bytes) {
       return "0 B";
     }
+
 
     const units = [
       "B",
@@ -733,11 +1628,13 @@
       "TB"
     ];
 
+
     const index =
       Math.floor(
         Math.log(bytes) /
         Math.log(1024)
       );
+
 
     return (
       parseFloat(
@@ -760,7 +1657,9 @@
      FORMAT DATE
   ===================================================== */
 
-  function formatDate(date) {
+  function formatDate(
+    date
+  ) {
 
     try {
 
@@ -768,8 +1667,11 @@
         .toLocaleString(
           "id-ID",
           {
-            dateStyle: "medium",
-            timeStyle: "short"
+            dateStyle:
+              "medium",
+
+            timeStyle:
+              "short"
           }
         );
 
@@ -786,7 +1688,9 @@
      ESCAPE HTML
   ===================================================== */
 
-  function escapeHtml(value) {
+  function escapeHtml(
+    value
+  ) {
 
     return String(value)
       .replace(
@@ -817,13 +1721,16 @@
      FILE ICON
   ===================================================== */
 
-  function getFileIcon(fileName) {
+  function getFileIcon(
+    fileName
+  ) {
 
     const extension =
       fileName
         .split(".")
         .pop()
         .toLowerCase();
+
 
     const icons = {
 
@@ -867,10 +1774,139 @@
 
     };
 
+
     return (
       icons[extension] ||
       "📄"
     );
+
+  }
+
+
+  /* =====================================================
+     CHECK IMAGE
+  ===================================================== */
+
+  function isImageFile(
+    fileName
+  ) {
+
+    return /\.(jpg|jpeg|png|gif|webp|svg)$/i
+      .test(fileName);
+
+  }
+
+
+  /* =====================================================
+     GET THUMBNAIL
+  ===================================================== */
+
+  async function getThumbnailUrl(
+    fileName
+  ) {
+
+    try {
+
+      const filePath =
+        `${currentUser.id}/${fileName}`;
+
+
+      /*
+        Gunakan signed URL biasa.
+        Browser akan menampilkan thumbnail
+        jika file merupakan gambar.
+      */
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .storage
+          .from(BUCKET)
+          .createSignedUrl(
+            filePath,
+            60 * 60
+          );
+
+
+      if (error) {
+
+        console.error(
+          "Thumbnail error:",
+          error
+        );
+
+        return null;
+
+      }
+
+
+      return data?.signedUrl || null;
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+      return null;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     LOAD THUMBNAIL
+  ===================================================== */
+
+  async function loadThumbnail(
+    imageElement,
+    fileName
+  ) {
+
+    if (
+      !isImageFile(
+        fileName
+      )
+    ) {
+      return;
+    }
+
+
+    const url =
+      await getThumbnailUrl(
+        fileName
+      );
+
+
+    if (!url) {
+      return;
+    }
+
+
+    imageElement.src =
+      url;
+
+
+    imageElement.onload =
+      () => {
+
+        imageElement.classList.add(
+          "loaded"
+        );
+
+      };
+
+
+    imageElement.onerror =
+      () => {
+
+        imageElement.style.display =
+          "none";
+
+      };
 
   }
 
@@ -885,11 +1921,19 @@
       return;
     }
 
+
     fileList.innerHTML = `
-      <div class="bg-white rounded-xl p-6 text-center text-gray-400">
+
+      <div class="loading-card">
+
+        <div class="spinner"></div>
+
         Memuat file...
+
       </div>
+
     `;
+
 
     const {
       data,
@@ -902,28 +1946,45 @@
           currentUser.id,
           {
             limit: 1000,
+
             offset: 0,
+
             sortBy: {
-              column: "created_at",
-              order: "desc"
+              column:
+                "created_at",
+
+              order:
+                "desc"
             }
           }
         );
 
+
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       fileList.innerHTML = `
+
         <div class="bg-red-100 text-red-700 rounded-xl p-4">
+
           Gagal memuat file:
-          ${escapeHtml(error.message)}
+          ${escapeHtml(
+            error.message
+          )}
+
         </div>
+
       `;
+
 
       return;
 
     }
+
 
     allFiles =
       (data || [])
@@ -932,6 +1993,7 @@
             file.name !==
             ".emptyFolderPlaceholder"
         );
+
 
     renderFiles(
       allFiles
@@ -944,9 +2006,13 @@
      RENDER FILES
   ===================================================== */
 
-  function renderFiles(files) {
+  function renderFiles(
+    files
+  ) {
 
-    fileList.innerHTML = "";
+    fileList.innerHTML =
+      "";
+
 
     fileCount.textContent =
       `${files.length} file${
@@ -955,7 +2021,10 @@
           : ""
       }`;
 
-    if (files.length === 0) {
+
+    if (
+      files.length === 0
+    ) {
 
       emptyState.classList.remove(
         "hidden"
@@ -964,6 +2033,7 @@
       return;
 
     }
+
 
     emptyState.classList.add(
       "hidden"
@@ -978,20 +2048,23 @@
             "div"
           );
 
+
         card.className =
-          "bg-white rounded-xl shadow-sm p-4 flex items-center gap-3";
+          "file-card";
 
 
-        const name =
+        const safeName =
           escapeHtml(
             file.name
           );
+
 
         const size =
           formatSize(
             file.metadata?.size ||
             0
           );
+
 
         const created =
           formatDate(
@@ -1000,87 +2073,165 @@
           );
 
 
+        const image =
+          isImageFile(
+            file.name
+          );
+
+
         card.innerHTML = `
 
-          <div class="text-3xl flex-shrink-0">
-            ${getFileIcon(file.name)}
+          <!-- THUMBNAIL -->
+
+          <div class="file-thumbnail">
+
+            ${
+              image
+                ? `
+                  <img
+                    alt="${safeName}"
+                    class="thumbnail-image"
+                  />
+                `
+                : `
+                  <div class="file-icon">
+                    ${getFileIcon(
+                      file.name
+                    )}
+                  </div>
+                `
+            }
+
           </div>
 
-          <div class="flex-1 min-w-0">
+
+          <!-- INFO -->
+
+          <div class="file-info">
 
             <div
-              class="font-semibold text-gray-800 truncate"
-              title="${name}"
+              class="file-name"
+              title="${safeName}"
             >
-              ${name}
+              ${safeName}
             </div>
 
-            <div class="text-xs text-gray-400 mt-1">
-              ${size} • ${created}
+            <div class="file-meta">
+              ${size}
+              •
+              ${created}
             </div>
 
           </div>
 
-          <div class="flex gap-2 flex-shrink-0 flex-wrap justify-end">
+
+          <!-- ACTIONS -->
+
+          <div class="file-actions">
 
             <button
-              class="renameButton bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-sm"
+              class="action-btn rename-btn"
+              type="button"
             >
-              Rename
+              ✏️ Rename
             </button>
 
             <button
-              class="downloadButton bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm"
+              class="action-btn download-btn"
+              type="button"
             >
-              Download
+              ⬇️ Download
             </button>
 
             <button
-              class="deleteButton bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
+              class="action-btn delete-btn"
+              type="button"
             >
-              Hapus
+              🗑️ Hapus
             </button>
 
           </div>
+
         `;
 
 
+        /* =================================================
+           THUMBNAIL
+        ================================================== */
+
+        if (image) {
+
+          const imageElement =
+            card.querySelector(
+              ".thumbnail-image"
+            );
+
+
+          loadThumbnail(
+            imageElement,
+            file.name
+          );
+
+        }
+
+
+        /* =================================================
+           RENAME
+        ================================================== */
+
         card
           .querySelector(
-            ".renameButton"
+            ".rename-btn"
           )
           .addEventListener(
             "click",
-            () =>
+            () => {
+
               renameFile(
                 file.name
-              )
+              );
+
+            }
           );
 
 
+        /* =================================================
+           DOWNLOAD
+        ================================================== */
+
         card
           .querySelector(
-            ".downloadButton"
+            ".download-btn"
           )
           .addEventListener(
             "click",
-            () =>
+            () => {
+
               downloadFile(
                 file.name
-              )
+              );
+
+            }
           );
 
 
+        /* =================================================
+           DELETE
+        ================================================== */
+
         card
           .querySelector(
-            ".deleteButton"
+            ".delete-btn"
           )
           .addEventListener(
             "click",
-            () =>
+            () => {
+
               deleteFile(
                 file.name
-              )
+              );
+
+            }
           );
 
 
@@ -1095,7 +2246,7 @@
 
 
   /* =====================================================
-     UPLOAD SATU FILE
+     UPLOAD SINGLE FILE
   ===================================================== */
 
   async function uploadSingleFile(
@@ -1131,9 +2282,11 @@
 
 
     const fileName =
-      `${Date.now()}_${Math.random()
-        .toString(36)
-        .slice(2, 8)}_${safeName}`;
+      `${Date.now()}_${
+        Math.random()
+          .toString(36)
+          .slice(2, 8)
+      }_${safeName}`;
 
 
     const filePath =
@@ -1150,8 +2303,12 @@
           filePath,
           file,
           {
-            cacheControl: "3600",
-            upsert: false,
+            cacheControl:
+              "3600",
+
+            upsert:
+              false,
+
             contentType:
               file.type ||
               undefined
@@ -1170,7 +2327,7 @@
 
 
   /* =====================================================
-     UPLOAD MAKSIMAL 10 FILE SEKALIGUS
+     MULTI UPLOAD MAX 10
   ===================================================== */
 
   async function uploadFiles(
@@ -1197,8 +2354,7 @@
 
 
     /*
-      Batasi maksimal 10 file
-      dalam satu proses.
+      Batasi 10 file.
     */
 
     if (
@@ -1216,17 +2372,26 @@
     }
 
 
-    isUploading = true;
+    isUploading =
+      true;
 
 
     const total =
       files.length;
 
-    let completed = 0;
-    let successful = 0;
-    let failed = 0;
 
-    const errors = [];
+    let completed =
+      0;
+
+    let successful =
+      0;
+
+    let failed =
+      0;
+
+
+    const errors =
+      [];
 
 
     showUploadMessage(
@@ -1235,11 +2400,8 @@
     );
 
 
-    /*
-      Validasi ukuran file.
-    */
-
-    const validFiles = [];
+    const validFiles =
+      [];
 
 
     files.forEach(
@@ -1268,12 +2430,8 @@
     );
 
 
-    /*
-      Maksimal 10 upload
-      berjalan bersamaan.
-    */
-
-    let nextIndex = 0;
+    let nextIndex =
+      0;
 
 
     async function worker() {
@@ -1311,6 +2469,7 @@
 
           failed++;
 
+
           errors.push(
             `${file.name}: ${
               error.message ||
@@ -1323,7 +2482,6 @@
             `Upload gagal: ${file.name}`,
             error
           );
-
 
         } finally {
 
@@ -1349,51 +2507,45 @@
       );
 
 
-    await Promise.all(
+    if (
+      workerCount > 0
+    ) {
 
-      Array.from(
-        {
-          length:
-            workerCount
-        },
-        () =>
-          worker()
-      )
+      await Promise.all(
 
-    );
+        Array.from(
+          {
+            length:
+              workerCount
+          },
+          () =>
+            worker()
+        )
 
+      );
 
-    /*
-      Hasil upload.
-    */
+    }
+
 
     const message =
       `Selesai! ${successful} berhasil • ${failed} gagal dari ${total} file.`;
 
 
     if (
-      failed === 0
+      successful === 0 &&
+      failed > 0
     ) {
 
       showUploadMessage(
         message,
-        "success"
-      );
-
-    } else if (
-      successful > 0
-    ) {
-
-      showUploadMessage(
-        message,
-        "success"
+        "error"
       );
 
     } else {
 
       showUploadMessage(
         message,
-        "error"
+        "success"
       );
 
     }
@@ -1404,34 +2556,24 @@
     ) {
 
       console.warn(
-        "Detail file yang gagal:",
+        "Detail upload gagal:",
         errors
       );
 
     }
 
 
-    try {
-
-      await loadFiles();
-
-    } catch (error) {
-
-      console.error(
-        "Gagal refresh daftar file:",
-        error
-      );
-
-    }
+    await loadFiles();
 
 
-    isUploading = false;
+    isUploading =
+      false;
 
   }
 
 
   /* =====================================================
-     FILE INPUT
+     FILE SELECT
   ===================================================== */
 
   fileInput.addEventListener(
@@ -1444,7 +2586,9 @@
         );
 
 
-      if (!files.length) {
+      if (
+        !files.length
+      ) {
         return;
       }
 
@@ -1454,12 +2598,8 @@
       );
 
 
-      /*
-        Reset input agar file
-        yang sama bisa dipilih lagi.
-      */
-
-      this.value = "";
+      this.value =
+        "";
 
     }
   );
@@ -1469,148 +2609,89 @@
      DRAG & DROP
   ===================================================== */
 
-  const uploadLabel =
-    fileInput.closest(
-      "label"
-    );
+  [
+    "dragenter",
+    "dragover"
+  ].forEach(
+    eventName => {
+
+      uploadLabel.addEventListener(
+        eventName,
+        event => {
+
+          event.preventDefault();
+          event.stopPropagation();
 
 
-  if (uploadLabel) {
+          uploadLabel.style.borderColor =
+            "#3b82f6";
 
-    [
-      "dragenter",
-      "dragover"
-    ].forEach(
-      eventName => {
+          uploadLabel.style.background =
+            "#eff6ff";
 
-        uploadLabel.addEventListener(
-          eventName,
-          event => {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            uploadLabel.classList.add(
-              "border-blue-500",
-              "bg-blue-50"
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-    [
-      "dragleave",
-      "drop"
-    ].forEach(
-      eventName => {
-
-        uploadLabel.addEventListener(
-          eventName,
-          event => {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            uploadLabel.classList.remove(
-              "border-blue-500",
-              "bg-blue-50"
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-    uploadLabel.addEventListener(
-      "drop",
-      async event => {
-
-        const files =
-          Array.from(
-            event
-              .dataTransfer
-              .files || []
-          );
-
-
-        if (!files.length) {
-          return;
         }
-
-
-        await uploadFiles(
-          files
-        );
-
-      }
-    );
-
-  }
-
-
-  /* =====================================================
-     DOWNLOAD
-  ===================================================== */
-
-  async function downloadFile(
-    fileName
-  ) {
-
-    try {
-
-      const filePath =
-        `${currentUser.id}/${fileName}`;
-
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .storage
-          .from(BUCKET)
-          .createSignedUrl(
-            filePath,
-            60 * 60
-          );
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      window.open(
-        data.signedUrl,
-        "_blank"
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        error
-      );
-
-
-      alert(
-        "Download gagal: " +
-        error.message
       );
 
     }
+  );
 
-  }
+
+  [
+    "dragleave",
+    "drop"
+  ].forEach(
+    eventName => {
+
+      uploadLabel.addEventListener(
+        eventName,
+        event => {
+
+          event.preventDefault();
+          event.stopPropagation();
+
+
+          uploadLabel.style.borderColor =
+            "";
+
+          uploadLabel.style.background =
+            "";
+
+        }
+      );
+
+    }
+  );
+
+
+  uploadLabel.addEventListener(
+    "drop",
+    async event => {
+
+      const files =
+        Array.from(
+          event
+            .dataTransfer
+            .files || []
+        );
+
+
+      if (
+        !files.length
+      ) {
+        return;
+      }
+
+
+      await uploadFiles(
+        files
+      );
+
+    }
+  );
 
 
   /* =====================================================
-     RENAME FILE
+     RENAME
   ===================================================== */
 
   async function renameFile(
@@ -1622,20 +2703,23 @@
     }
 
 
-    const input =
+    const newNameInput =
       prompt(
         "Masukkan nama file baru:",
         oldName
       );
 
 
-    if (input === null) {
+    if (
+      newNameInput ===
+      null
+    ) {
       return;
     }
 
 
     const newName =
-      input.trim();
+      newNameInput.trim();
 
 
     if (!newName) {
@@ -1680,6 +2764,7 @@
     const oldPath =
       `${currentUser.id}/${oldName}`;
 
+
     const newPath =
       `${currentUser.id}/${safeName}`;
 
@@ -1690,6 +2775,31 @@
         `Mengganti nama ${oldName}...`,
         "loading"
       );
+
+
+      /*
+        Cek apakah nama baru
+        sudah digunakan.
+      */
+
+      const existing =
+        allFiles.some(
+          file =>
+            file.name ===
+            safeName
+        );
+
+
+      if (existing) {
+
+        showUploadMessage(
+          "Nama file tersebut sudah digunakan.",
+          "error"
+        );
+
+        return;
+
+      }
 
 
       const {
@@ -1710,7 +2820,7 @@
 
 
       showUploadMessage(
-        `Berhasil mengganti nama menjadi ${safeName}.`,
+        `Berhasil rename menjadi ${safeName}.`,
         "success"
       );
 
@@ -1736,6 +2846,84 @@
 
 
   /* =====================================================
+     DOWNLOAD
+  ===================================================== */
+
+  async function downloadFile(
+    fileName
+  ) {
+
+    try {
+
+      const filePath =
+        `${currentUser.id}/${fileName}`;
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .storage
+          .from(BUCKET)
+          .createSignedUrl(
+            filePath,
+            60 * 60
+          );
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+
+      link.href =
+        data.signedUrl;
+
+
+      link.target =
+        "_blank";
+
+
+      link.rel =
+        "noopener";
+
+
+      document.body.appendChild(
+        link
+      );
+
+
+      link.click();
+
+
+      link.remove();
+
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      alert(
+        "Download gagal: " +
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
      DELETE
   ===================================================== */
 
@@ -1743,14 +2931,14 @@
     fileName
   ) {
 
-    if (
-      !confirm(
+    const confirmed =
+      confirm(
         `Hapus file "${fileName}"?`
-      )
-    ) {
+      );
 
+
+    if (!confirmed) {
       return;
-
     }
 
 
@@ -1850,7 +3038,11 @@
     )
     .addEventListener(
       "click",
-      loadFiles
+      async () => {
+
+        await loadFiles();
+
+      }
     );
 
 
