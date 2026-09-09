@@ -1,317 +1,839 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<head>
+
+  <!-- =========================================================
+       ⚙️ DASAR HTML
+       =========================================================
+       Bagian ini mengatur encoding, ukuran layar, judul aplikasi,
+       serta library eksternal yang digunakan.
+       ========================================================= -->
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <!-- 🟢 AMAN DIUBAH
+       Nama yang tampil di tab browser -->
   <title>Ju𝟱tFun Cloud</title>
 
+
+  <!-- =========================================================
+       📦 LIBRARY
+       ========================================================= -->
+
+  <!-- Tailwind CSS
+       Digunakan untuk membuat tampilan/UI aplikasi -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Supabase JavaScript SDK
+       Digunakan untuk:
+       - Login/register
+       - Database
+       - Storage
+       - Signed URL
+       -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
+  <!-- =========================================================
+       🎨 KONFIGURASI TAILWIND
+       ========================================================= -->
+
   <script>
+
     tailwind.config = {
+
+      /*
+       * darkMode: "class"
+       *
+       * Artinya mode gelap dikontrol melalui class "dark"
+       * pada elemen <html>.
+       */
       darkMode: "class",
+
       theme: {
+
         extend: {
+
           fontFamily: {
-            sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+
+            /*
+             * 🟢 AMAN DIUBAH
+             *
+             * Font utama aplikasi.
+             */
+            sans: [
+              "Inter",
+              "ui-sans-serif",
+              "system-ui",
+              "sans-serif"
+            ]
+
           }
+
         }
+
       }
+
     };
+
   </script>
 
+
+  <!-- =========================================================
+       🎨 CSS CUSTOM
+       =========================================================
+       Tailwind menangani sebagian besar tampilan.
+       CSS di bawah ini digunakan untuk animasi dan efek tambahan.
+       ========================================================= -->
+
   <style>
+
+    /*
+     * Scrollbar tipis.
+     */
     * {
+
       scrollbar-width: thin;
-      scrollbar-color: #cbd5e1 transparent;
+
+      scrollbar-color:
+        #cbd5e1
+        transparent;
+
     }
 
+
+    /*
+     * Warna scrollbar ketika dark mode.
+     */
     html.dark * {
-      scrollbar-color: #475569 transparent;
+
+      scrollbar-color:
+        #475569
+        transparent;
+
     }
 
+
+    /*
+     * Font utama body.
+     */
     body {
-      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        sans-serif;
+
     }
 
+
+    /*
+     * Class untuk menyembunyikan elemen.
+     */
     .hidden-important {
+
       display: none !important;
+
     }
 
+
+    /*
+     * Efek glass / kaca.
+     */
     .glass {
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+
     }
 
+
+    /*
+     * Animasi kartu file ketika mouse diarahkan.
+     */
     .file-card {
+
       transition:
         transform .2s ease,
         box-shadow .2s ease,
         border-color .2s ease,
         background .2s ease;
+
     }
+
 
     .file-card:hover {
-      transform: translateY(-3px);
+
+      transform:
+        translateY(-3px);
+
     }
 
+
+    /*
+     * Animasi area drag & drop.
+     */
     .drop-zone {
+
       transition:
         border-color .2s ease,
         background .2s ease,
         transform .2s ease;
+
     }
+
 
     .drop-zone.dragover {
-      transform: scale(1.01);
-      border-color: #6366f1;
-      background: rgba(99, 102, 241, .08);
+
+      transform:
+        scale(1.01);
+
+      border-color:
+        #6366f1;
+
+      background:
+        rgba(99, 102, 241, .08);
+
     }
 
+
+    /*
+     * Animasi modal.
+     */
     .modal-backdrop {
-      animation: fadeIn .18s ease;
+
+      animation:
+        fadeIn .18s ease;
+
     }
+
 
     .modal-box {
-      animation: modalIn .2s ease;
+
+      animation:
+        modalIn .2s ease;
+
     }
 
+
+    /*
+     * Animasi toast notification.
+     */
     .toast {
-      animation: toastIn .25s ease;
+
+      animation:
+        toastIn .25s ease;
+
     }
+
 
     @keyframes fadeIn {
+
       from {
+
         opacity: 0;
+
       }
+
       to {
+
         opacity: 1;
+
       }
+
     }
+
 
     @keyframes modalIn {
+
       from {
+
         opacity: 0;
-        transform: translateY(12px) scale(.98);
+
+        transform:
+          translateY(12px)
+          scale(.98);
+
       }
 
       to {
+
         opacity: 1;
-        transform: translateY(0) scale(1);
+
+        transform:
+          translateY(0)
+          scale(1);
+
       }
+
     }
+
 
     @keyframes toastIn {
+
       from {
+
         opacity: 0;
-        transform: translateY(12px);
+
+        transform:
+          translateY(12px);
+
       }
 
       to {
+
         opacity: 1;
-        transform: translateY(0);
+
+        transform:
+          translateY(0);
+
       }
+
     }
 
+
+    /*
+     * Animasi logo cloud.
+     */
     @keyframes float {
+
       0%, 100% {
-        transform: translateY(0);
+
+        transform:
+          translateY(0);
+
       }
 
       50% {
-        transform: translateY(-5px);
+
+        transform:
+          translateY(-5px);
+
       }
+
     }
+
 
     .float {
-      animation: float 3s ease-in-out infinite;
+
+      animation:
+        float 3s ease-in-out infinite;
+
     }
 
+
+    /*
+     * Animasi progress upload.
+     */
     .progress-bar {
-      transition: width .35s ease;
+
+      transition:
+        width .35s ease;
+
     }
 
+
+    /*
+     * Membatasi teks maksimal 2 baris.
+     */
     .line-clamp-2 {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+
+      display:
+        -webkit-box;
+
+      -webkit-line-clamp:
+        2;
+
+      -webkit-box-orient:
+        vertical;
+
+      overflow:
+        hidden;
+
     }
+
 
     button,
     input {
-      outline: none;
+
+      outline:
+        none;
+
     }
 
+
+    /*
+     * Warna teks ketika diseleksi.
+     */
     ::selection {
-      background: #6366f1;
-      color: white;
+
+      background:
+        #6366f1;
+
+      color:
+        white;
+
     }
+
   </style>
+
 </head>
 
+
 <body
-  class="bg-slate-50 text-slate-900 min-h-screen transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100"
+  class="
+    bg-slate-50
+    text-slate-900
+    min-h-screen
+    transition-colors
+    duration-300
+    dark:bg-slate-950
+    dark:text-slate-100
+  "
 >
 
+
 <!-- =========================================================
-     AUTH PAGE
-========================================================= -->
+     🔐 AUTH PAGE
+     =========================================================
+     Halaman login dan register.
+     Hanya salah satu form yang ditampilkan.
+     ========================================================= -->
 
 <div
   id="authPage"
-  class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-blue-100 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950"
+  class="
+    min-h-screen
+    flex
+    items-center
+    justify-center
+    p-4
+    relative
+    overflow-hidden
+    bg-gradient-to-br
+    from-indigo-50
+    via-white
+    to-blue-100
+    dark:from-slate-950
+    dark:via-slate-900
+    dark:to-indigo-950
+  "
 >
 
-  <div class="absolute -top-32 -left-32 w-80 h-80 bg-indigo-400/20 rounded-full blur-3xl"></div>
-  <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl"></div>
+  <!-- Dekorasi background -->
+  <div
+    class="
+      absolute
+      -top-32
+      -left-32
+      w-80
+      h-80
+      bg-indigo-400/20
+      rounded-full
+      blur-3xl
+    "
+  ></div>
 
   <div
-    class="relative w-full max-w-md bg-white/90 dark:bg-slate-900/90 glass border border-white/60 dark:border-slate-700 rounded-[2rem] shadow-2xl p-7 sm:p-9"
+    class="
+      absolute
+      -bottom-32
+      -right-32
+      w-96
+      h-96
+      bg-blue-400/20
+      rounded-full
+      blur-3xl
+    "
+  ></div>
+
+
+  <!-- Kotak login/register -->
+  <div
+    class="
+      relative
+      w-full
+      max-w-md
+      bg-white/90
+      dark:bg-slate-900/90
+      glass
+      border
+      border-white/60
+      dark:border-slate-700
+      rounded-[2rem]
+      shadow-2xl
+      p-7
+      sm:p-9
+    "
   >
 
-    <!-- BRAND -->
 
-    <div class="text-center mb-8">
+    <!-- =====================================================
+         ☁️ BRAND
+         ===================================================== -->
+
+    <div
+      class="text-center mb-8"
+    >
 
       <div
-        class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-4xl shadow-xl shadow-indigo-500/20 float"
+        class="
+          w-20
+          h-20
+          mx-auto
+          rounded-3xl
+          bg-gradient-to-br
+          from-indigo-500
+          to-blue-600
+          flex
+          items-center
+          justify-center
+          text-4xl
+          shadow-xl
+          shadow-indigo-500/20
+          float
+        "
       >
         ☁️
       </div>
 
-      <h1 class="text-3xl font-black tracking-tight mt-5">
-        Ju𝟱tFun <span class="text-indigo-600 dark:text-indigo-400">Cloud</span>
+
+      <!-- 🟢 AMAN DIUBAH
+           Nama aplikasi -->
+      <h1
+        class="
+          text-3xl
+          font-black
+          tracking-tight
+          mt-5
+        "
+      >
+        Ju𝟱tFun
+        <span
+          class="
+            text-indigo-600
+            dark:text-indigo-400
+          "
+        >
+          Cloud
+        </span>
       </h1>
 
-      <p class="text-slate-500 dark:text-slate-400 mt-2">
+
+      <p
+        class="
+          text-slate-500
+          dark:text-slate-400
+          mt-2
+        "
+      >
         Simpan dan kelola file kamu dengan mudah.
       </p>
 
     </div>
 
-    <!-- LOGIN -->
+
+    <!-- =====================================================
+         🔑 LOGIN FORM
+         ===================================================== -->
 
     <div id="loginForm">
 
       <div class="mb-5">
+
         <h2 class="text-xl font-bold">
           Selamat datang kembali 👋
         </h2>
 
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p
+          class="
+            text-sm
+            text-slate-500
+            dark:text-slate-400
+            mt-1
+          "
+        >
           Login untuk mengakses file kamu.
         </p>
+
       </div>
 
-      <label class="block text-sm font-semibold mb-2">
+
+      <label
+        class="block text-sm font-semibold mb-2"
+      >
         Email
       </label>
+
 
       <input
         id="loginEmail"
         type="email"
         autocomplete="email"
         placeholder="nama@email.com"
-        class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition mb-4"
+        class="
+          w-full
+          px-4
+          py-3.5
+          rounded-2xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          bg-slate-50
+          dark:bg-slate-800
+          focus:ring-2
+          focus:ring-indigo-500
+          focus:border-indigo-500
+          transition
+          mb-4
+        "
       />
 
-      <label class="block text-sm font-semibold mb-2">
+
+      <label
+        class="block text-sm font-semibold mb-2"
+      >
         Password
       </label>
+
 
       <input
         id="loginPassword"
         type="password"
         autocomplete="current-password"
         placeholder="Masukkan password"
-        class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+        class="
+          w-full
+          px-4
+          py-3.5
+          rounded-2xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          bg-slate-50
+          dark:bg-slate-800
+          focus:ring-2
+          focus:ring-indigo-500
+          focus:border-indigo-500
+          transition
+        "
       />
+
 
       <button
         id="loginButton"
-        class="w-full mt-5 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold shadow-lg shadow-indigo-500/20 active:scale-[.99]"
+        class="
+          w-full
+          mt-5
+          py-3.5
+          rounded-2xl
+          bg-gradient-to-r
+          from-indigo-600
+          to-blue-600
+          hover:from-indigo-700
+          hover:to-blue-700
+          text-white
+          font-bold
+          shadow-lg
+          shadow-indigo-500/20
+          active:scale-[.99]
+        "
       >
         Login
       </button>
 
-      <p class="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
+
+      <p
+        class="
+          text-center
+          text-sm
+          text-slate-500
+          dark:text-slate-400
+          mt-6
+        "
+      >
+
         Belum punya akun?
 
         <button
           id="showRegister"
-          class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+          class="
+            font-bold
+            text-indigo-600
+            dark:text-indigo-400
+            hover:underline
+          "
         >
           Daftar sekarang
         </button>
+
       </p>
 
     </div>
 
-    <!-- REGISTER -->
 
-    <div id="registerForm" class="hidden">
+    <!-- =====================================================
+         📝 REGISTER FORM
+         ===================================================== -->
+
+    <div
+      id="registerForm"
+      class="hidden"
+    >
 
       <div class="mb-5">
+
         <h2 class="text-xl font-bold">
           Buat akun baru ✨
         </h2>
 
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p
+          class="
+            text-sm
+            text-slate-500
+            dark:text-slate-400
+            mt-1
+          "
+        >
           Mulai gunakan cloud storage kamu.
         </p>
+
       </div>
 
-      <label class="block text-sm font-semibold mb-2">
+
+      <label
+        class="block text-sm font-semibold mb-2"
+      >
         Email
       </label>
+
 
       <input
         id="registerEmail"
         type="email"
         autocomplete="email"
         placeholder="nama@email.com"
-        class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition mb-4"
+        class="
+          w-full
+          px-4
+          py-3.5
+          rounded-2xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          bg-slate-50
+          dark:bg-slate-800
+          focus:ring-2
+          focus:ring-indigo-500
+          focus:border-indigo-500
+          transition
+          mb-4
+        "
       />
 
-      <label class="block text-sm font-semibold mb-2">
+
+      <label
+        class="block text-sm font-semibold mb-2"
+      >
         Password
       </label>
+
 
       <input
         id="registerPassword"
         type="password"
         autocomplete="new-password"
         placeholder="Minimal 6 karakter"
-        class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+        class="
+          w-full
+          px-4
+          py-3.5
+          rounded-2xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          bg-slate-50
+          dark:bg-slate-800
+          focus:ring-2
+          focus:ring-indigo-500
+          focus:border-indigo-500
+          transition
+        "
       />
+
 
       <button
         id="registerButton"
-        class="w-full mt-5 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold shadow-lg shadow-green-500/20"
+        class="
+          w-full
+          mt-5
+          py-3.5
+          rounded-2xl
+          bg-gradient-to-r
+          from-emerald-600
+          to-green-600
+          hover:from-emerald-700
+          hover:to-green-700
+          text-white
+          font-bold
+          shadow-lg
+          shadow-green-500/20
+        "
       >
         Buat Akun
       </button>
 
-      <p class="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
+
+      <p
+        class="
+          text-center
+          text-sm
+          text-slate-500
+          dark:text-slate-400
+          mt-6
+        "
+      >
+
         Sudah punya akun?
 
         <button
           id="showLogin"
-          class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+          class="
+            font-bold
+            text-indigo-600
+            dark:text-indigo-400
+            hover:underline
+          "
         >
           Login
         </button>
+
       </p>
 
     </div>
 
+
+    <!-- Pesan error/sukses login/register -->
     <div
       id="authMessage"
-      class="hidden mt-5 p-4 rounded-2xl text-sm font-medium"
+      class="
+        hidden
+        mt-5
+        p-4
+        rounded-2xl
+        text-sm
+        font-medium
+      "
     ></div>
 
   </div>
@@ -320,33 +842,84 @@
 
 
 <!-- =========================================================
-     APP
-========================================================= -->
+     ☁️ MAIN APP
+     ========================================================= -->
 
-<div id="appPage" class="hidden min-h-screen">
+<div
+  id="appPage"
+  class="hidden min-h-screen"
+>
 
-  <!-- MOBILE HEADER -->
+
+  <!-- =======================================================
+       📱 MOBILE HEADER
+       ======================================================= -->
 
   <header
-    class="lg:hidden sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 glass border-b border-slate-200 dark:border-slate-800"
+    class="
+      lg:hidden
+      sticky
+      top-0
+      z-40
+      bg-white/90
+      dark:bg-slate-900/90
+      glass
+      border-b
+      border-slate-200
+      dark:border-slate-800
+    "
   >
 
-    <div class="px-4 py-3 flex items-center justify-between">
+    <div
+      class="
+        px-4
+        py-3
+        flex
+        items-center
+        justify-between
+      "
+    >
 
       <button
         id="mobileMenuButton"
-        class="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xl"
+        class="
+          w-11
+          h-11
+          rounded-xl
+          bg-slate-100
+          dark:bg-slate-800
+          flex
+          items-center
+          justify-center
+          text-xl
+        "
       >
         ☰
       </button>
 
+
       <div class="font-black text-lg">
-        Ju𝟱tFun <span class="text-indigo-500">Cloud</span>
+
+        Ju𝟱tFun
+        <span class="text-indigo-500">
+          Cloud
+        </span>
+
       </div>
+
 
       <button
         id="mobileThemeButton"
-        class="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center"
+        class="
+          w-11
+          h-11
+          rounded-xl
+          bg-slate-100
+          dark:bg-slate-800
+          flex
+          items-center
+          justify-center
+        "
       >
         🌙
       </button>
@@ -356,24 +929,60 @@
   </header>
 
 
-  <!-- SIDEBAR -->
+  <!-- =======================================================
+       📂 SIDEBAR
+       ======================================================= -->
 
   <aside
     id="sidebar"
-    class="fixed z-50 lg:z-30 inset-y-0 left-0 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300"
+    class="
+      fixed
+      z-50
+      lg:z-30
+      inset-y-0
+      left-0
+      w-72
+      bg-white
+      dark:bg-slate-900
+      border-r
+      border-slate-200
+      dark:border-slate-800
+      flex
+      flex-col
+      transform
+      -translate-x-full
+      lg:translate-x-0
+      transition-transform
+      duration-300
+    "
   >
 
+    <!-- Logo sidebar -->
     <div class="p-6">
 
       <div class="flex items-center gap-3">
 
         <div
-          class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-xl shadow-lg"
+          class="
+            w-11
+            h-11
+            rounded-2xl
+            bg-gradient-to-br
+            from-indigo-500
+            to-blue-600
+            flex
+            items-center
+            justify-center
+            text-xl
+            shadow-lg
+          "
         >
           ☁️
         </div>
 
+
         <div>
+
           <div class="font-black text-lg">
             Ju𝟱tFun Cloud
           </div>
@@ -381,6 +990,7 @@
           <div class="text-xs text-slate-400">
             Personal storage
           </div>
+
         </div>
 
       </div>
@@ -388,18 +998,48 @@
     </div>
 
 
+    <!-- Navigasi -->
     <nav class="px-4 space-y-1">
 
       <button
-        class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold"
+        class="
+          sidebar-item
+          w-full
+          flex
+          items-center
+          gap-3
+          px-4
+          py-3
+          rounded-xl
+          bg-indigo-50
+          dark:bg-indigo-500/10
+          text-indigo-600
+          dark:text-indigo-400
+          font-semibold
+        "
       >
         <span>🏠</span>
         <span>My Files</span>
       </button>
 
+
       <button
         id="sidebarUploadButton"
-        class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium"
+        class="
+          sidebar-item
+          w-full
+          flex
+          items-center
+          gap-3
+          px-4
+          py-3
+          rounded-xl
+          text-slate-600
+          dark:text-slate-300
+          hover:bg-slate-100
+          dark:hover:bg-slate-800
+          font-medium
+        "
       >
         <span>📤</span>
         <span>Upload File</span>
@@ -408,42 +1048,93 @@
     </nav>
 
 
-    <!-- STORAGE -->
+    <!-- =====================================================
+         💾 STORAGE INFO
+         ===================================================== -->
 
     <div class="mt-auto p-4">
 
       <div
-        class="rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 p-4"
+        class="
+          rounded-2xl
+          bg-slate-50
+          dark:bg-slate-800/70
+          border
+          border-slate-200
+          dark:border-slate-700
+          p-4
+        "
       >
 
-        <div class="flex justify-between items-center mb-2">
+        <div
+          class="
+            flex
+            justify-between
+            items-center
+            mb-2
+          "
+        >
 
-          <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+          <span
+            class="
+              text-xs
+              font-semibold
+              text-slate-500
+              dark:text-slate-400
+            "
+          >
             Storage
           </span>
 
+
           <span
             id="sidebarStoragePercentage"
-            class="text-xs font-bold text-indigo-600 dark:text-indigo-400"
+            class="
+              text-xs
+              font-bold
+              text-indigo-600
+              dark:text-indigo-400
+            "
           >
             0%
           </span>
 
         </div>
 
-        <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+
+        <div
+          class="
+            h-2
+            bg-slate-200
+            dark:bg-slate-700
+            rounded-full
+            overflow-hidden
+          "
+        >
 
           <div
             id="sidebarStorageBar"
-            class="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full progress-bar"
+            class="
+              h-full
+              bg-gradient-to-r
+              from-indigo-500
+              to-blue-500
+              rounded-full
+              progress-bar
+            "
             style="width:0%"
           ></div>
 
         </div>
 
+
         <div
           id="sidebarStorageText"
-          class="text-xs text-slate-400 mt-2"
+          class="
+            text-xs
+            text-slate-400
+            mt-2
+          "
         >
           0 Bytes / 10 GB
         </div>
@@ -451,18 +1142,41 @@
       </div>
 
 
+      <!-- Tombol tema dan logout -->
       <div class="mt-3 flex gap-2">
 
         <button
           id="themeButton"
-          class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-sm"
+          class="
+            flex-1
+            py-2.5
+            rounded-xl
+            bg-slate-100
+            dark:bg-slate-800
+            hover:bg-slate-200
+            dark:hover:bg-slate-700
+            text-sm
+          "
         >
           🌙 Tema
         </button>
 
+
         <button
           id="logoutButton"
-          class="flex-1 py-2.5 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 text-sm font-semibold"
+          class="
+            flex-1
+            py-2.5
+            rounded-xl
+            bg-red-50
+            dark:bg-red-500/10
+            text-red-600
+            dark:text-red-400
+            hover:bg-red-100
+            dark:hover:bg-red-500/20
+            text-sm
+            font-semibold
+          "
         >
           Logout
         </button>
@@ -474,25 +1188,55 @@
   </aside>
 
 
-  <!-- MOBILE SIDEBAR OVERLAY -->
-
+  <!-- Overlay sidebar mobile -->
   <div
     id="sidebarOverlay"
-    class="hidden fixed inset-0 bg-black/40 z-40 lg:hidden"
+    class="
+      hidden
+      fixed
+      inset-0
+      bg-black/40
+      z-40
+      lg:hidden
+    "
   ></div>
 
 
-  <!-- MAIN -->
+  <!-- =======================================================
+       🖥️ MAIN CONTENT
+       ======================================================= -->
 
-  <main class="lg:ml-72 min-h-screen">
+  <main
+    class="lg:ml-72 min-h-screen"
+  >
 
-    <!-- DESKTOP TOPBAR -->
 
+    <!-- Desktop topbar -->
     <header
-      class="hidden lg:block sticky top-0 z-20 bg-white/80 dark:bg-slate-950/80 glass border-b border-slate-200 dark:border-slate-800"
+      class="
+        hidden
+        lg:block
+        sticky
+        top-0
+        z-20
+        bg-white/80
+        dark:bg-slate-950/80
+        glass
+        border-b
+        border-slate-200
+        dark:border-slate-800
+      "
     >
 
-      <div class="px-8 py-4 flex items-center justify-between">
+      <div
+        class="
+          px-8
+          py-4
+          flex
+          items-center
+          justify-between
+        "
+      >
 
         <div>
 
@@ -502,23 +1246,49 @@
 
           <p
             id="desktopUserEmail"
-            class="text-xs text-slate-400 mt-1"
+            class="
+              text-xs
+              text-slate-400
+              mt-1
+            "
           ></p>
 
         </div>
+
 
         <div class="flex items-center gap-3">
 
           <button
             id="desktopThemeButton"
-            class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
+            class="
+              w-10
+              h-10
+              rounded-xl
+              bg-slate-100
+              dark:bg-slate-800
+              hover:bg-slate-200
+              dark:hover:bg-slate-700
+            "
           >
             🌙
           </button>
 
+
           <div
             id="desktopAvatar"
-            class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold"
+            class="
+              w-10
+              h-10
+              rounded-full
+              bg-indigo-100
+              dark:bg-indigo-500/20
+              text-indigo-600
+              dark:text-indigo-400
+              flex
+              items-center
+              justify-center
+              font-bold
+            "
           >
             U
           </div>
@@ -530,39 +1300,133 @@
     </header>
 
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div
+      class="
+        max-w-7xl
+        mx-auto
+        px-4
+        sm:px-6
+        lg:px-8
+        py-6
+      "
+    >
 
 
-      <!-- WELCOME -->
+      <!-- =====================================================
+           👋 WELCOME
+           ===================================================== -->
 
       <section
-        class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-indigo-600 to-blue-600 text-white p-6 sm:p-8 mb-6 shadow-xl shadow-indigo-500/10"
+        class="
+          relative
+          overflow-hidden
+          rounded-3xl
+          bg-gradient-to-br
+          from-indigo-600
+          via-indigo-600
+          to-blue-600
+          text-white
+          p-6
+          sm:p-8
+          mb-6
+          shadow-xl
+          shadow-indigo-500/10
+        "
       >
 
-        <div class="absolute -right-10 -top-20 w-60 h-60 rounded-full bg-white/10 blur-2xl"></div>
-        <div class="absolute right-20 bottom-[-100px] w-60 h-60 rounded-full bg-blue-300/10 blur-2xl"></div>
+        <div
+          class="
+            absolute
+            -right-10
+            -top-20
+            w-60
+            h-60
+            rounded-full
+            bg-white/10
+            blur-2xl
+          "
+        ></div>
 
-        <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+
+        <div
+          class="
+            absolute
+            right-20
+            bottom-[-100px]
+            w-60
+            h-60
+            rounded-full
+            bg-blue-300/10
+            blur-2xl
+          "
+        ></div>
+
+
+        <div
+          class="
+            relative
+            flex
+            flex-col
+            md:flex-row
+            md:items-center
+            justify-between
+            gap-6
+          "
+        >
 
           <div>
 
-            <div class="text-indigo-100 text-sm font-medium mb-2">
+            <div
+              class="
+                text-indigo-100
+                text-sm
+                font-medium
+                mb-2
+              "
+            >
               CLOUD STORAGE
             </div>
 
-            <h2 class="text-2xl sm:text-3xl font-black">
+
+            <h2
+              class="
+                text-2xl
+                sm:text-3xl
+                font-black
+              "
+            >
               Semua file kamu, satu tempat. ☁️
             </h2>
 
-            <p class="text-indigo-100 mt-2 max-w-xl text-sm sm:text-base">
+
+            <p
+              class="
+                text-indigo-100
+                mt-2
+                max-w-xl
+                text-sm
+                sm:text-base
+              "
+            >
               Upload, simpan, cari, dan download file dengan cepat.
             </p>
 
           </div>
 
+
           <button
             id="heroUploadButton"
-            class="flex-shrink-0 px-5 py-3 rounded-2xl bg-white text-indigo-600 font-bold hover:bg-indigo-50 shadow-lg"
+            class="
+              flex-shrink-0
+              px-5
+              py-3
+              rounded-2xl
+              bg-white
+              text-indigo-600
+              font-bold
+              hover:bg-indigo-50
+              shadow-lg
+            "
           >
             + Upload File
           </button>
@@ -572,32 +1436,75 @@
       </section>
 
 
-      <!-- STORAGE CARDS -->
+      <!-- =====================================================
+           💾 STORAGE CARDS
+           ===================================================== -->
 
-      <section class="grid sm:grid-cols-3 gap-4 mb-6">
+      <section
+        class="grid sm:grid-cols-3 gap-4 mb-6"
+      >
 
+        <!-- Storage digunakan -->
         <div
-          class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5"
+          class="
+            bg-white
+            dark:bg-slate-900
+            border
+            border-slate-200
+            dark:border-slate-800
+            rounded-2xl
+            p-5
+          "
         >
 
-          <div class="flex items-center justify-between">
+          <div
+            class="
+              flex
+              items-center
+              justify-between
+            "
+          >
 
             <div>
 
-              <div class="text-xs uppercase tracking-wide text-slate-400 font-bold">
+              <div
+                class="
+                  text-xs
+                  uppercase
+                  tracking-wide
+                  text-slate-400
+                  font-bold
+                "
+              >
                 Storage Digunakan
               </div>
 
               <div
                 id="storageUsedCard"
-                class="text-2xl font-black mt-2"
+                class="
+                  text-2xl
+                  font-black
+                  mt-2
+                "
               >
                 0 Bytes
               </div>
 
             </div>
 
-            <div class="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center">
+
+            <div
+              class="
+                w-11
+                h-11
+                rounded-xl
+                bg-indigo-50
+                dark:bg-indigo-500/10
+                flex
+                items-center
+                justify-center
+              "
+            >
               💾
             </div>
 
@@ -606,28 +1513,67 @@
         </div>
 
 
+        <!-- Storage tersisa -->
         <div
-          class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5"
+          class="
+            bg-white
+            dark:bg-slate-900
+            border
+            border-slate-200
+            dark:border-slate-800
+            rounded-2xl
+            p-5
+          "
         >
 
-          <div class="flex items-center justify-between">
+          <div
+            class="
+              flex
+              items-center
+              justify-between
+            "
+          >
 
             <div>
 
-              <div class="text-xs uppercase tracking-wide text-slate-400 font-bold">
+              <div
+                class="
+                  text-xs
+                  uppercase
+                  tracking-wide
+                  text-slate-400
+                  font-bold
+                "
+              >
                 Tersisa
               </div>
 
               <div
                 id="storageRemainingCard"
-                class="text-2xl font-black mt-2"
+                class="
+                  text-2xl
+                  font-black
+                  mt-2
+                "
               >
                 10 GB
               </div>
 
             </div>
 
-            <div class="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center">
+
+            <div
+              class="
+                w-11
+                h-11
+                rounded-xl
+                bg-emerald-50
+                dark:bg-emerald-500/10
+                flex
+                items-center
+                justify-center
+              "
+            >
               📦
             </div>
 
@@ -636,28 +1582,67 @@
         </div>
 
 
+        <!-- Total file -->
         <div
-          class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5"
+          class="
+            bg-white
+            dark:bg-slate-900
+            border
+            border-slate-200
+            dark:border-slate-800
+            rounded-2xl
+            p-5
+          "
         >
 
-          <div class="flex items-center justify-between">
+          <div
+            class="
+              flex
+              items-center
+              justify-between
+            "
+          >
 
             <div>
 
-              <div class="text-xs uppercase tracking-wide text-slate-400 font-bold">
+              <div
+                class="
+                  text-xs
+                  uppercase
+                  tracking-wide
+                  text-slate-400
+                  font-bold
+                "
+              >
                 Total File
               </div>
 
               <div
                 id="totalFilesCard"
-                class="text-2xl font-black mt-2"
+                class="
+                  text-2xl
+                  font-black
+                  mt-2
+                "
               >
                 0
               </div>
 
             </div>
 
-            <div class="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center">
+
+            <div
+              class="
+                w-11
+                h-11
+                rounded-xl
+                bg-blue-50
+                dark:bg-blue-500/10
+                flex
+                items-center
+                justify-center
+              "
+            >
               📁
             </div>
 
@@ -668,14 +1653,34 @@
       </section>
 
 
-      <!-- UPLOAD -->
+      <!-- =====================================================
+           📤 UPLOAD SECTION
+           ===================================================== -->
 
       <section
         id="uploadSection"
-        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-7 mb-6 shadow-sm"
+        class="
+          bg-white
+          dark:bg-slate-900
+          border
+          border-slate-200
+          dark:border-slate-800
+          rounded-3xl
+          p-5
+          sm:p-7
+          mb-6
+          shadow-sm
+        "
       >
 
-        <div class="flex items-center justify-between mb-5">
+        <div
+          class="
+            flex
+            items-center
+            justify-between
+            mb-5
+          "
+        >
 
           <div>
 
@@ -683,11 +1688,18 @@
               Upload File
             </h2>
 
-            <p class="text-sm text-slate-400 mt-1">
+            <p
+              class="
+                text-sm
+                text-slate-400
+                mt-1
+              "
+            >
               Maksimal 100 MB untuk setiap file.
             </p>
 
           </div>
+
 
           <div class="text-3xl">
             📤
@@ -696,28 +1708,81 @@
         </div>
 
 
+        <!--
+          Area drag & drop.
+
+          User dapat:
+          1. Klik area ini untuk memilih file.
+          2. Drag file ke area ini.
+        -->
+
         <label
           id="dropZone"
           for="fileInput"
-          class="drop-zone block border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 sm:p-12 text-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/50 dark:hover:bg-indigo-500/5"
+          class="
+            drop-zone
+            block
+            border-2
+            border-dashed
+            border-slate-300
+            dark:border-slate-700
+            rounded-2xl
+            p-8
+            sm:p-12
+            text-center
+            cursor-pointer
+            hover:border-indigo-500
+            hover:bg-indigo-50/50
+            dark:hover:bg-indigo-500/5
+          "
         >
 
           <div class="text-5xl mb-4">
             📁
           </div>
 
-          <div class="font-bold text-slate-700 dark:text-slate-200">
+          <div
+            class="
+              font-bold
+              text-slate-700
+              dark:text-slate-200
+            "
+          >
             Klik untuk memilih file
           </div>
 
-          <div class="text-sm text-slate-400 mt-2">
+          <div
+            class="
+              text-sm
+              text-slate-400
+              mt-2
+            "
+          >
             atau drag & drop beberapa file di sini
           </div>
 
-          <div class="inline-flex mt-4 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs text-slate-500">
+          <div
+            class="
+              inline-flex
+              mt-4
+              px-3
+              py-1.5
+              rounded-lg
+              bg-slate-100
+              dark:bg-slate-800
+              text-xs
+              text-slate-500
+            "
+          >
             Maks. 100 MB / file
           </div>
 
+
+          <!--
+            Input file asli.
+
+            multiple = user boleh memilih banyak file.
+          -->
           <input
             id="fileInput"
             type="file"
@@ -728,25 +1793,58 @@
         </label>
 
 
+        <!-- Antrian proses upload -->
         <div
           id="uploadQueue"
-          class="hidden mt-5 space-y-3"
+          class="
+            hidden
+            mt-5
+            space-y-3
+          "
         ></div>
 
       </section>
 
 
-      <!-- FILE TOOLBAR -->
+      <!-- =====================================================
+           🔎 FILE TOOLBAR
+           ===================================================== -->
 
       <section
-        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 mb-5"
+        class="
+          bg-white
+          dark:bg-slate-900
+          border
+          border-slate-200
+          dark:border-slate-800
+          rounded-2xl
+          p-3
+          sm:p-4
+          mb-5
+        "
       >
 
-        <div class="flex flex-col lg:flex-row gap-3">
+        <div
+          class="
+            flex
+            flex-col
+            lg:flex-row
+            gap-3
+          "
+        >
 
+          <!-- Search -->
           <div class="relative flex-1">
 
-            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+            <span
+              class="
+                absolute
+                left-4
+                top-1/2
+                -translate-y-1/2
+                text-slate-400
+              "
+            >
               🔎
             </span>
 
@@ -754,46 +1852,120 @@
               id="searchInput"
               type="text"
               placeholder="Cari nama file..."
-              class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-transparent focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+              class="
+                w-full
+                pl-11
+                pr-4
+                py-3
+                rounded-xl
+                bg-slate-50
+                dark:bg-slate-800
+                border
+                border-transparent
+                focus:border-indigo-500
+                focus:ring-2
+                focus:ring-indigo-500/20
+              "
             />
 
           </div>
 
 
+          <!-- Sorting -->
           <select
             id="sortSelect"
-            class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-transparent focus:border-indigo-500"
+            class="
+              px-4
+              py-3
+              rounded-xl
+              bg-slate-50
+              dark:bg-slate-800
+              border
+              border-transparent
+              focus:border-indigo-500
+            "
           >
-            <option value="newest">Terbaru</option>
-            <option value="oldest">Terlama</option>
-            <option value="name_asc">Nama A-Z</option>
-            <option value="name_desc">Nama Z-A</option>
-            <option value="size_desc">Ukuran terbesar</option>
-            <option value="size_asc">Ukuran terkecil</option>
+
+            <option value="newest">
+              Terbaru
+            </option>
+
+            <option value="oldest">
+              Terlama
+            </option>
+
+            <option value="name_asc">
+              Nama A-Z
+            </option>
+
+            <option value="name_desc">
+              Nama Z-A
+            </option>
+
+            <option value="size_desc">
+              Ukuran terbesar
+            </option>
+
+            <option value="size_asc">
+              Ukuran terkecil
+            </option>
+
           </select>
 
 
+          <!-- Grid / List / Refresh -->
           <div class="flex gap-2">
 
             <button
               id="gridViewButton"
-              class="flex-1 lg:flex-none px-4 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
+              class="
+                flex-1
+                lg:flex-none
+                px-4
+                py-3
+                rounded-xl
+                bg-indigo-50
+                dark:bg-indigo-500/10
+                text-indigo-600
+                dark:text-indigo-400
+              "
               title="Grid view"
             >
               ▦
             </button>
 
+
             <button
               id="listViewButton"
-              class="flex-1 lg:flex-none px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500"
+              class="
+                flex-1
+                lg:flex-none
+                px-4
+                py-3
+                rounded-xl
+                bg-slate-100
+                dark:bg-slate-800
+                text-slate-500
+              "
               title="List view"
             >
               ☰
             </button>
 
+
             <button
               id="refreshButton"
-              class="flex-1 lg:flex-none px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
+              class="
+                flex-1
+                lg:flex-none
+                px-4
+                py-3
+                rounded-xl
+                bg-slate-100
+                dark:bg-slate-800
+                hover:bg-slate-200
+                dark:hover:bg-slate-700
+              "
               title="Refresh"
             >
               ↻
@@ -806,9 +1978,18 @@
       </section>
 
 
-      <!-- FILE HEADER -->
+      <!-- =====================================================
+           📁 FILE HEADER
+           ===================================================== -->
 
-      <div class="flex items-center justify-between mb-4">
+      <div
+        class="
+          flex
+          items-center
+          justify-between
+          mb-4
+        "
+      >
 
         <div>
 
@@ -818,7 +1999,11 @@
 
           <p
             id="fileCount"
-            class="text-sm text-slate-400 mt-1"
+            class="
+              text-sm
+              text-slate-400
+              mt-1
+            "
           >
             0 file
           </p>
@@ -828,19 +2013,39 @@
       </div>
 
 
-      <!-- FILE LIST -->
+      <!-- =====================================================
+           📂 FILE LIST
+           ===================================================== -->
 
       <div
         id="fileList"
-        class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"
+        class="
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          xl:grid-cols-3
+          gap-4
+        "
       ></div>
 
 
-      <!-- EMPTY -->
+      <!-- =====================================================
+           📭 EMPTY STATE
+           ===================================================== -->
 
       <div
         id="emptyState"
-        class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center"
+        class="
+          hidden
+          bg-white
+          dark:bg-slate-900
+          border
+          border-slate-200
+          dark:border-slate-800
+          rounded-3xl
+          p-12
+          text-center
+        "
       >
 
         <div class="text-6xl mb-4">
@@ -851,13 +2056,28 @@
           Belum ada file
         </h3>
 
-        <p class="text-sm text-slate-400 mt-2">
+        <p
+          class="
+            text-sm
+            text-slate-400
+            mt-2
+          "
+        >
           Upload file pertama kamu untuk mulai menggunakan cloud.
         </p>
 
         <button
           id="emptyUploadButton"
-          class="mt-5 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
+          class="
+            mt-5
+            px-5
+            py-3
+            rounded-xl
+            bg-indigo-600
+            hover:bg-indigo-700
+            text-white
+            font-bold
+          "
         >
           + Upload File
         </button>
@@ -872,20 +2092,50 @@
 
 
 <!-- =========================================================
-     PREVIEW MODAL
-========================================================= -->
+     👁️ PREVIEW MODAL
+     ========================================================= -->
 
 <div
   id="previewModal"
-  class="hidden fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4 modal-backdrop"
+  class="
+    hidden
+    fixed
+    inset-0
+    z-[100]
+    bg-black/70
+    flex
+    items-center
+    justify-center
+    p-4
+    modal-backdrop
+  "
 >
 
   <div
-    class="modal-box w-full max-w-5xl max-h-[90vh] bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl"
+    class="
+      modal-box
+      w-full
+      max-w-5xl
+      max-h-[90vh]
+      bg-white
+      dark:bg-slate-900
+      rounded-3xl
+      overflow-hidden
+      shadow-2xl
+    "
   >
 
     <div
-      class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800"
+      class="
+        flex
+        items-center
+        justify-between
+        px-5
+        py-4
+        border-b
+        border-slate-200
+        dark:border-slate-800
+      "
     >
 
       <div class="min-w-0">
@@ -899,18 +2149,33 @@
 
       </div>
 
+
       <button
         id="closePreviewButton"
-        class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800"
+        class="
+          w-10
+          h-10
+          rounded-xl
+          bg-slate-100
+          dark:bg-slate-800
+        "
       >
         ✕
       </button>
 
     </div>
 
+
     <div
       id="previewContent"
-      class="p-5 max-h-[calc(90vh-80px)] overflow-auto flex items-center justify-center"
+      class="
+        p-5
+        max-h-[calc(90vh-80px)]
+        overflow-auto
+        flex
+        items-center
+        justify-center
+      "
     ></div>
 
   </div>
@@ -919,44 +2184,101 @@
 
 
 <!-- =========================================================
-     RENAME MODAL
-========================================================= -->
+     ✏️ RENAME MODAL
+     ========================================================= -->
 
 <div
   id="renameModal"
-  class="hidden fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4 modal-backdrop"
+  class="
+    hidden
+    fixed
+    inset-0
+    z-[100]
+    bg-black/50
+    flex
+    items-center
+    justify-center
+    p-4
+    modal-backdrop
+  "
 >
 
   <div
-    class="modal-box w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl"
+    class="
+      modal-box
+      w-full
+      max-w-md
+      bg-white
+      dark:bg-slate-900
+      rounded-3xl
+      p-6
+      shadow-2xl
+    "
   >
 
     <h3 class="text-xl font-bold">
       Rename File
     </h3>
 
-    <p class="text-sm text-slate-400 mt-1">
+    <p
+      class="
+        text-sm
+        text-slate-400
+        mt-1
+      "
+    >
       Masukkan nama file baru.
     </p>
+
 
     <input
       id="renameInput"
       type="text"
-      class="w-full mt-5 px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500"
+      class="
+        w-full
+        mt-5
+        px-4
+        py-3
+        rounded-xl
+        bg-slate-50
+        dark:bg-slate-800
+        border
+        border-slate-200
+        dark:border-slate-700
+        focus:ring-2
+        focus:ring-indigo-500
+      "
     />
+
 
     <div class="flex gap-3 mt-5">
 
       <button
         id="cancelRenameButton"
-        class="flex-1 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold"
+        class="
+          flex-1
+          py-3
+          rounded-xl
+          bg-slate-100
+          dark:bg-slate-800
+          font-semibold
+        "
       >
         Batal
       </button>
 
+
       <button
         id="saveRenameButton"
-        class="flex-1 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
+        class="
+          flex-1
+          py-3
+          rounded-xl
+          bg-indigo-600
+          hover:bg-indigo-700
+          text-white
+          font-bold
+        "
       >
         Simpan
       </button>
@@ -969,49 +2291,116 @@
 
 
 <!-- =========================================================
-     DELETE MODAL
-========================================================= -->
+     🗑️ DELETE MODAL
+     ========================================================= -->
 
 <div
   id="deleteModal"
-  class="hidden fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4 modal-backdrop"
+  class="
+    hidden
+    fixed
+    inset-0
+    z-[100]
+    bg-black/50
+    flex
+    items-center
+    justify-center
+    p-4
+    modal-backdrop
+  "
 >
 
   <div
-    class="modal-box w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl"
+    class="
+      modal-box
+      w-full
+      max-w-md
+      bg-white
+      dark:bg-slate-900
+      rounded-3xl
+      p-6
+      shadow-2xl
+    "
   >
 
     <div
-      class="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-500/10 text-red-600 flex items-center justify-center text-2xl"
+      class="
+        w-14
+        h-14
+        rounded-2xl
+        bg-red-100
+        dark:bg-red-500/10
+        text-red-600
+        flex
+        items-center
+        justify-center
+        text-2xl
+      "
     >
       🗑️
     </div>
 
-    <h3 class="text-xl font-bold mt-5">
+
+    <h3
+      class="
+        text-xl
+        font-bold
+        mt-5
+      "
+    >
       Hapus file?
     </h3>
 
-    <p class="text-sm text-slate-400 mt-2">
+
+    <p
+      class="
+        text-sm
+        text-slate-400
+        mt-2
+      "
+    >
       File ini akan dihapus dari storage dan tidak dapat dikembalikan.
     </p>
 
+
     <p
       id="deleteFileName"
-      class="font-semibold mt-3 break-all"
+      class="
+        font-semibold
+        mt-3
+        break-all
+      "
     ></p>
+
 
     <div class="flex gap-3 mt-6">
 
       <button
         id="cancelDeleteButton"
-        class="flex-1 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold"
+        class="
+          flex-1
+          py-3
+          rounded-xl
+          bg-slate-100
+          dark:bg-slate-800
+          font-semibold
+        "
       >
         Batal
       </button>
 
+
       <button
         id="confirmDeleteButton"
-        class="flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold"
+        class="
+          flex-1
+          py-3
+          rounded-xl
+          bg-red-600
+          hover:bg-red-700
+          text-white
+          font-bold
+        "
       >
         Hapus
       </button>
@@ -1024,31 +2413,81 @@
 
 
 <!-- =========================================================
-     TOAST
-========================================================= -->
+     🔔 TOAST
+     ========================================================= -->
 
 <div
   id="toastContainer"
-  class="fixed right-4 bottom-4 z-[200] space-y-3 w-[calc(100%-2rem)] max-w-sm"
+  class="
+    fixed
+    right-4
+    bottom-4
+    z-[200]
+    space-y-3
+    w-[calc(100%-2rem)]
+    max-w-sm
+  "
 ></div>
 
 
 <script>
 
-/* =========================================================
-   SUPABASE CONFIG
-========================================================= */
 
+/* =========================================================
+   🔴 SUPABASE CONFIG
+   =========================================================
+   ⚠️ BAGIAN PENTING
+   =========================================================
+
+   SUPABASE_URL:
+   URL project Supabase kamu.
+
+   SUPABASE_KEY:
+   Gunakan Publishable Key / anon key.
+
+   JANGAN memasukkan:
+   - service_role key
+   - secret key
+   - password database
+
+   ke dalam HTML frontend.
+
+   ========================================================= */
+
+
+/*
+ * URL project Supabase.
+ */
 const SUPABASE_URL =
   "https://jbrrlophgrdqniorjkjn.supabase.co";
 
+
+/*
+ * Publishable key / anon key.
+ *
+ * ⚠️ Jika kamu mengganti key di Supabase,
+ * ubah bagian ini.
+ */
 const SUPABASE_KEY =
   "sb_publishable_VxFQ1sUpf4-wjEpzhg4IMg_c_scLRSQ";
 
+
+/*
+ * Nama bucket Storage.
+ *
+ * 🟢 Jika bucket kamu bernama berbeda,
+ * ubah "file-storage" di sini.
+ */
 const BUCKET =
   "file-storage";
 
 
+/*
+ * Membuat koneksi ke Supabase.
+ *
+ * Hampir semua operasi backend aplikasi
+ * menggunakan object ini.
+ */
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
@@ -1057,183 +2496,391 @@ const supabaseClient =
 
 
 /* =========================================================
-   SETTINGS
-========================================================= */
+   ⚙️ SETTINGS
+   =========================================================
+   Pengaturan utama aplikasi.
+   ========================================================= */
 
+
+/*
+ * 🟢 BATAS UKURAN FILE
+ *
+ * 100 MB.
+ *
+ * Contoh:
+ *
+ * 50 MB  = 50 * 1024 * 1024
+ * 100 MB = 100 * 1024 * 1024
+ * 500 MB = 500 * 1024 * 1024
+ *
+ * Kalau ingin maksimum 200 MB:
+ *
+ * const MAX_FILE_SIZE = 200 * 1024 * 1024;
+ */
 const MAX_FILE_SIZE =
   100 * 1024 * 1024;
 
+
+/*
+ * 🟢 TOTAL QUOTA
+ *
+ * Saat ini 10 GB.
+ *
+ * Kalau ingin 20 GB:
+ *
+ * const STORAGE_QUOTA =
+ *   20 * 1024 * 1024 * 1024;
+ */
 const STORAGE_QUOTA =
   10 * 1024 * 1024 * 1024;
 
 
-/* =========================================================
-   STATE
-========================================================= */
+/*
+ * 🟢 MASA BERLAKU SIGNED URL
+ *
+ * Thumbnail:
+ * 5 menit = 300 detik.
+ *
+ * Preview:
+ * 10 menit.
+ *
+ * Download:
+ * 1 jam.
+ */
 
+
+/* =========================================================
+   🧠 STATE
+   =========================================================
+   Variabel yang menyimpan kondisi aplikasi.
+   ========================================================= */
+
+
+/*
+ * User yang sedang login.
+ */
 let currentUser = null;
 
+
+/*
+ * Semua file milik user.
+ *
+ * Data ini berasal dari tabel "files".
+ */
 let allFiles = [];
 
-let currentView = "grid";
 
-let currentRenameFile = null;
+/*
+ * Mode tampilan:
+ *
+ * "grid" = kartu
+ * "list" = daftar
+ */
+let currentView =
+  "grid";
 
-let currentDeleteFile = null;
 
+/*
+ * File yang sedang di-rename.
+ */
+let currentRenameFile =
+  null;
+
+
+/*
+ * File yang sedang akan dihapus.
+ */
+let currentDeleteFile =
+  null;
+
+
+/*
+ * Informasi storage user.
+ */
 let storageInfo = {
+
   used: 0,
-  quota: STORAGE_QUOTA,
-  remaining: STORAGE_QUOTA,
+
+  quota:
+    STORAGE_QUOTA,
+
+  remaining:
+    STORAGE_QUOTA,
+
   percentage: 0
+
 };
 
 
 /* =========================================================
-   ELEMENTS
-========================================================= */
+   ⚡ CACHE THUMBNAIL
+   =========================================================
+   Cache membuat browser tidak perlu meminta signed URL
+   yang sama berulang kali.
+   ========================================================= */
 
-const authPage =
-  document.getElementById("authPage");
 
-const appPage =
-  document.getElementById("appPage");
+/*
+ * Menyimpan URL thumbnail yang sudah dibuat.
+ *
+ * key   = storage_path
+ * value = signed URL
+ */
+const thumbnailCache =
+  new Map();
 
-const loginForm =
-  document.getElementById("loginForm");
 
-const registerForm =
-  document.getElementById("registerForm");
+/*
+ * Menyimpan URL preview.
+ *
+ * Ini terpisah dari thumbnail karena preview
+ * menggunakan file resolusi asli.
+ */
+const previewCache =
+  new Map();
 
-const authMessage =
-  document.getElementById("authMessage");
 
-const fileInput =
-  document.getElementById("fileInput");
-
-const dropZone =
-  document.getElementById("dropZone");
-
-const fileList =
-  document.getElementById("fileList");
-
-const emptyState =
-  document.getElementById("emptyState");
-
-const searchInput =
-  document.getElementById("searchInput");
-
-const sortSelect =
-  document.getElementById("sortSelect");
-
-const uploadQueue =
-  document.getElementById("uploadQueue");
-
-const previewModal =
-  document.getElementById("previewModal");
-
-const previewContent =
-  document.getElementById("previewContent");
-
-const previewTitle =
-  document.getElementById("previewTitle");
-
-const renameModal =
-  document.getElementById("renameModal");
-
-const renameInput =
-  document.getElementById("renameInput");
-
-const deleteModal =
-  document.getElementById("deleteModal");
-
-const deleteFileName =
-  document.getElementById("deleteFileName");
-
-const toastContainer =
-  document.getElementById("toastContainer");
+/*
+ * Mencegah request thumbnail yang sama
+ * dilakukan bersamaan berkali-kali.
+ */
+const thumbnailRequests =
+  new Map();
 
 
 /* =========================================================
-   FORMAT SIZE
-========================================================= */
+   🧩 ELEMENTS
+   =========================================================
+   Mengambil elemen HTML agar dapat dikontrol melalui JavaScript.
+   ========================================================= */
+
+const authPage =
+  document.getElementById(
+    "authPage"
+  );
+
+const appPage =
+  document.getElementById(
+    "appPage"
+  );
+
+const loginForm =
+  document.getElementById(
+    "loginForm"
+  );
+
+const registerForm =
+  document.getElementById(
+    "registerForm"
+  );
+
+const authMessage =
+  document.getElementById(
+    "authMessage"
+  );
+
+const fileInput =
+  document.getElementById(
+    "fileInput"
+  );
+
+const dropZone =
+  document.getElementById(
+    "dropZone"
+  );
+
+const fileList =
+  document.getElementById(
+    "fileList"
+  );
+
+const emptyState =
+  document.getElementById(
+    "emptyState"
+  );
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+const sortSelect =
+  document.getElementById(
+    "sortSelect"
+  );
+
+const uploadQueue =
+  document.getElementById(
+    "uploadQueue"
+  );
+
+const previewModal =
+  document.getElementById(
+    "previewModal"
+  );
+
+const previewContent =
+  document.getElementById(
+    "previewContent"
+  );
+
+const previewTitle =
+  document.getElementById(
+    "previewTitle"
+  );
+
+const renameModal =
+  document.getElementById(
+    "renameModal"
+  );
+
+const renameInput =
+  document.getElementById(
+    "renameInput"
+  );
+
+const deleteModal =
+  document.getElementById(
+    "deleteModal"
+  );
+
+const deleteFileName =
+  document.getElementById(
+    "deleteFileName"
+  );
+
+const toastContainer =
+  document.getElementById(
+    "toastContainer"
+  );
+
+
+/* =========================================================
+   📏 FORMAT SIZE
+   =========================================================
+   Mengubah angka bytes menjadi:
+   Bytes / KB / MB / GB / TB
+   ========================================================= */
 
 function formatSize(bytes) {
 
-  bytes = Number(bytes) || 0;
+  bytes =
+    Number(bytes) || 0;
+
 
   if (bytes <= 0) {
+
     return "0 Bytes";
+
   }
 
+
   const units = [
+
     "Bytes",
     "KB",
     "MB",
     "GB",
     "TB"
+
   ];
+
 
   const index =
     Math.min(
+
       Math.floor(
-        Math.log(bytes) / Math.log(1024)
+        Math.log(bytes) /
+        Math.log(1024)
       ),
+
       units.length - 1
+
     );
 
+
   return (
+
     parseFloat(
+
       (
+
         bytes /
-        Math.pow(1024, index)
+        Math.pow(
+          1024,
+          index
+        )
+
       ).toFixed(2)
+
     )
+
     + " "
+
     + units[index]
+
   );
+
 }
 
 
 /* =========================================================
-   FORMAT DATE
-========================================================= */
+   📅 FORMAT DATE
+   ========================================================= */
 
 function formatDate(date) {
 
   if (!date) {
+
     return "-";
+
   }
 
-  return new Date(date).toLocaleString(
+
+  return new Date(
+    date
+  ).toLocaleString(
     "id-ID",
     {
-      dateStyle: "medium",
-      timeStyle: "short"
+      dateStyle:
+        "medium",
+
+      timeStyle:
+        "short"
     }
   );
+
 }
 
 
 /* =========================================================
-   ESCAPE HTML
-========================================================= */
+   🛡️ ESCAPE HTML
+   =========================================================
+   Mencegah nama file tertentu merusak HTML.
+   ========================================================= */
 
 function escapeHtml(text) {
 
   const div =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   div.textContent =
     text ?? "";
 
+
   return div.innerHTML;
+
 }
 
 
 /* =========================================================
-   FILE ICON
-========================================================= */
+   📁 FILE ICON
+   =========================================================
+   Menentukan icon berdasarkan extension file.
+   ========================================================= */
 
 function getFileIcon(fileName) {
 
@@ -1243,7 +2890,9 @@ function getFileIcon(fileName) {
       .pop()
       .toLowerCase();
 
+
   const imageTypes = [
+
     "jpg",
     "jpeg",
     "png",
@@ -1252,27 +2901,36 @@ function getFileIcon(fileName) {
     "svg",
     "bmp",
     "ico"
+
   ];
 
+
   const videoTypes = [
+
     "mp4",
     "mov",
     "avi",
     "mkv",
     "webm",
     "m4v"
+
   ];
 
+
   const audioTypes = [
+
     "mp3",
     "wav",
     "ogg",
     "m4a",
     "flac",
     "aac"
+
   ];
 
+
   const documentTypes = [
+
     "pdf",
     "doc",
     "docx",
@@ -1282,77 +2940,142 @@ function getFileIcon(fileName) {
     "ppt",
     "pptx",
     "csv"
+
   ];
 
+
   const archiveTypes = [
+
     "zip",
     "rar",
     "7z",
     "tar",
     "gz"
+
   ];
 
-  if (imageTypes.includes(ext)) {
+
+  if (
+    imageTypes.includes(ext)
+  ) {
+
     return "🖼️";
+
   }
 
-  if (videoTypes.includes(ext)) {
+
+  if (
+    videoTypes.includes(ext)
+  ) {
+
     return "🎬";
+
   }
 
-  if (audioTypes.includes(ext)) {
+
+  if (
+    audioTypes.includes(ext)
+  ) {
+
     return "🎵";
+
   }
 
-  if (documentTypes.includes(ext)) {
+
+  if (
+    documentTypes.includes(ext)
+  ) {
+
     return "📄";
+
   }
 
-  if (archiveTypes.includes(ext)) {
+
+  if (
+    archiveTypes.includes(ext)
+  ) {
+
     return "📦";
+
   }
+
 
   return "📁";
+
 }
 
 
 /* =========================================================
-   FILE TYPE
-========================================================= */
+   🔎 FILE TYPE
+   ========================================================= */
 
 function getFileType(file) {
 
   const mime =
     file.mime_type || "";
 
-  if (mime.startsWith("image/")) {
-    return "image";
-  }
-
-  if (mime.startsWith("video/")) {
-    return "video";
-  }
-
-  if (mime.startsWith("audio/")) {
-    return "audio";
-  }
 
   if (
-    mime === "application/pdf" ||
+    mime.startsWith(
+      "image/"
+    )
+  ) {
+
+    return "image";
+
+  }
+
+
+  if (
+    mime.startsWith(
+      "video/"
+    )
+  ) {
+
+    return "video";
+
+  }
+
+
+  if (
+    mime.startsWith(
+      "audio/"
+    )
+  ) {
+
+    return "audio";
+
+  }
+
+
+  if (
+
+    mime ===
+      "application/pdf"
+
+    ||
+
     file.file_name
       ?.toLowerCase()
       .endsWith(".pdf")
+
   ) {
+
     return "pdf";
+
   }
 
+
   return "other";
+
 }
 
 
 /* =========================================================
-   TOAST
-========================================================= */
+   🔔 TOAST
+   =========================================================
+   Menampilkan notifikasi kecil di kanan bawah.
+   ========================================================= */
 
 function showToast(
   message,
@@ -1360,33 +3083,61 @@ function showToast(
 ) {
 
   const toast =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  let icon = "✅";
+
+  let icon =
+    "✅";
+
 
   let classes =
     "bg-emerald-600 text-white";
 
-  if (type === "error") {
-    icon = "❌";
+
+  if (
+    type === "error"
+  ) {
+
+    icon =
+      "❌";
+
     classes =
       "bg-red-600 text-white";
+
   }
 
-  if (type === "warning") {
-    icon = "⚠️";
+
+  if (
+    type === "warning"
+  ) {
+
+    icon =
+      "⚠️";
+
     classes =
       "bg-amber-500 text-white";
+
   }
 
-  if (type === "info") {
-    icon = "ℹ️";
+
+  if (
+    type === "info"
+  ) {
+
+    icon =
+      "ℹ️";
+
     classes =
       "bg-indigo-600 text-white";
+
   }
+
 
   toast.className =
     `toast ${classes} rounded-2xl shadow-xl px-4 py-3 flex items-start gap-3`;
+
 
   toast.innerHTML = `
 
@@ -1394,7 +3145,13 @@ function showToast(
       ${icon}
     </span>
 
-    <div class="text-sm font-medium flex-1">
+    <div
+      class="
+        text-sm
+        font-medium
+        flex-1
+      "
+    >
       ${escapeHtml(message)}
     </div>
 
@@ -1406,6 +3163,7 @@ function showToast(
 
   `;
 
+
   toast
     .querySelector("button")
     .addEventListener(
@@ -1413,21 +3171,41 @@ function showToast(
       () => toast.remove()
     );
 
-  toastContainer.appendChild(toast);
 
-  setTimeout(() => {
+  toastContainer.appendChild(
+    toast
+  );
 
-    if (toast.isConnected) {
-      toast.remove();
-    }
 
-  }, 4500);
+  /*
+   * 🟢 Lama toast ditampilkan.
+   *
+   * 4500 = 4.5 detik.
+   *
+   * Kalau ingin 8 detik:
+   * 8000
+   */
+  setTimeout(
+    () => {
+
+      if (
+        toast.isConnected
+      ) {
+
+        toast.remove();
+
+      }
+
+    },
+    4500
+  );
+
 }
 
 
 /* =========================================================
-   AUTH MESSAGE
-========================================================= */
+   🔐 AUTH MESSAGE
+   ========================================================= */
 
 function showAuthMessage(
   message,
@@ -1437,17 +3215,23 @@ function showAuthMessage(
   authMessage.textContent =
     message;
 
+
   authMessage.className =
     "mt-5 p-4 rounded-2xl text-sm font-medium";
 
-  if (type === "success") {
+
+  if (
+    type === "success"
+  ) {
 
     authMessage.classList.add(
       "bg-emerald-100",
       "text-emerald-700"
     );
 
-  } else {
+  }
+
+  else {
 
     authMessage.classList.add(
       "bg-red-100",
@@ -1460,149 +3244,233 @@ function showAuthMessage(
 
 
 /* =========================================================
-   THEME
-========================================================= */
+   🌙 THEME
+   ========================================================= */
 
 function applyTheme(theme) {
 
+  /*
+   * Menambahkan / menghapus class "dark"
+   * dari <html>.
+   */
   document.documentElement.classList.toggle(
     "dark",
     theme === "dark"
   );
 
+
+  /*
+   * Menyimpan pilihan tema di browser.
+   */
   localStorage.setItem(
     "jf_theme",
     theme
   );
+
 
   const icon =
     theme === "dark"
       ? "☀️"
       : "🌙";
 
+
+  /*
+   * Mengubah icon tombol tema.
+   */
   [
+
     "themeButton",
     "desktopThemeButton",
     "mobileThemeButton"
-  ].forEach(id => {
 
-    const element =
-      document.getElementById(id);
+  ].forEach(
+    id => {
 
-    if (element) {
-      element.textContent =
-        icon;
+      const element =
+        document.getElementById(
+          id
+        );
+
+
+      if (element) {
+
+        element.textContent =
+          icon;
+
+      }
+
     }
+  );
 
-  });
 }
 
 
+/*
+ * Mengubah light <-> dark.
+ */
 function toggleTheme() {
 
   const current =
-    document.documentElement.classList.contains("dark")
+    document.documentElement.classList.contains(
+      "dark"
+    )
       ? "dark"
       : "light";
 
+
   applyTheme(
+
     current === "dark"
       ? "light"
       : "dark"
+
   );
+
 }
 
 
+/*
+ * 🟢 Tema awal.
+ *
+ * Jika user pernah memilih tema,
+ * gunakan pilihan tersebut.
+ *
+ * Jika belum ada:
+ * gunakan light.
+ */
 applyTheme(
-  localStorage.getItem("jf_theme") ||
-  "light"
+
+  localStorage.getItem(
+    "jf_theme"
+  ) || "light"
+
 );
 
 
 /* =========================================================
-   AUTH FORM SWITCH
-========================================================= */
+   🔐 LOGIN / REGISTER SWITCH
+   ========================================================= */
 
 document
-  .getElementById("showRegister")
+  .getElementById(
+    "showRegister"
+  )
   .addEventListener(
     "click",
     () => {
 
-      loginForm.classList.add("hidden");
+      loginForm.classList.add(
+        "hidden"
+      );
 
-      registerForm.classList.remove("hidden");
+      registerForm.classList.remove(
+        "hidden"
+      );
 
-      authMessage.classList.add("hidden");
+      authMessage.classList.add(
+        "hidden"
+      );
 
     }
   );
 
 
 document
-  .getElementById("showLogin")
+  .getElementById(
+    "showLogin"
+  )
   .addEventListener(
     "click",
     () => {
 
-      registerForm.classList.add("hidden");
+      registerForm.classList.add(
+        "hidden"
+      );
 
-      loginForm.classList.remove("hidden");
+      loginForm.classList.remove(
+        "hidden"
+      );
 
-      authMessage.classList.add("hidden");
+      authMessage.classList.add(
+        "hidden"
+      );
 
     }
   );
 
 
 /* =========================================================
-   REGISTER
-========================================================= */
+   📝 REGISTER
+   ========================================================= */
 
 document
-  .getElementById("registerButton")
+  .getElementById(
+    "registerButton"
+  )
   .addEventListener(
     "click",
     async () => {
 
       const email =
         document
-          .getElementById("registerEmail")
+          .getElementById(
+            "registerEmail"
+          )
           .value
           .trim();
 
+
       const password =
         document
-          .getElementById("registerPassword")
+          .getElementById(
+            "registerPassword"
+          )
           .value;
 
-      if (!email || !password) {
+
+      if (
+        !email ||
+        !password
+      ) {
 
         showAuthMessage(
           "Email dan password harus diisi."
         );
 
         return;
+
       }
 
-      if (password.length < 6) {
+
+      /*
+       * 🟢 Panjang password minimum.
+       */
+      if (
+        password.length < 6
+      ) {
 
         showAuthMessage(
           "Password minimal 6 karakter."
         );
 
         return;
+
       }
+
 
       const button =
         document.getElementById(
           "registerButton"
         );
 
-      button.disabled = true;
+
+      button.disabled =
+        true;
+
 
       button.textContent =
         "Membuat akun...";
+
 
       try {
 
@@ -1610,26 +3478,48 @@ document
           data,
           error
         } =
-          await supabaseClient.auth.signUp({
-            email,
-            password
-          });
+          await supabaseClient
+            .auth
+            .signUp({
+
+              email,
+
+              password
+
+            });
+
 
         if (error) {
+
           throw error;
+
         }
 
-        if (data.session) {
+
+        /*
+         * Jika Supabase langsung memberikan session,
+         * user dapat langsung masuk aplikasi.
+         */
+        if (
+          data.session
+        ) {
 
           showAuthMessage(
             "Akun berhasil dibuat!",
             "success"
           );
 
+
           await loadUser();
 
-        } else {
+        }
 
+        else {
+
+          /*
+           * Jika email confirmation aktif,
+           * user harus melakukan verifikasi email.
+           */
           showAuthMessage(
             "Akun berhasil dibuat. Silakan cek email untuk verifikasi.",
             "success"
@@ -1637,18 +3527,28 @@ document
 
         }
 
-      } catch (error) {
 
-        console.error(error);
+      }
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
 
         showAuthMessage(
           error.message ||
           "Gagal membuat akun."
         );
 
-      } finally {
+      }
 
-        button.disabled = false;
+
+      finally {
+
+        button.disabled =
+          false;
 
         button.textContent =
           "Buat Akun";
@@ -1660,44 +3560,61 @@ document
 
 
 /* =========================================================
-   LOGIN
-========================================================= */
+   🔑 LOGIN
+   ========================================================= */
 
 document
-  .getElementById("loginButton")
+  .getElementById(
+    "loginButton"
+  )
   .addEventListener(
     "click",
     async () => {
 
       const email =
         document
-          .getElementById("loginEmail")
+          .getElementById(
+            "loginEmail"
+          )
           .value
           .trim();
 
+
       const password =
         document
-          .getElementById("loginPassword")
+          .getElementById(
+            "loginPassword"
+          )
           .value;
 
-      if (!email || !password) {
+
+      if (
+        !email ||
+        !password
+      ) {
 
         showAuthMessage(
           "Email dan password harus diisi."
         );
 
         return;
+
       }
+
 
       const button =
         document.getElementById(
           "loginButton"
         );
 
-      button.disabled = true;
+
+      button.disabled =
+        true;
+
 
       button.textContent =
         "Login...";
+
 
       try {
 
@@ -1705,33 +3622,52 @@ document
           data,
           error
         } =
-          await supabaseClient.auth
+          await supabaseClient
+            .auth
             .signInWithPassword({
+
               email,
+
               password
+
             });
 
+
         if (error) {
+
           throw error;
+
         }
+
 
         currentUser =
           data.user;
 
+
         await showApp();
 
-      } catch (error) {
 
-        console.error(error);
+      }
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
 
         showAuthMessage(
           error.message ||
           "Email atau password salah."
         );
 
-      } finally {
+      }
 
-        button.disabled = false;
+
+      finally {
+
+        button.disabled =
+          false;
 
         button.textContent =
           "Login";
@@ -1743,32 +3679,56 @@ document
 
 
 /* =========================================================
-   LOGOUT
-========================================================= */
+   🚪 LOGOUT
+   ========================================================= */
 
 document
-  .getElementById("logoutButton")
+  .getElementById(
+    "logoutButton"
+  )
   .addEventListener(
     "click",
     async () => {
 
-      await supabaseClient.auth.signOut();
+      await supabaseClient
+        .auth
+        .signOut();
 
-      currentUser = null;
 
-      allFiles = [];
+      currentUser =
+        null;
 
-      appPage.classList.add("hidden");
 
-      authPage.classList.remove("hidden");
+      allFiles =
+        [];
+
+
+      /*
+       * Membersihkan cache ketika logout.
+       */
+      thumbnailCache.clear();
+
+      previewCache.clear();
+
+      thumbnailRequests.clear();
+
+
+      appPage.classList.add(
+        "hidden"
+      );
+
+
+      authPage.classList.remove(
+        "hidden"
+      );
 
     }
   );
 
 
 /* =========================================================
-   LOAD USER
-========================================================= */
+   👤 LOAD USER
+   ========================================================= */
 
 async function loadUser() {
 
@@ -1776,7 +3736,10 @@ async function loadUser() {
     data,
     error
   } =
-    await supabaseClient.auth.getUser();
+    await supabaseClient
+      .auth
+      .getUser();
+
 
   if (
     error ||
@@ -1786,91 +3749,137 @@ async function loadUser() {
     showAuthPage();
 
     return;
+
   }
+
 
   currentUser =
     data.user;
 
+
   await showApp();
+
 }
 
 
 /* =========================================================
-   SHOW AUTH
-========================================================= */
+   🔐 SHOW AUTH PAGE
+   ========================================================= */
 
 function showAuthPage() {
 
-  appPage.classList.add("hidden");
+  appPage.classList.add(
+    "hidden"
+  );
 
-  authPage.classList.remove("hidden");
+
+  authPage.classList.remove(
+    "hidden"
+  );
+
 }
 
 
 /* =========================================================
-   SHOW APP
-========================================================= */
+   ☁️ SHOW APP
+   ========================================================= */
 
 async function showApp() {
 
-  authPage.classList.add("hidden");
+  authPage.classList.add(
+    "hidden"
+  );
 
-  appPage.classList.remove("hidden");
+
+  appPage.classList.remove(
+    "hidden"
+  );
+
 
   updateUserUI();
 
+
   await loadFiles();
+
 }
 
 
 /* =========================================================
-   USER UI
-========================================================= */
+   👤 USER UI
+   ========================================================= */
 
 function updateUserUI() {
 
   if (!currentUser) {
+
     return;
+
   }
+
 
   const email =
     currentUser.email || "";
 
+
   const first =
     email.charAt(0).toUpperCase() ||
     "U";
+
 
   const desktopEmail =
     document.getElementById(
       "desktopUserEmail"
     );
 
+
   const avatar =
     document.getElementById(
       "desktopAvatar"
     );
 
-  if (desktopEmail) {
+
+  if (
+    desktopEmail
+  ) {
+
     desktopEmail.textContent =
       email;
+
   }
 
-  if (avatar) {
+
+  if (
+    avatar
+  ) {
+
     avatar.textContent =
       first;
+
   }
+
 }
 
 
 /* =========================================================
-   STORAGE INFO
-========================================================= */
+   💾 LOAD STORAGE INFO
+   =========================================================
+   Mengambil informasi penggunaan storage dari Supabase RPC.
+
+   ⚠️ Fungsi ini membutuhkan database function:
+   get_storage_info
+
+   Jika RPC tersebut tidak ada di Supabase,
+   bagian ini akan error.
+   ========================================================= */
 
 async function loadStorageInfo() {
 
   if (!currentUser) {
+
     return;
+
   }
+
 
   try {
 
@@ -1879,16 +3888,23 @@ async function loadStorageInfo() {
       error
     } =
       await supabaseClient
-        .rpc("get_storage_info");
+        .rpc(
+          "get_storage_info"
+        );
+
 
     if (error) {
+
       throw error;
+
     }
+
 
     const used =
       Number(
         data?.used_bytes || 0
       );
+
 
     const quota =
       Number(
@@ -1896,11 +3912,13 @@ async function loadStorageInfo() {
         STORAGE_QUOTA
       );
 
+
     const remaining =
       Math.max(
         quota - used,
         0
       );
+
 
     const percentage =
       Math.min(
@@ -1908,16 +3926,26 @@ async function loadStorageInfo() {
         100
       );
 
+
     storageInfo = {
+
       used,
+
       quota,
+
       remaining,
+
       percentage
+
     };
+
 
     updateStorageUI();
 
-  } catch (error) {
+
+  }
+
+  catch (error) {
 
     console.error(
       "Storage info error:",
@@ -1925,12 +3953,13 @@ async function loadStorageInfo() {
     );
 
   }
+
 }
 
 
 /* =========================================================
-   STORAGE UI
-========================================================= */
+   💾 UPDATE STORAGE UI
+   ========================================================= */
 
 function updateStorageUI() {
 
@@ -1942,89 +3971,150 @@ function updateStorageUI() {
   } =
     storageInfo;
 
+
   const percent =
     Number(
       percentage.toFixed(2)
     );
+
 
   const usedCard =
     document.getElementById(
       "storageUsedCard"
     );
 
+
   const remainingCard =
     document.getElementById(
       "storageRemainingCard"
     );
+
 
   const totalFilesCard =
     document.getElementById(
       "totalFilesCard"
     );
 
+
   const sidebarText =
     document.getElementById(
       "sidebarStorageText"
     );
+
 
   const sidebarPercentage =
     document.getElementById(
       "sidebarStoragePercentage"
     );
 
+
   const sidebarBar =
     document.getElementById(
       "sidebarStorageBar"
     );
 
+
   if (usedCard) {
+
     usedCard.textContent =
       formatSize(used);
+
   }
+
 
   if (remainingCard) {
+
     remainingCard.textContent =
       formatSize(remaining);
+
   }
+
 
   if (totalFilesCard) {
+
     totalFilesCard.textContent =
       allFiles.length;
+
   }
+
 
   if (sidebarText) {
+
     sidebarText.textContent =
       `${formatSize(used)} / ${formatSize(quota)}`;
+
   }
+
 
   if (sidebarPercentage) {
+
     sidebarPercentage.textContent =
       `${percent}%`;
+
   }
 
+
   if (sidebarBar) {
+
     sidebarBar.style.width =
       `${percent}%`;
+
   }
+
 }
 
 
 /* =========================================================
-   LOAD FILES
-========================================================= */
+   📂 LOAD FILES
+   =========================================================
+   Mengambil daftar file milik user dari tabel "files".
+   ========================================================= */
 
 async function loadFiles() {
 
   if (!currentUser) {
+
     return;
+
   }
 
+
+  /*
+   * Tampilkan loading sementara.
+   */
   fileList.innerHTML = `
-    <div class="col-span-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center text-slate-400">
-      <div class="text-3xl mb-3 animate-pulse">☁️</div>
+
+    <div
+      class="
+        col-span-full
+        bg-white
+        dark:bg-slate-900
+        border
+        border-slate-200
+        dark:border-slate-800
+        rounded-2xl
+        p-8
+        text-center
+        text-slate-400
+      "
+    >
+
+      <div
+        class="
+          text-3xl
+          mb-3
+          animate-pulse
+        "
+      >
+        ☁️
+      </div>
+
       Memuat file...
+
     </div>
+
   `;
+
 
   try {
 
@@ -2042,30 +4132,63 @@ async function loadFiles() {
         .order(
           "created_at",
           {
-            ascending: false
+            ascending:
+              false
           }
         );
 
+
     if (error) {
+
       throw error;
+
     }
+
 
     allFiles =
       data || [];
 
+
+    /*
+     * Render file ke halaman.
+     */
     renderFiles();
 
+
+    /*
+     * Update storage.
+     */
     await loadStorageInfo();
 
-  } catch (error) {
 
-    console.error(error);
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
 
     fileList.innerHTML = `
-      <div class="col-span-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-2xl p-5">
+
+      <div
+        class="
+          col-span-full
+          bg-red-50
+          dark:bg-red-500/10
+          text-red-600
+          dark:text-red-400
+          rounded-2xl
+          p-5
+        "
+      >
+
         Gagal memuat file:
         ${escapeHtml(error.message)}
+
       </div>
+
     `;
 
   }
@@ -2074,8 +4197,8 @@ async function loadFiles() {
 
 
 /* =========================================================
-   FILTER + SORT
-========================================================= */
+   🔎 FILTER + SORT
+   ========================================================= */
 
 function getVisibleFiles() {
 
@@ -2084,77 +4207,123 @@ function getVisibleFiles() {
       .toLowerCase()
       .trim();
 
+
+  /*
+   * Salin array supaya sorting tidak merusak
+   * array allFiles asli.
+   */
   let files =
     [...allFiles];
 
+
+  /*
+   * Filter berdasarkan nama file.
+   */
   if (keyword) {
 
     files =
-      files.filter(file =>
-        String(file.file_name || "")
+      files.filter(
+        file =>
+          String(
+            file.file_name || ""
+          )
           .toLowerCase()
-          .includes(keyword)
+          .includes(
+            keyword
+          )
       );
 
   }
 
-  switch (sortSelect.value) {
+
+  /*
+   * Sorting.
+   */
+  switch (
+    sortSelect.value
+  ) {
+
 
     case "oldest":
 
       files.sort(
         (a, b) =>
-          new Date(a.created_at) -
-          new Date(b.created_at)
+          new Date(
+            a.created_at
+          ) -
+          new Date(
+            b.created_at
+          )
       );
 
       break;
+
 
     case "name_asc":
 
       files.sort(
         (a, b) =>
-          String(a.file_name)
-            .localeCompare(
-              String(b.file_name),
-              "id"
-            )
+          String(
+            a.file_name
+          )
+          .localeCompare(
+            String(
+              b.file_name
+            ),
+            "id"
+          )
       );
 
       break;
+
 
     case "name_desc":
 
       files.sort(
         (a, b) =>
-          String(b.file_name)
-            .localeCompare(
-              String(a.file_name),
-              "id"
-            )
+          String(
+            b.file_name
+          )
+          .localeCompare(
+            String(
+              a.file_name
+            ),
+            "id"
+          )
       );
 
       break;
+
 
     case "size_desc":
 
       files.sort(
         (a, b) =>
-          Number(b.file_size || 0) -
-          Number(a.file_size || 0)
+          Number(
+            b.file_size || 0
+          ) -
+          Number(
+            a.file_size || 0
+          )
       );
 
       break;
+
 
     case "size_asc":
 
       files.sort(
         (a, b) =>
-          Number(a.file_size || 0) -
-          Number(b.file_size || 0)
+          Number(
+            a.file_size || 0
+          ) -
+          Number(
+            b.file_size || 0
+          )
       );
 
       break;
+
 
     case "newest":
 
@@ -2162,31 +4331,309 @@ function getVisibleFiles() {
 
       files.sort(
         (a, b) =>
-          new Date(b.created_at) -
-          new Date(a.created_at)
+          new Date(
+            b.created_at
+          ) -
+          new Date(
+            a.created_at
+          )
       );
 
   }
 
+
   return files;
+
 }
 
 
 /* =========================================================
-   RENDER FILES
-========================================================= */
+   🖼️ THUMBNAIL URL
+   =========================================================
+   ⚡ BAGIAN PENTING UNTUK PERFORMA FOTO
+   =========================================================
+
+   Foto asli mungkin berukuran:
+   3 MB
+   5 MB
+   10 MB
+   dst.
+
+   Untuk kartu file kita TIDAK perlu foto sebesar itu.
+
+   Supabase Image Transformation digunakan untuk membuat
+   gambar kecil khusus thumbnail.
+
+   width  = 480
+   height = 288
+   quality = 70
+
+   🟢 Kalau thumbnail masih terlalu besar:
+      turunkan quality menjadi 60.
+
+   🟢 Kalau gambar terlalu kecil:
+      naikkan width menjadi 640.
+
+   ⚠️ Image Transformation harus tersedia/aktif pada
+      project Supabase kamu.
+
+   ========================================================= */
+
+async function getThumbnailUrl(file) {
+
+  const path =
+    file.storage_path;
+
+
+  /*
+   * Jika URL sudah pernah dibuat,
+   * gunakan cache.
+   */
+  if (
+    thumbnailCache.has(path)
+  ) {
+
+    return thumbnailCache.get(
+      path
+    );
+
+  }
+
+
+  /*
+   * Jika request untuk path yang sama
+   * sedang berjalan, tunggu request tersebut.
+   */
+  if (
+    thumbnailRequests.has(path)
+  ) {
+
+    return thumbnailRequests.get(
+      path
+    );
+
+  }
+
+
+  const request =
+    (async () => {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .storage
+            .from(BUCKET)
+            .createSignedUrl(
+              path,
+              300,
+              {
+
+                /*
+                 * ⚡ IMAGE TRANSFORMATION
+                 *
+                 * Inilah yang membuat thumbnail
+                 * jauh lebih ringan daripada file asli.
+                 */
+                transform: {
+
+                  /*
+                   * 🟢 Lebar thumbnail.
+                   */
+                  width:
+                    480,
+
+                  /*
+                   * 🟢 Tinggi thumbnail.
+                   */
+                  height:
+                    288,
+
+                  /*
+                   * cover:
+                   * gambar memenuhi seluruh kotak.
+                   *
+                   * contain:
+                   * seluruh gambar terlihat tetapi
+                   * bisa muncul ruang kosong.
+                   */
+                  resize:
+                    "cover",
+
+                  /*
+                   * 🟢 Kualitas thumbnail.
+                   *
+                   * 50 = sangat ringan
+                   * 70 = seimbang
+                   * 80 = lebih bagus
+                   * 100 = kualitas tinggi
+                   */
+                  quality:
+                    70
+
+                }
+
+              }
+            );
+
+
+        if (error) {
+
+          /*
+           * Jika transform tidak tersedia,
+           * error akan muncul di console.
+           */
+          console.error(
+            "Thumbnail error:",
+            error
+          );
+
+          return null;
+
+        }
+
+
+        const url =
+          data?.signedUrl;
+
+
+        if (url) {
+
+          /*
+           * Simpan URL ke cache.
+           */
+          thumbnailCache.set(
+            path,
+            url
+          );
+
+        }
+
+
+        return url;
+
+      }
+
+      finally {
+
+        /*
+         * Hapus request dari daftar setelah selesai.
+         */
+        thumbnailRequests.delete(
+          path
+        );
+
+      }
+
+    })();
+
+
+  thumbnailRequests.set(
+    path,
+    request
+  );
+
+
+  return request;
+
+}
+
+
+/* =========================================================
+   🖼️ LOAD IMAGE THUMBNAIL
+   ========================================================= */
+
+async function loadImageThumbnail(
+  img,
+  file
+) {
+
+  try {
+
+    /*
+     * Ambil thumbnail URL.
+     */
+    const url =
+      await getThumbnailUrl(
+        file
+      );
+
+
+    if (!url) {
+
+      return;
+
+    }
+
+
+    /*
+     * Masukkan URL ke img.
+     */
+    img.src =
+      url;
+
+
+    /*
+     * Ketika gambar selesai dimuat,
+     * tampilkan gambar dan sembunyikan placeholder.
+     */
+    img.onload = () => {
+
+      img.classList.remove(
+        "hidden"
+      );
+
+
+      const placeholder =
+        img.parentElement
+          .querySelector(
+            ".preview-placeholder"
+          );
+
+
+      placeholder?.classList.add(
+        "hidden"
+      );
+
+    };
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Thumbnail loading error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   📦 RENDER FILES
+   ========================================================= */
 
 function renderFiles() {
 
   const files =
     getVisibleFiles();
 
-  fileList.innerHTML = "";
+
+  fileList.innerHTML =
+    "";
+
 
   document.getElementById(
     "fileCount"
   ).textContent =
     `${files.length} file${files.length !== 1 ? "s" : ""}`;
+
 
   if (
     files.length === 0
@@ -2200,17 +4647,25 @@ function renderFiles() {
 
   }
 
+
   emptyState.classList.add(
     "hidden"
   );
 
 
-  if (currentView === "list") {
+  /*
+   * Tentukan mode grid/list.
+   */
+  if (
+    currentView === "list"
+  ) {
 
     fileList.className =
       "space-y-3";
 
-  } else {
+  }
+
+  else {
 
     fileList.className =
       "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4";
@@ -2218,19 +4673,37 @@ function renderFiles() {
   }
 
 
+  /*
+   * Gunakan DocumentFragment.
+   *
+   * Ini mengurangi perubahan DOM berulang ketika
+   * banyak file ditampilkan.
+   */
+  const fragment =
+    document.createDocumentFragment();
+
+
   files.forEach(
     file => {
 
-      if (currentView === "list") {
+      if (
+        currentView === "list"
+      ) {
 
-        fileList.appendChild(
-          createListCard(file)
+        fragment.appendChild(
+          createListCard(
+            file
+          )
         );
 
-      } else {
+      }
 
-        fileList.appendChild(
-          createGridCard(file)
+      else {
+
+        fragment.appendChild(
+          createGridCard(
+            file
+          )
         );
 
       }
@@ -2238,46 +4711,112 @@ function renderFiles() {
     }
   );
 
+
+  fileList.appendChild(
+    fragment
+  );
+
+
   updateStorageUI();
+
 }
 
 
 /* =========================================================
-   GRID CARD
-========================================================= */
+   🖼️ GRID CARD
+   ========================================================= */
 
 function createGridCard(file) {
 
   const card =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   card.className =
     "file-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl";
 
 
   const type =
-    getFileType(file);
+    getFileType(
+      file
+    );
 
+
+  /*
+   * Default preview.
+   *
+   * Digunakan untuk file selain image.
+   */
   let preview = `
-    <div class="h-36 bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-6xl">
+
+    <div
+      class="
+        h-36
+        bg-slate-50
+        dark:bg-slate-800
+        flex
+        items-center
+        justify-center
+        text-6xl
+      "
+    >
       ${getFileIcon(file.file_name)}
     </div>
+
   `;
 
-  if (type === "image") {
+
+  /*
+   * Jika file adalah gambar,
+   * buat area thumbnail.
+   */
+  if (
+    type === "image"
+  ) {
 
     preview = `
-      <div class="h-36 bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+
+      <div
+        class="
+          h-36
+          bg-slate-100
+          dark:bg-slate-800
+          flex
+          items-center
+          justify-center
+          overflow-hidden
+        "
+      >
+
         <img
           src=""
-          data-preview-path="${escapeHtml(file.storage_path)}"
-          class="preview-thumbnail w-full h-full object-cover hidden"
+          class="
+            preview-thumbnail
+            w-full
+            h-full
+            object-cover
+            hidden
+          "
           alt=""
+          loading="lazy"
+          decoding="async"
+          fetchpriority="low"
         />
-        <div class="preview-placeholder text-5xl">
+
+
+        <div
+          class="
+            preview-placeholder
+            text-5xl
+          "
+        >
           ${getFileIcon(file.file_name)}
         </div>
+
       </div>
+
     `;
 
   }
@@ -2287,26 +4826,50 @@ function createGridCard(file) {
 
     ${preview}
 
+
     <div class="p-4">
 
-      <div class="flex items-start gap-3">
+      <div
+        class="
+          flex
+          items-start
+          gap-3
+        "
+      >
 
-        <div class="min-w-0 flex-1">
+        <div
+          class="
+            min-w-0
+            flex-1
+          "
+        >
 
           <div
-            class="font-bold text-sm truncate"
+            class="
+              font-bold
+              text-sm
+              truncate
+            "
             title="${escapeHtml(file.file_name)}"
           >
             ${escapeHtml(file.file_name)}
           </div>
 
-          <div class="text-xs text-slate-400 mt-1">
+
+          <div
+            class="
+              text-xs
+              text-slate-400
+              mt-1
+            "
+          >
             ${formatSize(file.file_size)}
             •
             ${formatDate(file.created_at)}
           </div>
 
         </div>
+
 
         <div class="text-xl">
           ${getFileIcon(file.file_name)}
@@ -2315,22 +4878,61 @@ function createGridCard(file) {
       </div>
 
 
-      <div class="grid grid-cols-3 gap-2 mt-4">
+      <div
+        class="
+          grid
+          grid-cols-3
+          gap-2
+          mt-4
+        "
+      >
 
         <button
-          class="preview-button py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-xs font-semibold"
+          class="
+            preview-button
+            py-2
+            rounded-xl
+            bg-slate-100
+            dark:bg-slate-800
+            hover:bg-indigo-50
+            dark:hover:bg-indigo-500/10
+            text-xs
+            font-semibold
+          "
         >
           👁️ Lihat
         </button>
 
+
         <button
-          class="rename-button py-2 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 hover:bg-amber-100 text-xs font-semibold"
+          class="
+            rename-button
+            py-2
+            rounded-xl
+            bg-amber-50
+            dark:bg-amber-500/10
+            text-amber-600
+            hover:bg-amber-100
+            text-xs
+            font-semibold
+          "
         >
           ✏️ Nama
         </button>
 
+
         <button
-          class="delete-button py-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 hover:bg-red-100 text-xs font-semibold"
+          class="
+            delete-button
+            py-2
+            rounded-xl
+            bg-red-50
+            dark:bg-red-500/10
+            text-red-600
+            hover:bg-red-100
+            text-xs
+            font-semibold
+          "
         >
           🗑️
         </button>
@@ -2342,34 +4944,63 @@ function createGridCard(file) {
   `;
 
 
+  /*
+   * Tombol preview.
+   */
   card
-    .querySelector(".preview-button")
+    .querySelector(
+      ".preview-button"
+    )
     .addEventListener(
       "click",
-      () => previewFile(file)
+      () =>
+        previewFile(
+          file
+        )
     );
 
 
+  /*
+   * Tombol rename.
+   */
   card
-    .querySelector(".rename-button")
+    .querySelector(
+      ".rename-button"
+    )
     .addEventListener(
       "click",
-      () => openRenameModal(file)
+      () =>
+        openRenameModal(
+          file
+        )
     );
 
 
+  /*
+   * Tombol delete.
+   */
   card
-    .querySelector(".delete-button")
+    .querySelector(
+      ".delete-button"
+    )
     .addEventListener(
       "click",
-      () => openDeleteModal(file)
+      () =>
+        openDeleteModal(
+          file
+        )
     );
 
 
+  /*
+   * Jika file gambar,
+   * load thumbnail.
+   */
   const thumbnail =
     card.querySelector(
       ".preview-thumbnail"
     );
+
 
   if (thumbnail) {
 
@@ -2380,18 +5011,23 @@ function createGridCard(file) {
 
   }
 
+
   return card;
+
 }
 
 
 /* =========================================================
-   LIST CARD
-========================================================= */
+   📋 LIST CARD
+   ========================================================= */
 
 function createListCard(file) {
 
   const card =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   card.className =
     "file-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4";
@@ -2399,25 +5035,57 @@ function createListCard(file) {
 
   card.innerHTML = `
 
-    <div class="flex items-center gap-4">
+    <div
+      class="
+        flex
+        items-center
+        gap-4
+      "
+    >
 
       <div
-        class="w-14 h-14 flex-shrink-0 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-3xl"
+        class="
+          w-14
+          h-14
+          flex-shrink-0
+          rounded-2xl
+          bg-slate-100
+          dark:bg-slate-800
+          flex
+          items-center
+          justify-center
+          text-3xl
+        "
       >
         ${getFileIcon(file.file_name)}
       </div>
 
 
-      <div class="min-w-0 flex-1">
+      <div
+        class="
+          min-w-0
+          flex-1
+        "
+      >
 
         <div
-          class="font-bold truncate"
+          class="
+            font-bold
+            truncate
+          "
           title="${escapeHtml(file.file_name)}"
         >
           ${escapeHtml(file.file_name)}
         </div>
 
-        <div class="text-xs text-slate-400 mt-1">
+
+        <div
+          class="
+            text-xs
+            text-slate-400
+            mt-1
+          "
+        >
           ${formatSize(file.file_size)}
           •
           ${formatDate(file.created_at)}
@@ -2426,22 +5094,56 @@ function createListCard(file) {
       </div>
 
 
-      <div class="hidden sm:flex gap-2">
+      <div
+        class="
+          hidden
+          sm:flex
+          gap-2
+        "
+      >
 
         <button
-          class="preview-button px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm"
+          class="
+            preview-button
+            px-3
+            py-2
+            rounded-xl
+            bg-slate-100
+            dark:bg-slate-800
+            text-sm
+          "
         >
           👁️
         </button>
 
+
         <button
-          class="rename-button px-3 py-2 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 text-sm"
+          class="
+            rename-button
+            px-3
+            py-2
+            rounded-xl
+            bg-amber-50
+            dark:bg-amber-500/10
+            text-amber-600
+            text-sm
+          "
         >
           ✏️
         </button>
 
+
         <button
-          class="delete-button px-3 py-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 text-sm"
+          class="
+            delete-button
+            px-3
+            py-2
+            rounded-xl
+            bg-red-50
+            dark:bg-red-500/10
+            text-red-600
+            text-sm
+          "
         >
           🗑️
         </button>
@@ -2449,10 +5151,18 @@ function createListCard(file) {
       </div>
 
 
+      <!-- Mobile menu -->
       <div class="sm:hidden">
 
         <button
-          class="mobile-menu-button w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800"
+          class="
+            mobile-menu-button
+            w-10
+            h-10
+            rounded-xl
+            bg-slate-100
+            dark:bg-slate-800
+          "
         >
           ⋮
         </button>
@@ -2465,139 +5175,151 @@ function createListCard(file) {
 
 
   card
-    .querySelector(".preview-button")
+    .querySelector(
+      ".preview-button"
+    )
     ?.addEventListener(
       "click",
-      () => previewFile(file)
+      () =>
+        previewFile(
+          file
+        )
     );
 
 
   card
-    .querySelector(".rename-button")
+    .querySelector(
+      ".rename-button"
+    )
     ?.addEventListener(
       "click",
-      () => openRenameModal(file)
+      () =>
+        openRenameModal(
+          file
+        )
     );
 
 
   card
-    .querySelector(".delete-button")
+    .querySelector(
+      ".delete-button"
+    )
     ?.addEventListener(
       "click",
-      () => openDeleteModal(file)
+      () =>
+        openDeleteModal(
+          file
+        )
     );
 
 
   card
-    .querySelector(".mobile-menu-button")
+    .querySelector(
+      ".mobile-menu-button"
+    )
     ?.addEventListener(
       "click",
-      () => showMobileFileActions(file)
+      () =>
+        showMobileFileActions(
+          file
+        )
     );
 
 
   return card;
-}
-
-
-/* =========================================================
-   IMAGE THUMBNAIL
-========================================================= */
-
-async function loadImageThumbnail(
-  img,
-  file
-) {
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .createSignedUrl(
-          file.storage_path,
-          300
-        );
-
-    if (error) {
-      return;
-    }
-
-    img.src =
-      data.signedUrl;
-
-    img.onload = () => {
-
-      img.classList.remove(
-        "hidden"
-      );
-
-      const placeholder =
-        img.parentElement
-          .querySelector(
-            ".preview-placeholder"
-          );
-
-      placeholder?.classList.add(
-        "hidden"
-      );
-
-    };
-
-  } catch (error) {
-
-    console.error(error);
-
-  }
 
 }
 
 
 /* =========================================================
-   PREVIEW
-========================================================= */
+   👁️ PREVIEW
+   =========================================================
+   Preview menggunakan file asli/resolusi penuh,
+   bukan thumbnail.
+
+   Jadi:
+   - daftar file = thumbnail ringan
+   - preview = file asli
+   ========================================================= */
 
 async function previewFile(file) {
 
   try {
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .storage
-        .from(BUCKET)
-        .createSignedUrl(
-          file.storage_path,
-          60 * 10
-        );
+    let url =
+      previewCache.get(
+        file.storage_path
+      );
 
-    if (error) {
-      throw error;
+
+    /*
+     * Jika URL preview belum ada,
+     * buat signed URL baru.
+     */
+    if (!url) {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .storage
+          .from(BUCKET)
+          .createSignedUrl(
+            file.storage_path,
+            60 * 10
+          );
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      url =
+        data.signedUrl;
+
+
+      /*
+       * Simpan ke cache.
+       */
+      previewCache.set(
+        file.storage_path,
+        url
+      );
+
     }
+
 
     previewTitle.textContent =
       file.file_name;
 
-    const url =
-      data.signedUrl;
 
     const type =
-      getFileType(file);
+      getFileType(
+        file
+      );
 
 
-    if (type === "image") {
+    /*
+     * IMAGE
+     */
+    if (
+      type === "image"
+    ) {
 
       previewContent.innerHTML = `
 
         <img
-          src="${url}"
-          class="max-w-full max-h-[70vh] rounded-2xl object-contain"
+          src="${escapeHtml(url)}"
+          class="
+            max-w-full
+            max-h-[70vh]
+            rounded-2xl
+            object-contain
+          "
           alt="${escapeHtml(file.file_name)}"
         />
 
@@ -2605,37 +5327,71 @@ async function previewFile(file) {
 
     }
 
-    else if (type === "video") {
+
+    /*
+     * VIDEO
+     */
+    else if (
+      type === "video"
+    ) {
 
       previewContent.innerHTML = `
 
         <video
-          src="${url}"
+          src="${escapeHtml(url)}"
           controls
           autoplay
-          class="max-w-full max-h-[70vh] rounded-2xl"
+          class="
+            max-w-full
+            max-h-[70vh]
+            rounded-2xl
+          "
         ></video>
 
       `;
 
     }
 
-    else if (type === "audio") {
+
+    /*
+     * AUDIO
+     */
+    else if (
+      type === "audio"
+    ) {
 
       previewContent.innerHTML = `
 
-        <div class="w-full max-w-xl text-center">
+        <div
+          class="
+            w-full
+            max-w-xl
+            text-center
+          "
+        >
 
-          <div class="text-7xl mb-6">
+          <div
+            class="
+              text-7xl
+              mb-6
+            "
+          >
             🎵
           </div>
 
-          <div class="font-bold mb-5">
+
+          <div
+            class="
+              font-bold
+              mb-5
+            "
+          >
             ${escapeHtml(file.file_name)}
           </div>
 
+
           <audio
-            src="${url}"
+            src="${escapeHtml(url)}"
             controls
             class="w-full"
           ></audio>
@@ -2646,40 +5402,87 @@ async function previewFile(file) {
 
     }
 
-    else if (type === "pdf") {
+
+    /*
+     * PDF
+     */
+    else if (
+      type === "pdf"
+    ) {
 
       previewContent.innerHTML = `
 
         <iframe
-          src="${url}"
-          class="w-full h-[70vh] rounded-2xl border-0"
+          src="${escapeHtml(url)}"
+          class="
+            w-full
+            h-[70vh]
+            rounded-2xl
+            border-0
+          "
         ></iframe>
 
       `;
 
     }
 
+
+    /*
+     * FILE LAIN
+     */
     else {
 
       previewContent.innerHTML = `
 
-        <div class="text-center py-10">
+        <div
+          class="
+            text-center
+            py-10
+          "
+        >
 
-          <div class="text-7xl mb-5">
+          <div
+            class="
+              text-7xl
+              mb-5
+            "
+          >
             ${getFileIcon(file.file_name)}
           </div>
 
-          <h3 class="font-bold text-lg">
+
+          <h3
+            class="
+              font-bold
+              text-lg
+            "
+          >
             Preview tidak tersedia
           </h3>
 
-          <p class="text-sm text-slate-400 mt-2">
+
+          <p
+            class="
+              text-sm
+              text-slate-400
+              mt-2
+            "
+          >
             File ini dapat didownload untuk dibuka.
           </p>
 
+
           <button
             id="previewDownloadButton"
-            class="mt-5 px-5 py-3 rounded-xl bg-indigo-600 text-white font-bold"
+            class="
+              mt-5
+              px-5
+              py-3
+              rounded-xl
+              bg-indigo-600
+              text-white
+              font-bold
+            "
           >
             ⬇️ Download File
           </button>
@@ -2688,24 +5491,35 @@ async function previewFile(file) {
 
       `;
 
+
       document
         .getElementById(
           "previewDownloadButton"
         )
         .addEventListener(
           "click",
-          () => downloadFile(file)
+          () =>
+            downloadFile(
+              file
+            )
         );
 
     }
+
 
     previewModal.classList.remove(
       "hidden"
     );
 
-  } catch (error) {
 
-    console.error(error);
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
 
     showToast(
       "Preview gagal: " +
@@ -2719,8 +5533,8 @@ async function previewFile(file) {
 
 
 /* =========================================================
-   CLOSE PREVIEW
-========================================================= */
+   ❌ CLOSE PREVIEW
+   ========================================================= */
 
 document
   .getElementById(
@@ -2736,6 +5550,9 @@ previewModal.addEventListener(
   "click",
   event => {
 
+    /*
+     * Klik background modal = tutup.
+     */
     if (
       event.target ===
       previewModal
@@ -2755,14 +5572,21 @@ function closePreview() {
     "hidden"
   );
 
-  previewContent.innerHTML = "";
+
+  /*
+   * Hapus isi preview.
+   *
+   * Ini juga membantu menghentikan video/audio.
+   */
+  previewContent.innerHTML =
+    "";
 
 }
 
 
 /* =========================================================
-   DOWNLOAD
-========================================================= */
+   ⬇️ DOWNLOAD
+   ========================================================= */
 
 async function downloadFile(file) {
 
@@ -2780,36 +5604,55 @@ async function downloadFile(file) {
           60 * 60
         );
 
+
     if (error) {
+
       throw error;
+
     }
 
+
     const link =
-      document.createElement("a");
+      document.createElement(
+        "a"
+      );
+
 
     link.href =
       data.signedUrl;
 
+
     link.target =
       "_blank";
+
 
     link.rel =
       "noopener";
 
+
     link.download =
       file.file_name;
+
 
     document.body.appendChild(
       link
     );
 
+
     link.click();
+
 
     link.remove();
 
-  } catch (error) {
 
-    console.error(error);
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
 
     showToast(
       "Download gagal: " +
@@ -2823,28 +5666,38 @@ async function downloadFile(file) {
 
 
 /* =========================================================
-   RENAME MODAL
-========================================================= */
+   ✏️ RENAME
+   ========================================================= */
 
 function openRenameModal(file) {
 
   currentRenameFile =
     file;
 
+
   renameInput.value =
     file.file_name;
+
 
   renameModal.classList.remove(
     "hidden"
   );
 
+
+  /*
+   * Fokus input otomatis.
+   */
   setTimeout(
     () => {
+
       renameInput.focus();
+
       renameInput.select();
+
     },
     50
   );
+
 }
 
 
@@ -2852,6 +5705,7 @@ function closeRenameModal() {
 
   currentRenameFile =
     null;
+
 
   renameModal.classList.add(
     "hidden"
@@ -2880,6 +5734,10 @@ document
   );
 
 
+/*
+ * Enter = simpan.
+ * Escape = batal.
+ */
 renameInput.addEventListener(
   "keydown",
   event => {
@@ -2891,6 +5749,7 @@ renameInput.addEventListener(
       renameCurrentFile();
 
     }
+
 
     if (
       event.key === "Escape"
@@ -2904,14 +5763,24 @@ renameInput.addEventListener(
 );
 
 
+/* =========================================================
+   💾 RENAME FILE DI DATABASE
+   ========================================================= */
+
 async function renameCurrentFile() {
 
-  if (!currentRenameFile) {
+  if (
+    !currentRenameFile
+  ) {
+
     return;
+
   }
+
 
   const newName =
     renameInput.value.trim();
+
 
   if (!newName) {
 
@@ -2921,7 +5790,9 @@ async function renameCurrentFile() {
     );
 
     return;
+
   }
+
 
   if (
     newName ===
@@ -2931,17 +5802,23 @@ async function renameCurrentFile() {
     closeRenameModal();
 
     return;
+
   }
+
 
   const button =
     document.getElementById(
       "saveRenameButton"
     );
 
-  button.disabled = true;
+
+  button.disabled =
+    true;
+
 
   button.textContent =
     "Menyimpan...";
+
 
   try {
 
@@ -2951,11 +5828,13 @@ async function renameCurrentFile() {
       await supabaseClient
         .from("files")
         .update({
+
           file_name:
             newName,
 
           updated_at:
             new Date().toISOString()
+
         })
         .eq(
           "id",
@@ -2966,21 +5845,33 @@ async function renameCurrentFile() {
           currentUser.id
         );
 
+
     if (error) {
+
       throw error;
+
     }
 
+
     closeRenameModal();
+
 
     showToast(
       "Nama file berhasil diubah."
     );
 
+
     await loadFiles();
 
-  } catch (error) {
 
-    console.error(error);
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
 
     showToast(
       "Rename gagal: " +
@@ -2988,9 +5879,13 @@ async function renameCurrentFile() {
       "error"
     );
 
-  } finally {
+  }
 
-    button.disabled = false;
+
+  finally {
+
+    button.disabled =
+      false;
 
     button.textContent =
       "Simpan";
@@ -3001,16 +5896,18 @@ async function renameCurrentFile() {
 
 
 /* =========================================================
-   DELETE MODAL
-========================================================= */
+   🗑️ DELETE MODAL
+   ========================================================= */
 
 function openDeleteModal(file) {
 
   currentDeleteFile =
     file;
 
+
   deleteFileName.textContent =
     file.file_name;
+
 
   deleteModal.classList.remove(
     "hidden"
@@ -3023,6 +5920,7 @@ function closeDeleteModal() {
 
   currentDeleteFile =
     null;
+
 
   deleteModal.classList.add(
     "hidden"
@@ -3051,41 +5949,75 @@ document
   );
 
 
+/* =========================================================
+   🗑️ DELETE FILE
+   =========================================================
+   Proses:
+   1. Hapus file dari Storage.
+   2. Hapus data file dari tabel database.
+   ========================================================= */
+
 async function deleteCurrentFile() {
 
-  if (!currentDeleteFile) {
+  if (
+    !currentDeleteFile
+  ) {
+
     return;
+
   }
+
 
   const button =
     document.getElementById(
       "confirmDeleteButton"
     );
 
-  button.disabled = true;
+
+  button.disabled =
+    true;
+
 
   button.textContent =
     "Menghapus...";
 
+
   try {
 
+    /*
+     * STEP 1
+     * Hapus file dari Supabase Storage.
+     */
     const {
-      error: storageError
+      error:
+        storageError
     } =
       await supabaseClient
         .storage
         .from(BUCKET)
         .remove([
+
           currentDeleteFile.storage_path
+
         ]);
 
-    if (storageError) {
+
+    if (
+      storageError
+    ) {
+
       throw storageError;
+
     }
 
 
+    /*
+     * STEP 2
+     * Hapus record dari database.
+     */
     const {
-      error: databaseError
+      error:
+        databaseError
     } =
       await supabaseClient
         .from("files")
@@ -3099,21 +6031,47 @@ async function deleteCurrentFile() {
           currentUser.id
         );
 
-    if (databaseError) {
+
+    if (
+      databaseError
+    ) {
+
       throw databaseError;
+
     }
 
+
+    /*
+     * Bersihkan cache file tersebut.
+     */
+    thumbnailCache.delete(
+      currentDeleteFile.storage_path
+    );
+
+    previewCache.delete(
+      currentDeleteFile.storage_path
+    );
+
+
     closeDeleteModal();
+
 
     showToast(
       "File berhasil dihapus."
     );
 
+
     await loadFiles();
 
-  } catch (error) {
 
-    console.error(error);
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
 
     showToast(
       "Gagal menghapus file: " +
@@ -3121,9 +6079,13 @@ async function deleteCurrentFile() {
       "error"
     );
 
-  } finally {
+  }
 
-    button.disabled = false;
+
+  finally {
+
+    button.disabled =
+      false;
 
     button.textContent =
       "Hapus";
@@ -3134,38 +6096,72 @@ async function deleteCurrentFile() {
 
 
 /* =========================================================
-   MOBILE FILE ACTIONS
-========================================================= */
+   📱 MOBILE FILE ACTIONS
+   ========================================================= */
 
 function showMobileFileActions(file) {
 
   const action =
     prompt(
-      `File: ${file.file_name}\n\nKetik:\n1 = Preview\n2 = Download\n3 = Rename\n4 = Hapus`
+
+      `File: ${file.file_name}
+
+Ketik:
+
+1 = Preview
+2 = Download
+3 = Rename
+4 = Hapus`
+
     );
 
-  if (action === "1") {
-    previewFile(file);
+
+  if (
+    action === "1"
+  ) {
+
+    previewFile(
+      file
+    );
+
   }
 
-  else if (action === "2") {
-    downloadFile(file);
+  else if (
+    action === "2"
+  ) {
+
+    downloadFile(
+      file
+    );
+
   }
 
-  else if (action === "3") {
-    openRenameModal(file);
+  else if (
+    action === "3"
+  ) {
+
+    openRenameModal(
+      file
+    );
+
   }
 
-  else if (action === "4") {
-    openDeleteModal(file);
+  else if (
+    action === "4"
+  ) {
+
+    openDeleteModal(
+      file
+    );
+
   }
 
 }
 
 
 /* =========================================================
-   UPLOAD QUEUE
-========================================================= */
+   📤 UPLOAD QUEUE
+   ========================================================= */
 
 function showUploadQueue() {
 
@@ -3176,6 +6172,9 @@ function showUploadQueue() {
 }
 
 
+/*
+ * Membuat satu item progress upload.
+ */
 function createUploadItem(file) {
 
   const id =
@@ -3184,51 +6183,101 @@ function createUploadItem(file) {
       .toString(36)
       .substring(2);
 
+
   const item =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   item.id =
     id;
 
+
   item.className =
     "border border-slate-200 dark:border-slate-700 rounded-2xl p-4";
 
+
   item.innerHTML = `
 
-    <div class="flex items-center gap-3">
+    <div
+      class="
+        flex
+        items-center
+        gap-3
+      "
+    >
 
       <div class="text-2xl">
         ${getFileIcon(file.name)}
       </div>
 
-      <div class="flex-1 min-w-0">
+
+      <div
+        class="
+          flex-1
+          min-w-0
+        "
+      >
 
         <div
-          class="font-semibold text-sm truncate"
+          class="
+            font-semibold
+            text-sm
+            truncate
+          "
         >
           ${escapeHtml(file.name)}
         </div>
 
+
         <div
-          class="upload-status text-xs text-slate-400 mt-1"
+          class="
+            upload-status
+            text-xs
+            text-slate-400
+            mt-1
+          "
         >
           Menunggu...
         </div>
 
       </div>
 
+
       <div
-        class="upload-percent text-xs font-bold"
+        class="
+          upload-percent
+          text-xs
+          font-bold
+        "
       >
         0%
       </div>
 
     </div>
 
-    <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mt-3">
+
+    <div
+      class="
+        h-2
+        bg-slate-100
+        dark:bg-slate-800
+        rounded-full
+        overflow-hidden
+        mt-3
+      "
+    >
 
       <div
-        class="upload-progress h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full"
+        class="
+          upload-progress
+          h-full
+          bg-gradient-to-r
+          from-indigo-500
+          to-blue-500
+          rounded-full
+        "
         style="width:0%"
       ></div>
 
@@ -3236,31 +6285,47 @@ function createUploadItem(file) {
 
   `;
 
+
   uploadQueue.appendChild(
     item
   );
 
+
   return {
+
     item,
+
     progress:
       item.querySelector(
         ".upload-progress"
       ),
+
     percent:
       item.querySelector(
         ".upload-percent"
       ),
+
     status:
       item.querySelector(
         ".upload-status"
       )
+
   };
+
 }
 
 
 /* =========================================================
-   UPLOAD FILES
-========================================================= */
+   📤 UPLOAD FILES
+   =========================================================
+   Proses:
+   1. Validasi user.
+   2. Validasi ukuran file.
+   3. Validasi quota.
+   4. Upload ke Storage.
+   5. Simpan informasi ke tabel files.
+   6. Jika database gagal -> rollback Storage.
+   ========================================================= */
 
 async function uploadFiles(files) {
 
@@ -3275,23 +6340,44 @@ async function uploadFiles(files) {
 
   }
 
-  if (!files.length) {
+
+  if (
+    !files.length
+  ) {
+
     return;
+
   }
+
 
   showUploadQueue();
 
-  let successCount = 0;
+
+  let successCount =
+    0;
 
 
+  /*
+   * Upload satu per satu.
+   *
+   * Jika ingin upload paralel,
+   * bagian ini bisa diubah,
+   * tetapi upload paralel akan membutuhkan
+   * penanganan quota dan error yang lebih kompleks.
+   */
   for (
     const file of files
   ) {
 
     const ui =
-      createUploadItem(file);
+      createUploadItem(
+        file
+      );
 
 
+    /*
+     * Validasi ukuran file.
+     */
     if (
       file.size >
       MAX_FILE_SIZE
@@ -3300,14 +6386,19 @@ async function uploadFiles(files) {
       ui.status.textContent =
         "File terlalu besar.";
 
+
       ui.status.className =
         "upload-status text-xs text-red-500 mt-1";
+
 
       continue;
 
     }
 
 
+    /*
+     * Validasi storage.
+     */
     if (
       file.size >
       storageInfo.remaining
@@ -3316,8 +6407,10 @@ async function uploadFiles(files) {
       ui.status.textContent =
         "Storage tidak mencukupi.";
 
+
       ui.status.className =
         "upload-status text-xs text-red-500 mt-1";
+
 
       continue;
 
@@ -3331,10 +6424,12 @@ async function uploadFiles(files) {
 
 
       /*
-       * Sanitasi nama file untuk
-       * storage path.
+       * =====================================================
+       * 🛡️ SANITASI NAMA FILE
+       * =====================================================
+       *
+       * Karakter aneh diubah menjadi "_".
        */
-
       const safeName =
         file.name
           .replace(
@@ -3343,67 +6438,122 @@ async function uploadFiles(files) {
           );
 
 
+      /*
+       * =====================================================
+       * 🆔 UNIQUE FILE NAME
+       * =====================================================
+       *
+       * Tujuannya agar dua file dengan nama sama
+       * tidak saling menimpa.
+       */
       const uniqueName =
         `${Date.now()}_${Math.random()
           .toString(36)
           .substring(2, 8)}_${safeName}`;
 
 
+      /*
+       * Struktur Storage:
+       *
+       * USER_ID / UNIQUE_FILE_NAME
+       *
+       * Contoh:
+       *
+       * abc123/1720000000_xxx_foto.jpg
+       */
       const filePath =
         `${currentUser.id}/${uniqueName}`;
 
 
       /*
-       * Supabase JS upload tidak menyediakan
-       * progress callback native pada metode
-       * upload biasa. Progress UI di sini
-       * menunjukkan status upload.
+       * Supabase upload biasa tidak memberikan
+       * progress callback native seperti upload
+       * XMLHttpRequest.
+       *
+       * Jadi progress ini merupakan indikator status,
+       * bukan persentase byte sebenarnya.
        */
 
       ui.progress.style.width =
         "20%";
 
+
       ui.percent.textContent =
         "20%";
 
 
+      /*
+       * =====================================================
+       * 📤 UPLOAD KE STORAGE
+       * =====================================================
+       */
+
       const {
-        error: uploadError
+        error:
+          uploadError
       } =
         await supabaseClient
           .storage
           .from(BUCKET)
           .upload(
+
             filePath,
+
             file,
+
             {
+
+              /*
+               * Browser/CDN boleh cache file
+               * selama 1 jam.
+               */
               cacheControl:
                 "3600",
 
+              /*
+               * false = jangan overwrite file.
+               */
               upsert:
                 false,
 
+              /*
+               * MIME type file.
+               */
               contentType:
                 file.type ||
                 "application/octet-stream"
+
             }
+
           );
 
 
-      if (uploadError) {
+      if (
+        uploadError
+      ) {
+
         throw uploadError;
+
       }
 
 
       ui.progress.style.width =
         "75%";
 
+
       ui.percent.textContent =
         "75%";
 
 
+      /*
+       * =====================================================
+       * 🗄️ SIMPAN METADATA KE DATABASE
+       * =====================================================
+       */
+
       const {
-        error: databaseError
+        error:
+          databaseError
       } =
         await supabaseClient
           .from("files")
@@ -3428,13 +6578,20 @@ async function uploadFiles(files) {
           });
 
 
-      if (databaseError) {
+      if (
+        databaseError
+      ) {
 
         /*
-         * Rollback Storage jika
-         * database insert gagal.
+         * =================================================
+         * 🔄 ROLLBACK
+         * =================================================
+         *
+         * Storage berhasil tetapi database gagal.
+         *
+         * Maka file Storage dihapus lagi agar
+         * tidak meninggalkan file yatim.
          */
-
         await supabaseClient
           .storage
           .from(BUCKET)
@@ -3442,19 +6599,26 @@ async function uploadFiles(files) {
             filePath
           ]);
 
+
         throw databaseError;
 
       }
 
 
+      /*
+       * Upload sukses.
+       */
       ui.progress.style.width =
         "100%";
+
 
       ui.percent.textContent =
         "100%";
 
+
       ui.status.textContent =
         "Berhasil diupload ✓";
+
 
       ui.status.className =
         "upload-status text-xs text-emerald-500 mt-1";
@@ -3462,35 +6626,49 @@ async function uploadFiles(files) {
 
       successCount++;
 
-      /*
-       * Kurangi local remaining sementara
-       * agar upload batch tidak melewati quota.
-       */
 
+      /*
+       * Update quota lokal sementara.
+       *
+       * Ini penting ketika user memilih banyak file sekaligus.
+       */
       storageInfo.remaining =
         Math.max(
+
           storageInfo.remaining -
           file.size,
+
           0
+
         );
 
 
-    } catch (error) {
+    }
 
-      console.error(error);
+    catch (error) {
+
+      console.error(
+        error
+      );
+
 
       ui.status.textContent =
         "Gagal: " +
         error.message;
 
+
       ui.status.className =
         "upload-status text-xs text-red-500 mt-1";
 
+
       ui.progress.classList.remove(
+
         "bg-gradient-to-r",
         "from-indigo-500",
         "to-blue-500"
+
       );
+
 
       ui.progress.classList.add(
         "bg-red-500"
@@ -3501,12 +6679,25 @@ async function uploadFiles(files) {
   }
 
 
-  fileInput.value = "";
+  /*
+   * Reset input file.
+   *
+   * Ini memungkinkan user memilih file yang sama
+   * lagi setelah upload.
+   */
+  fileInput.value =
+    "";
 
+
+  /*
+   * Refresh daftar file dan storage.
+   */
   await loadFiles();
 
 
-  if (successCount > 0) {
+  if (
+    successCount > 0
+  ) {
 
     showToast(
       `${successCount} file berhasil diupload.`
@@ -3518,17 +6709,19 @@ async function uploadFiles(files) {
 
 
 /* =========================================================
-   FILE INPUT
-========================================================= */
+   📁 FILE INPUT
+   ========================================================= */
 
 fileInput.addEventListener(
   "change",
   event => {
 
     uploadFiles(
+
       Array.from(
         event.target.files || []
       )
+
     );
 
   }
@@ -3536,55 +6729,66 @@ fileInput.addEventListener(
 
 
 /* =========================================================
-   DRAG & DROP
-========================================================= */
+   🖱️ DRAG & DROP
+   ========================================================= */
 
 [
   "dragenter",
   "dragover"
-].forEach(eventName => {
 
-  dropZone.addEventListener(
-    eventName,
-    event => {
+].forEach(
+  eventName => {
 
-      event.preventDefault();
+    dropZone.addEventListener(
+      eventName,
+      event => {
 
-      event.stopPropagation();
+        event.preventDefault();
 
-      dropZone.classList.add(
-        "dragover"
-      );
+        event.stopPropagation();
 
-    }
-  );
 
-});
+        dropZone.classList.add(
+          "dragover"
+        );
+
+      }
+    );
+
+  }
+);
 
 
 [
   "dragleave",
   "drop"
-].forEach(eventName => {
 
-  dropZone.addEventListener(
-    eventName,
-    event => {
+].forEach(
+  eventName => {
 
-      event.preventDefault();
+    dropZone.addEventListener(
+      eventName,
+      event => {
 
-      event.stopPropagation();
+        event.preventDefault();
 
-      dropZone.classList.remove(
-        "dragover"
-      );
-
-    }
-  );
-
-});
+        event.stopPropagation();
 
 
+        dropZone.classList.remove(
+          "dragover"
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/*
+ * Ketika file dijatuhkan.
+ */
 dropZone.addEventListener(
   "drop",
   event => {
@@ -3594,15 +6798,18 @@ dropZone.addEventListener(
         event.dataTransfer.files || []
       );
 
-    uploadFiles(files);
+
+    uploadFiles(
+      files
+    );
 
   }
 );
 
 
 /* =========================================================
-   UPLOAD BUTTONS
-========================================================= */
+   📤 UPLOAD BUTTONS
+   ========================================================= */
 
 function scrollToUpload() {
 
@@ -3611,46 +6818,66 @@ function scrollToUpload() {
       "uploadSection"
     )
     .scrollIntoView({
-      behavior: "smooth",
-      block: "center"
+
+      behavior:
+        "smooth",
+
+      block:
+        "center"
+
     });
 
 }
 
 
+/*
+ * Semua tombol upload menggunakan fungsi yang sama.
+ */
 [
   "heroUploadButton",
   "emptyUploadButton",
   "sidebarUploadButton"
-].forEach(id => {
 
-  const button =
-    document.getElementById(id);
+].forEach(
+  id => {
 
-  if (button) {
+    const button =
+      document.getElementById(
+        id
+      );
 
-    button.addEventListener(
-      "click",
-      () => {
 
-        scrollToUpload();
+    if (button) {
 
-        setTimeout(
-          () => fileInput.click(),
-          300
-        );
+      button.addEventListener(
+        "click",
+        () => {
 
-      }
-    );
+          scrollToUpload();
+
+
+          /*
+           * Sedikit delay agar scroll selesai
+           * sebelum file picker dibuka.
+           */
+          setTimeout(
+            () =>
+              fileInput.click(),
+            300
+          );
+
+        }
+      );
+
+    }
 
   }
-
-});
+);
 
 
 /* =========================================================
-   SEARCH
-========================================================= */
+   🔎 SEARCH
+   ========================================================= */
 
 searchInput.addEventListener(
   "input",
@@ -3659,8 +6886,8 @@ searchInput.addEventListener(
 
 
 /* =========================================================
-   SORT
-========================================================= */
+   ↕️ SORT
+   ========================================================= */
 
 sortSelect.addEventListener(
   "change",
@@ -3669,8 +6896,8 @@ sortSelect.addEventListener(
 
 
 /* =========================================================
-   VIEW
-========================================================= */
+   ▦ VIEW MODE
+   ========================================================= */
 
 document
   .getElementById(
@@ -3683,12 +6910,14 @@ document
       currentView =
         "grid";
 
+
       document
         .getElementById(
           "gridViewButton"
         )
         .className =
         "flex-1 lg:flex-none px-4 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400";
+
 
       document
         .getElementById(
@@ -3697,10 +6926,15 @@ document
         .className =
         "flex-1 lg:flex-none px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500";
 
+
+      /*
+       * Simpan pilihan view.
+       */
       localStorage.setItem(
         "jf_view",
         "grid"
       );
+
 
       renderFiles();
 
@@ -3719,12 +6953,14 @@ document
       currentView =
         "list";
 
+
       document
         .getElementById(
           "listViewButton"
         )
         .className =
         "flex-1 lg:flex-none px-4 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400";
+
 
       document
         .getElementById(
@@ -3733,10 +6969,12 @@ document
         .className =
         "flex-1 lg:flex-none px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500";
 
+
       localStorage.setItem(
         "jf_view",
         "list"
       );
+
 
       renderFiles();
 
@@ -3744,6 +6982,9 @@ document
   );
 
 
+/*
+ * Ambil view terakhir yang dipilih user.
+ */
 currentView =
   localStorage.getItem(
     "jf_view"
@@ -3751,8 +6992,8 @@ currentView =
 
 
 /* =========================================================
-   REFRESH
-========================================================= */
+   🔄 REFRESH
+   ========================================================= */
 
 document
   .getElementById(
@@ -3765,19 +7006,25 @@ document
       const button =
         event.currentTarget;
 
+
       button.disabled =
         true;
+
 
       button.textContent =
         "⟳";
 
+
       await loadFiles();
+
 
       button.disabled =
         false;
 
+
       button.textContent =
         "↻";
+
 
       showToast(
         "File berhasil diperbarui.",
@@ -3789,38 +7036,45 @@ document
 
 
 /* =========================================================
-   THEME BUTTONS
-========================================================= */
+   🌙 THEME BUTTONS
+   ========================================================= */
 
 [
   "themeButton",
   "desktopThemeButton",
   "mobileThemeButton"
-].forEach(id => {
 
-  const button =
-    document.getElementById(id);
+].forEach(
+  id => {
 
-  if (button) {
+    const button =
+      document.getElementById(
+        id
+      );
 
-    button.addEventListener(
-      "click",
-      toggleTheme
-    );
+
+    if (button) {
+
+      button.addEventListener(
+        "click",
+        toggleTheme
+      );
+
+    }
 
   }
-
-});
+);
 
 
 /* =========================================================
-   MOBILE SIDEBAR
-========================================================= */
+   📱 MOBILE SIDEBAR
+   ========================================================= */
 
 const sidebar =
   document.getElementById(
     "sidebar"
   );
+
 
 const sidebarOverlay =
   document.getElementById(
@@ -3828,11 +7082,15 @@ const sidebarOverlay =
   );
 
 
+/*
+ * Buka sidebar.
+ */
 function openMobileSidebar() {
 
   sidebar.classList.remove(
     "-translate-x-full"
   );
+
 
   sidebarOverlay.classList.remove(
     "hidden"
@@ -3841,11 +7099,15 @@ function openMobileSidebar() {
 }
 
 
+/*
+ * Tutup sidebar.
+ */
 function closeMobileSidebar() {
 
   sidebar.classList.add(
     "-translate-x-full"
   );
+
 
   sidebarOverlay.classList.add(
     "hidden"
@@ -3854,6 +7116,9 @@ function closeMobileSidebar() {
 }
 
 
+/*
+ * Tombol hamburger.
+ */
 document
   .getElementById(
     "mobileMenuButton"
@@ -3864,6 +7129,9 @@ document
   );
 
 
+/*
+ * Klik overlay = tutup sidebar.
+ */
 sidebarOverlay.addEventListener(
   "click",
   closeMobileSidebar
@@ -3871,9 +7139,14 @@ sidebarOverlay.addEventListener(
 
 
 /* =========================================================
-   ENTER KEY
-========================================================= */
+   ⌨️ ENTER KEY
+   ========================================================= */
 
+
+/*
+ * Enter pada password login
+ * = klik tombol Login.
+ */
 document
   .getElementById(
     "loginPassword"
@@ -3898,6 +7171,10 @@ document
   );
 
 
+/*
+ * Enter pada password register
+ * = klik tombol Buat Akun.
+ */
 document
   .getElementById(
     "registerPassword"
@@ -3924,7 +7201,7 @@ document
 
 /* =========================================================
    ESCAPE MODALS
-========================================================= */
+   ========================================================= */
 
 document.addEventListener(
   "keydown",
@@ -3947,49 +7224,81 @@ document.addEventListener(
 
 
 /* =========================================================
-   AUTH STATE
-========================================================= */
+   🔐 SUPABASE AUTH STATE
+   =========================================================
+   Supabase akan memanggil fungsi ini ketika:
+   - login
+   - logout
+   - session berubah
+   - session dipulihkan
+   ========================================================= */
 
-supabaseClient.auth.onAuthStateChange(
-  async (
-    event,
-    session
-  ) => {
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    async (
+      event,
+      session
+    ) => {
 
-    if (
-      session &&
-      session.user
-    ) {
+      if (
+        session &&
+        session.user
+      ) {
 
-      currentUser =
-        session.user;
+        /*
+         * User login.
+         */
+        currentUser =
+          session.user;
 
-      await showApp();
 
-    } else {
+        await showApp();
 
-      currentUser =
-        null;
+      }
 
-      allFiles =
-        [];
+      else {
 
-      showAuthPage();
+        /*
+         * User logout.
+         */
+        currentUser =
+          null;
+
+
+        allFiles =
+          [];
+
+
+        /*
+         * Bersihkan cache.
+         */
+        thumbnailCache.clear();
+
+        previewCache.clear();
+
+        thumbnailRequests.clear();
+
+
+        showAuthPage();
+
+      }
 
     }
-
-  }
-);
+  );
 
 
 /* =========================================================
-   START
-========================================================= */
+   🚀 START APPLICATION
+   =========================================================
+   Fungsi pertama yang dijalankan ketika HTML selesai dibaca.
+   ========================================================= */
 
 loadUser();
+
 
 </script>
 
 </body>
+
 </html>
-```
