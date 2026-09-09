@@ -51,7 +51,8 @@ body {
 }
 
 button,
-input {
+input,
+textarea {
     font: inherit;
 }
 
@@ -354,6 +355,53 @@ button:disabled {
 }
 
 /* =========================================================
+   NAVIGATION TABS
+========================================================= */
+
+.page-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 25px;
+
+    padding: 5px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    width: fit-content;
+
+    box-shadow:
+        0 5px 20px rgba(20,28,50,.025);
+}
+
+.page-tab {
+    border: 0;
+    background: transparent;
+
+    padding: 9px 15px;
+
+    border-radius: 10px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 750;
+
+    transition: .18s;
+}
+
+.page-tab:hover {
+    color: var(--primary);
+    background: #f8f8ff;
+}
+
+.page-tab.active {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+/* =========================================================
    HERO
 ========================================================= */
 
@@ -616,10 +664,6 @@ button:disabled {
 
     transition: opacity .16s ease;
 
-    /*
-       Jangan biarkan gambar mengganggu
-       layout saat belum selesai decode.
-    */
     will-change: opacity;
 }
 
@@ -714,6 +758,398 @@ button:disabled {
 .action.delete:hover {
     color: var(--danger);
     border-color: #fecaca;
+}
+
+/* =========================================================
+   NOTES
+========================================================= */
+
+.notes-page {
+    display: none;
+}
+
+.notes-page.active {
+    display: block;
+}
+
+.files-page {
+    display: block;
+}
+
+.files-page.hidden-page {
+    display: none;
+}
+
+.notes-hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.notes-hero h1 {
+    margin: 0;
+    font-size: clamp(25px, 4vw, 34px);
+    letter-spacing: -1px;
+}
+
+.notes-hero p {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.notes-count {
+    white-space: nowrap;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #4f46e5;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.notes-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 17px;
+}
+
+.note-search {
+    flex: 1;
+    position: relative;
+}
+
+.note-search span {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9aa2b2;
+    font-size: 15px;
+}
+
+.note-search input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px 0 39px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: white;
+    outline: none;
+
+    font-size: 13px;
+}
+
+.note-search input:focus {
+    border-color: #b9bdfc;
+    box-shadow:
+        0 0 0 4px rgba(99,102,241,.07);
+}
+
+.add-note-button {
+    height: 44px;
+    padding: 0 16px;
+
+    border: 0;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    color: white;
+    font-size: 12px;
+    font-weight: 750;
+
+    box-shadow:
+        0 8px 20px rgba(79,70,229,.17);
+
+    transition: .18s;
+}
+
+.add-note-button:hover {
+    transform: translateY(-1px);
+}
+
+.notes-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(260px, 1fr));
+
+    gap: 14px;
+}
+
+.note-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    padding: 17px;
+
+    transition:
+        transform .18s,
+        box-shadow .18s,
+        border-color .18s;
+
+    min-width: 0;
+}
+
+.note-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #d9dcf7;
+
+    box-shadow:
+        0 14px 30px rgba(25,32,55,.08);
+}
+
+.note-card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #20283a;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    padding-right: 5px;
+}
+
+.note-card-date {
+    margin-top: 5px;
+    color: #929aab;
+    font-size: 10px;
+}
+
+.note-card-content {
+    margin-top: 13px;
+
+    color: #596276;
+    font-size: 12px;
+    line-height: 1.65;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    min-height: 23px;
+}
+
+.note-actions {
+    display: flex;
+    gap: 7px;
+    margin-top: 15px;
+}
+
+.note-action {
+    flex: 1;
+
+    height: 34px;
+
+    border-radius: 9px;
+
+    border: 1px solid var(--border);
+
+    background: #fafbfc;
+    color: #596276;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition: .15s;
+}
+
+.note-action:hover {
+    background: #f2f4f8;
+}
+
+.note-action.edit:hover {
+    color: var(--primary);
+    border-color: #cdd1ff;
+}
+
+.note-action.delete:hover {
+    color: var(--danger);
+    border-color: #fecaca;
+}
+
+/* =========================================================
+   NOTE MODAL
+========================================================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 80;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15,23,42,.42);
+
+    backdrop-filter: blur(5px);
+}
+
+.note-modal {
+    width: min(600px, 100%);
+
+    background: white;
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(255,255,255,.8);
+
+    box-shadow:
+        0 25px 80px rgba(15,23,42,.2);
+
+    padding: 22px;
+}
+
+.note-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.note-modal-title {
+    margin: 0;
+
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.modal-close {
+    width: 34px;
+    height: 34px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: white;
+    color: #596276;
+
+    font-size: 17px;
+}
+
+.modal-close:hover {
+    background: #f8fafc;
+}
+
+.note-form-field {
+    margin-bottom: 15px;
+}
+
+.note-form-field label {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    color: #596276;
+
+    margin-bottom: 7px;
+}
+
+.note-form-field input,
+.note-form-field textarea {
+    width: 100%;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: #fafbfe;
+
+    outline: none;
+
+    padding: 12px 14px;
+
+    color: var(--text);
+
+    transition: .18s;
+}
+
+.note-form-field input {
+    height: 46px;
+}
+
+.note-form-field textarea {
+    min-height: 190px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.note-form-field input:focus,
+.note-form-field textarea:focus {
+    border-color: var(--primary);
+    background: white;
+
+    box-shadow:
+        0 0 0 4px rgba(99,102,241,.09);
+}
+
+.note-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+
+    margin-top: 18px;
+}
+
+.modal-button {
+    height: 42px;
+
+    padding: 0 15px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.modal-cancel {
+    border: 1px solid var(--border);
+    background: white;
+    color: #596276;
+}
+
+.modal-cancel:hover {
+    background: #f8fafc;
+}
+
+.modal-save {
+    border: 0;
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    color: white;
+
+    box-shadow:
+        0 7px 18px rgba(79,70,229,.18);
 }
 
 /* =========================================================
@@ -857,7 +1293,16 @@ button:disabled {
         padding-top: 22px;
     }
 
-    .hero {
+    .page-tabs {
+        width: 100%;
+    }
+
+    .page-tab {
+        flex: 1;
+    }
+
+    .hero,
+    .notes-hero {
         align-items: flex-start;
         flex-direction: column;
         gap: 10px;
@@ -866,6 +1311,13 @@ button:disabled {
     .file-grid {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+    .notes-grid {
+        grid-template-columns:
+            repeat(1, minmax(0, 1fr));
 
         gap: 10px;
     }
@@ -888,6 +1340,14 @@ button:disabled {
         font-size: 10px;
     }
 
+    .notes-toolbar {
+        align-items: stretch;
+    }
+
+    .add-note-button {
+        padding: 0 13px;
+    }
+
     .auth-card {
         padding: 27px 22px;
         border-radius: 23px;
@@ -902,6 +1362,18 @@ button:disabled {
 
     .file-preview {
         height: 150px;
+    }
+
+    .notes-toolbar {
+        flex-direction: column;
+    }
+
+    .add-note-button {
+        width: 100%;
+    }
+
+    .note-modal {
+        padding: 18px;
     }
 }
 </style>
@@ -944,7 +1416,7 @@ button:disabled {
             </h1>
 
             <p class="auth-description">
-                Login untuk mengakses file kamu.
+                Login untuk mengakses file dan catatan kamu.
             </p>
 
             <div class="field">
@@ -1012,7 +1484,7 @@ button:disabled {
             </h1>
 
             <p class="auth-description">
-                Buat akun baru untuk mulai menyimpan file.
+                Buat akun baru untuk mulai menyimpan file dan catatan.
             </p>
 
             <div class="field">
@@ -1121,116 +1593,315 @@ button:disabled {
 
     <main class="main">
 
-        <div class="hero">
+        <!-- =================================================
+             PAGE TABS
+        ================================================== -->
 
-            <div>
-
-                <h1>
-                    File saya
-                </h1>
-
-                <p>
-                    Kelola semua file kamu dengan cepat dan mudah.
-                </p>
-
-            </div>
-
-            <div
-                id="fileCount"
-                class="file-count"
-            >
-                0 file
-            </div>
-
-        </div>
-
-
-        <!-- UPLOAD -->
-
-        <div class="upload-card">
-
-            <label
-                id="uploadZone"
-                class="upload-zone"
-                for="fileInput"
-            >
-
-                <div>
-
-                    <div class="upload-icon">
-                        ↑
-                    </div>
-
-                    <div class="upload-title">
-                        Upload file
-                    </div>
-
-                    <div class="upload-subtitle">
-                        Klik untuk memilih banyak file
-                        atau drag & drop
-                    </div>
-
-                    <div class="upload-limit">
-                        Maksimal 10 file • 100 MB per file
-                    </div>
-
-                </div>
-
-            </label>
-
-            <input
-                id="fileInput"
-                type="file"
-                multiple
-                hidden
-            >
-
-            <div
-                id="uploadStatus"
-                class="upload-status"
-            ></div>
-
-        </div>
-
-
-        <!-- TOOLBAR -->
-
-        <div class="toolbar">
-
-            <div class="search-box">
-
-                <span>⌕</span>
-
-                <input
-                    id="searchInput"
-                    type="search"
-                    placeholder="Cari file..."
-                    autocomplete="off"
-                >
-
-            </div>
+        <div class="page-tabs">
 
             <button
-                id="refreshButton"
-                class="refresh-button"
-                title="Refresh"
+                id="filesTab"
+                class="page-tab active"
             >
-                ↻
+                ☁️ File Saya
+            </button>
+
+            <button
+                id="notesTab"
+                class="page-tab"
+            >
+                📝 Notes
             </button>
 
         </div>
 
 
-        <!-- FILE GRID -->
+        <!-- =================================================
+             FILES PAGE
+        ================================================== -->
 
         <div
-            id="fileGrid"
-            class="file-grid"
-        ></div>
+            id="filesPage"
+            class="files-page"
+        >
+
+            <div class="hero">
+
+                <div>
+
+                    <h1>
+                        File saya
+                    </h1>
+
+                    <p>
+                        Kelola semua file kamu dengan cepat dan mudah.
+                    </p>
+
+                </div>
+
+                <div
+                    id="fileCount"
+                    class="file-count"
+                >
+                    0 file
+                </div>
+
+            </div>
+
+
+            <!-- UPLOAD -->
+
+            <div class="upload-card">
+
+                <label
+                    id="uploadZone"
+                    class="upload-zone"
+                    for="fileInput"
+                >
+
+                    <div>
+
+                        <div class="upload-icon">
+                            ↑
+                        </div>
+
+                        <div class="upload-title">
+                            Upload file
+                        </div>
+
+                        <div class="upload-subtitle">
+                            Klik untuk memilih banyak file
+                            atau drag & drop
+                        </div>
+
+                        <div class="upload-limit">
+                            Maksimal 10 file • 100 MB per file
+                        </div>
+
+                    </div>
+
+                </label>
+
+                <input
+                    id="fileInput"
+                    type="file"
+                    multiple
+                    hidden
+                >
+
+                <div
+                    id="uploadStatus"
+                    class="upload-status"
+                ></div>
+
+            </div>
+
+
+            <!-- TOOLBAR -->
+
+            <div class="toolbar">
+
+                <div class="search-box">
+
+                    <span>⌕</span>
+
+                    <input
+                        id="searchInput"
+                        type="search"
+                        placeholder="Cari file..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <button
+                    id="refreshButton"
+                    class="refresh-button"
+                    title="Refresh"
+                >
+                    ↻
+                </button>
+
+            </div>
+
+
+            <!-- FILE GRID -->
+
+            <div
+                id="fileGrid"
+                class="file-grid"
+            ></div>
+
+        </div>
+
+
+        <!-- =================================================
+             NOTES PAGE
+        ================================================== -->
+
+        <div
+            id="notesPage"
+            class="notes-page"
+        >
+
+            <div class="notes-hero">
+
+                <div>
+
+                    <h1>
+                        Catatan saya
+                    </h1>
+
+                    <p>
+                        Simpan catatan penting kamu dengan aman.
+                    </p>
+
+                </div>
+
+                <div
+                    id="notesCount"
+                    class="notes-count"
+                >
+                    0 catatan
+                </div>
+
+            </div>
+
+
+            <!-- NOTES TOOLBAR -->
+
+            <div class="notes-toolbar">
+
+                <div class="note-search">
+
+                    <span>⌕</span>
+
+                    <input
+                        id="noteSearchInput"
+                        type="search"
+                        placeholder="Cari catatan..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <button
+                    id="addNoteButton"
+                    class="add-note-button"
+                >
+                    + Tambah Catatan
+                </button>
+
+                <button
+                    id="refreshNotesButton"
+                    class="refresh-button"
+                    title="Refresh catatan"
+                >
+                    ↻
+                </button>
+
+            </div>
+
+
+            <!-- NOTES GRID -->
+
+            <div
+                id="notesGrid"
+                class="notes-grid"
+            ></div>
+
+        </div>
 
     </main>
 
 </section>
+
+
+<!-- =======================================================
+     NOTE MODAL
+======================================================= -->
+
+div
+    id="noteModalOverlay"
+    class="modal-overlay hidden"
+>
+
+    <div class="note-modal">
+
+        <div class="note-modal-header">
+
+            <h2
+                id="noteModalTitle"
+                class="note-modal-title"
+            >
+                Tambah Catatan
+            </h2>
+
+            <button
+                id="closeNoteModal"
+                class="modal-close"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="note-form-field">
+
+            <label for="noteTitleInput">
+                Judul
+            </label>
+
+            <input
+                id="noteTitleInput"
+                type="text"
+                maxlength="200"
+                placeholder="Contoh: Catatan Penting"
+            >
+
+        </div>
+
+
+        <div class="note-form-field">
+
+            <label for="noteContentInput">
+                Isi Catatan
+            </label>
+
+            <textarea
+                id="noteContentInput"
+                maxlength="10000"
+                placeholder="Tulis catatan kamu di sini..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="note-modal-actions">
+
+            <button
+                id="cancelNoteButton"
+                class="modal-button modal-cancel"
+                type="button"
+            >
+                Batal
+            </button>
+
+            <button
+                id="saveNoteButton"
+                class="modal-button modal-save"
+                type="button"
+            >
+                Simpan
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <div
@@ -1264,22 +1935,9 @@ const MAX_CONCURRENT_UPLOADS =
     10;
 
 
-/*
-   =========================================================
+/* =========================================================
    THUMBNAIL SETTINGS
-   =========================================================
-
-   Supabase akan membuat versi kecil gambar
-   sebelum dikirim ke browser.
-
-   Ini yang membuat thumbnail jauh lebih ringan
-   daripada mengambil file original.
-
-   Image Transformation:
-   420 x 280
-   cover
-   quality 65
-*/
+========================================================= */
 
 const THUMB_WIDTH = 420;
 const THUMB_HEIGHT = 280;
@@ -1322,16 +1980,16 @@ let thumbnailQueue = [];
 
 let thumbnailLoading = false;
 
+let allNotes = [];
 
-/*
-   Map card berdasarkan nama file.
+let loadingNotes = false;
 
-   Sebelumnya pencarian card memakai Array.find()
-   berkali-kali.
+let editingNoteId = null;
 
-   Sekarang langsung:
-       cardMap.get(fileName)
-*/
+
+/* =========================================================
+   CARD MAP
+========================================================= */
 
 const cardMap = new Map();
 
@@ -1372,6 +2030,59 @@ const fileCount =
 
 const toast =
     document.getElementById("toast");
+
+
+/* =========================================================
+   NOTE ELEMENTS
+========================================================= */
+
+const filesPage =
+    document.getElementById("filesPage");
+
+const notesPage =
+    document.getElementById("notesPage");
+
+const filesTab =
+    document.getElementById("filesTab");
+
+const notesTab =
+    document.getElementById("notesTab");
+
+const notesGrid =
+    document.getElementById("notesGrid");
+
+const notesCount =
+    document.getElementById("notesCount");
+
+const noteSearchInput =
+    document.getElementById("noteSearchInput");
+
+const addNoteButton =
+    document.getElementById("addNoteButton");
+
+const refreshNotesButton =
+    document.getElementById("refreshNotesButton");
+
+const noteModalOverlay =
+    document.getElementById("noteModalOverlay");
+
+const noteModalTitle =
+    document.getElementById("noteModalTitle");
+
+const noteTitleInput =
+    document.getElementById("noteTitleInput");
+
+const noteContentInput =
+    document.getElementById("noteContentInput");
+
+const saveNoteButton =
+    document.getElementById("saveNoteButton");
+
+const cancelNoteButton =
+    document.getElementById("cancelNoteButton");
+
+const closeNoteModal =
+    document.getElementById("closeNoteModal");
 
 
 /* =========================================================
@@ -1427,6 +2138,25 @@ function formatDate(date) {
                 day: "2-digit",
                 month: "short",
                 year: "numeric"
+            }
+        );
+}
+
+
+function formatDateTime(date) {
+
+    if (!date)
+        return "-";
+
+    return new Date(date)
+        .toLocaleString(
+            "id-ID",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
             }
         );
 }
@@ -1830,6 +2560,64 @@ document
 
 
 /* =========================================================
+   PAGE SWITCH
+========================================================= */
+
+filesTab.addEventListener(
+    "click",
+    showFilesPage
+);
+
+
+notesTab.addEventListener(
+    "click",
+    showNotesPage
+);
+
+
+function showFilesPage() {
+
+    filesPage.classList.remove(
+        "hidden-page"
+    );
+
+    notesPage.classList.remove(
+        "active"
+    );
+
+    filesTab.classList.add(
+        "active"
+    );
+
+    notesTab.classList.remove(
+        "active"
+    );
+}
+
+
+async function showNotesPage() {
+
+    filesPage.classList.add(
+        "hidden-page"
+    );
+
+    notesPage.classList.add(
+        "active"
+    );
+
+    filesTab.classList.remove(
+        "active"
+    );
+
+    notesTab.classList.add(
+        "active"
+    );
+
+    await loadNotes();
+}
+
+
+/* =========================================================
    SHOW STORAGE
 ========================================================= */
 
@@ -1847,6 +2635,8 @@ async function showStoragePage() {
         .getElementById("userEmail")
         .textContent =
         currentUser?.email || "";
+
+    showFilesPage();
 
     await loadFiles();
 }
@@ -1998,11 +2788,6 @@ function renderFiles(files) {
             card.dataset.fileName =
                 file.name;
 
-            /*
-               Simpan card langsung ke Map.
-               Tidak perlu Array.find() lagi.
-            */
-
             cardMap.set(
                 file.name,
                 card
@@ -2149,15 +2934,6 @@ function setupThumbnailObserver(
 
     thumbnailQueue = [];
 
-    /*
-       Map untuk akses cepat.
-
-       Sebelumnya menggunakan:
-       imageCards.find(...)
-
-       Sekarang O(1).
-    */
-
     const imageMap =
         new Map(
             imageCards.map(
@@ -2194,11 +2970,6 @@ function setupThumbnailObserver(
                         if (!item)
                             return;
 
-                        /*
-                           Cegah item yang sama
-                           masuk queue dua kali.
-                        */
-
                         if (
                             item.card.dataset
                                 .thumbnailQueued ===
@@ -2227,26 +2998,14 @@ function setupThumbnailObserver(
             },
             {
                 root: null,
-
-                /*
-                   Mulai request 400px
-                   sebelum masuk layar.
-                */
-
                 rootMargin:
                     "400px 0px",
-
                 threshold: 0
             }
         );
 
     imageCards.forEach(
         item => {
-
-            /*
-               Kalau sudah ada di cache,
-               langsung tampilkan.
-            */
 
             if (
                 thumbnailCache.has(
@@ -2285,15 +3044,6 @@ async function getThumbnailUrl(
     const filePath =
         `${currentUser.id}/${file.name}`;
 
-    /*
-       INI BAGIAN UTAMA OPTIMASI.
-
-       Browser meminta gambar yang sudah
-       di-resize oleh Supabase.
-
-       Bukan file original.
-    */
-
     const {
         data,
         error
@@ -2329,15 +3079,6 @@ async function getThumbnailUrl(
         return data.signedUrl;
 
     }
-
-    /*
-       FALLBACK
-
-       Kalau Image Transformation tidak
-       tersedia di project/plan, tetap
-       buat signed URL normal supaya
-       thumbnail tidak rusak total.
-    */
 
     console.warn(
         "Image transformation gagal untuk:",
@@ -2386,12 +3127,6 @@ async function processThumbnailQueue() {
 
     thumbnailLoading = true;
 
-    /*
-       Hanya 6 thumbnail sekaligus.
-
-       Tidak membanjiri browser/network.
-    */
-
     const batch =
         thumbnailQueue.splice(
             0,
@@ -2409,11 +3144,6 @@ async function processThumbnailQueue() {
                         !item?.card
                     )
                         return;
-
-                    /*
-                       Kalau cache sudah ada,
-                       tidak perlu request lagi.
-                    */
 
                     if (
                         thumbnailCache.has(
@@ -2471,11 +3201,6 @@ async function processThumbnailQueue() {
 
         thumbnailLoading = false;
 
-        /*
-           Lanjutkan batch berikutnya
-           tanpa blocking render browser.
-        */
-
         if (
             thumbnailQueue.length
         ) {
@@ -2512,10 +3237,6 @@ function applyThumbnail(
     if (!preview)
         return;
 
-    /*
-       Jangan render dua kali.
-    */
-
     if (
         preview.querySelector("img")
     )
@@ -2538,11 +3259,6 @@ function applyThumbnail(
     img.alt =
         file.name;
 
-    /*
-       Pasang URL sebelum append.
-       Browser langsung mulai download.
-    */
-
     img.src =
         url;
 
@@ -2551,14 +3267,6 @@ function applyThumbnail(
 
             if (!card.isConnected)
                 return;
-
-            /*
-               Hilangkan icon setelah
-               thumbnail benar-benar siap.
-
-               Ini mencegah card kosong
-               saat gambar masih loading.
-            */
 
             preview.innerHTML = "";
 
@@ -2581,11 +3289,6 @@ function applyThumbnail(
             );
 
         };
-
-    /*
-       Masukkan langsung ke DOM agar
-       browser mulai proses download.
-    */
 
     preview.appendChild(
         img
@@ -2894,15 +3597,6 @@ async function uploadFiles(files) {
 
     uploadStatus.textContent = "";
 
-    /*
-       Setelah upload:
-       refresh file list.
-
-       Cache thumbnail tidak perlu
-       dihapus semua karena file lama
-       tetap valid.
-    */
-
     await loadFiles();
 }
 
@@ -2922,11 +3616,6 @@ async function downloadFile(
 
         const filePath =
             `${currentUser.id}/${fileName}`;
-
-        /*
-           Download tetap menggunakan
-           file ORIGINAL.
-        */
 
         const {
             data,
@@ -3082,7 +3771,7 @@ async function renameFile(
 
 
 /* =========================================================
-   DELETE
+   DELETE FILE
 ========================================================= */
 
 async function deleteFile(
@@ -3143,7 +3832,7 @@ async function deleteFile(
 
 
 /* =========================================================
-   SEARCH
+   FILE SEARCH
 ========================================================= */
 
 let searchTimer = null;
@@ -3197,7 +3886,7 @@ searchInput.addEventListener(
 
 
 /* =========================================================
-   REFRESH
+   FILE REFRESH
 ========================================================= */
 
 document
@@ -3209,7 +3898,731 @@ document
 
 
 /* =========================================================
-   ENTER LOGIN
+   =========================================================
+   NOTES SYSTEM
+   =========================================================
+========================================================= */
+
+
+/* =========================================================
+   LOAD NOTES
+========================================================= */
+
+async function loadNotes() {
+
+    if (!currentUser)
+        return;
+
+    if (loadingNotes)
+        return;
+
+    loadingNotes = true;
+
+    notesGrid.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            Memuat catatan...
+        </div>
+    `;
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("notes")
+                .select(
+                    "id, user_id, title, content, created_at, updated_at"
+                )
+                .eq(
+                    "user_id",
+                    currentUser.id
+                )
+                .order(
+                    "updated_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error)
+            throw error;
+
+        allNotes =
+            data || [];
+
+        updateNotesCount();
+
+        renderNotes(
+            allNotes
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Load notes error:",
+            error
+        );
+
+        notesGrid.innerHTML = `
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
+
+                <div class="empty-title">
+                    Gagal memuat catatan
+                </div>
+
+                <div class="empty-text">
+                    ${escapeHtml(error.message)}
+                </div>
+
+            </div>
+        `;
+
+    } finally {
+
+        loadingNotes = false;
+
+    }
+}
+
+
+/* =========================================================
+   NOTES COUNT
+========================================================= */
+
+function updateNotesCount() {
+
+    const count =
+        allNotes.length;
+
+    notesCount.textContent =
+        `${count} ${count === 1 ? "catatan" : "catatan"}`;
+}
+
+
+/* =========================================================
+   RENDER NOTES
+========================================================= */
+
+function renderNotes(notes) {
+
+    notesGrid.innerHTML = "";
+
+    if (!notes.length) {
+
+        notesGrid.innerHTML = `
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📝
+                </div>
+
+                <div class="empty-title">
+                    Belum ada catatan
+                </div>
+
+                <div class="empty-text">
+                    Buat catatan pertama kamu dengan tombol
+                    "Tambah Catatan".
+                </div>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    const fragment =
+        document.createDocumentFragment();
+
+    notes.forEach(
+        note => {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+            card.className =
+                "note-card";
+
+            const title =
+                note.title?.trim()
+                    ||
+                "Tanpa judul";
+
+            const content =
+                note.content?.trim()
+                    ||
+                "Tidak ada isi catatan.";
+
+            const safeTitle =
+                escapeHtml(
+                    title
+                );
+
+            const safeContent =
+                escapeHtml(
+                    content
+                );
+
+            card.innerHTML = `
+
+                <div
+                    class="note-card-title"
+                    title="${safeTitle}"
+                >
+                    ${safeTitle}
+                </div>
+
+                <div class="note-card-date">
+                    Diubah ${escapeHtml(
+                        formatDateTime(
+                            note.updated_at
+                        )
+                    )}
+                </div>
+
+                <div class="note-card-content">
+                    ${safeContent}
+                </div>
+
+                <div class="note-actions">
+
+                    <button
+                        class="note-action edit"
+                        data-edit-note
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="note-action delete"
+                        data-delete-note
+                    >
+                        Hapus
+                    </button>
+
+                </div>
+            `;
+
+            card
+                .querySelector(
+                    "[data-edit-note]"
+                )
+                .onclick =
+                () =>
+                    openEditNote(
+                        note
+                    );
+
+            card
+                .querySelector(
+                    "[data-delete-note]"
+                )
+                .onclick =
+                () =>
+                    deleteNote(
+                        note.id
+                    );
+
+            fragment.appendChild(
+                card
+            );
+
+        }
+    );
+
+    notesGrid.appendChild(
+        fragment
+    );
+}
+
+
+/* =========================================================
+   OPEN ADD NOTE
+========================================================= */
+
+addNoteButton.addEventListener(
+    "click",
+    () => {
+
+        openAddNote();
+
+    }
+);
+
+
+function openAddNote() {
+
+    editingNoteId = null;
+
+    noteModalTitle.textContent =
+        "Tambah Catatan";
+
+    noteTitleInput.value = "";
+
+    noteContentInput.value = "";
+
+    saveNoteButton.textContent =
+        "Simpan";
+
+    noteModalOverlay.classList.remove(
+        "hidden"
+    );
+
+    setTimeout(
+        () => {
+            noteTitleInput.focus();
+        },
+        50
+    );
+}
+
+
+/* =========================================================
+   OPEN EDIT NOTE
+========================================================= */
+
+function openEditNote(note) {
+
+    editingNoteId =
+        note.id;
+
+    noteModalTitle.textContent =
+        "Edit Catatan";
+
+    noteTitleInput.value =
+        note.title || "";
+
+    noteContentInput.value =
+        note.content || "";
+
+    saveNoteButton.textContent =
+        "Simpan Perubahan";
+
+    noteModalOverlay.classList.remove(
+        "hidden"
+    );
+
+    setTimeout(
+        () => {
+            noteTitleInput.focus();
+        },
+        50
+    );
+}
+
+
+/* =========================================================
+   CLOSE NOTE MODAL
+========================================================= */
+
+function closeNoteModalWindow() {
+
+    editingNoteId = null;
+
+    noteModalOverlay.classList.add(
+        "hidden"
+    );
+
+    noteTitleInput.value = "";
+
+    noteContentInput.value = "";
+}
+
+
+closeNoteModal.addEventListener(
+    "click",
+    closeNoteModalWindow
+);
+
+
+cancelNoteButton.addEventListener(
+    "click",
+    closeNoteModalWindow
+);
+
+
+/*
+   Klik area gelap untuk menutup modal.
+*/
+
+noteModalOverlay.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            noteModalOverlay
+        ) {
+
+            closeNoteModalWindow();
+
+        }
+
+    }
+);
+
+
+/*
+   Escape untuk menutup modal.
+*/
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape" &&
+            !noteModalOverlay.classList.contains(
+                "hidden"
+            )
+        ) {
+
+            closeNoteModalWindow();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SAVE NOTE
+========================================================= */
+
+saveNoteButton.addEventListener(
+    "click",
+    saveNote
+);
+
+
+async function saveNote() {
+
+    if (!currentUser)
+        return;
+
+    const title =
+        noteTitleInput.value
+            .trim();
+
+    const content =
+        noteContentInput.value
+            .trim();
+
+    if (!title && !content) {
+
+        showToast(
+            "Judul atau isi catatan wajib diisi.",
+            "error"
+        );
+
+        return;
+    }
+
+    const originalText =
+        saveNoteButton.textContent;
+
+    saveNoteButton.disabled =
+        true;
+
+    saveNoteButton.textContent =
+        editingNoteId
+            ? "Menyimpan..."
+            : "Membuat...";
+
+    try {
+
+        if (editingNoteId) {
+
+            /*
+               UPDATE NOTE
+            */
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("notes")
+                    .update({
+                        title:
+                            title,
+
+                        content:
+                            content,
+
+                        updated_at:
+                            new Date()
+                                .toISOString()
+                    })
+                    .eq(
+                        "id",
+                        editingNoteId
+                    )
+                    .eq(
+                        "user_id",
+                        currentUser.id
+                    );
+
+            if (error)
+                throw error;
+
+            showToast(
+                "Catatan berhasil diperbarui.",
+                "success"
+            );
+
+        } else {
+
+            /*
+               INSERT NOTE
+
+               user_id diisi dengan ID
+               akun yang sedang login.
+            */
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("notes")
+                    .insert({
+                        user_id:
+                            currentUser.id,
+
+                        title:
+                            title,
+
+                        content:
+                            content
+                    });
+
+            if (error)
+                throw error;
+
+            showToast(
+                "Catatan berhasil dibuat.",
+                "success"
+            );
+
+        }
+
+        closeNoteModalWindow();
+
+        await loadNotes();
+
+    } catch (error) {
+
+        console.error(
+            "Save note error:",
+            error
+        );
+
+        showToast(
+            `Gagal menyimpan catatan: ${error.message}`,
+            "error"
+        );
+
+    } finally {
+
+        saveNoteButton.disabled =
+            false;
+
+        saveNoteButton.textContent =
+            originalText;
+
+    }
+}
+
+
+/* =========================================================
+   DELETE NOTE
+========================================================= */
+
+async function deleteNote(
+    noteId
+) {
+
+    if (!currentUser)
+        return;
+
+    const note =
+        allNotes.find(
+            item =>
+                item.id === noteId
+        );
+
+    const title =
+        note?.title?.trim()
+            ||
+        "catatan ini";
+
+    const confirmed =
+        confirm(
+            `Hapus "${title}"?`
+        );
+
+    if (!confirmed)
+        return;
+
+    try {
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("notes")
+                .delete()
+                .eq(
+                    "id",
+                    noteId
+                )
+                .eq(
+                    "user_id",
+                    currentUser.id
+                );
+
+        if (error)
+            throw error;
+
+        showToast(
+            "Catatan berhasil dihapus.",
+            "success"
+        );
+
+        await loadNotes();
+
+    } catch (error) {
+
+        console.error(
+            "Delete note error:",
+            error
+        );
+
+        showToast(
+            `Gagal menghapus catatan: ${error.message}`,
+            "error"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   NOTE SEARCH
+========================================================= */
+
+let noteSearchTimer = null;
+
+noteSearchInput.addEventListener(
+    "input",
+    () => {
+
+        clearTimeout(
+            noteSearchTimer
+        );
+
+        noteSearchTimer =
+            setTimeout(
+                () => {
+
+                    const keyword =
+                        noteSearchInput.value
+                            .trim()
+                            .toLowerCase();
+
+                    if (!keyword) {
+
+                        renderNotes(
+                            allNotes
+                        );
+
+                        return;
+                    }
+
+                    const filtered =
+                        allNotes.filter(
+                            note => {
+
+                                const title =
+                                    (
+                                        note.title ||
+                                        ""
+                                    )
+                                    .toLowerCase();
+
+                                const content =
+                                    (
+                                        note.content ||
+                                        ""
+                                    )
+                                    .toLowerCase();
+
+                                return (
+                                    title.includes(
+                                        keyword
+                                    ) ||
+                                    content.includes(
+                                        keyword
+                                    )
+                                );
+
+                            }
+                        );
+
+                    renderNotes(
+                        filtered
+                    );
+
+                },
+                80
+            );
+
+    }
+);
+
+
+/* =========================================================
+   NOTE REFRESH
+========================================================= */
+
+refreshNotesButton.addEventListener(
+    "click",
+    loadNotes
+);
+
+
+/* =========================================================
+   ENTER / CTRL+ENTER NOTE
+========================================================= */
+
+noteTitleInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            noteContentInput.focus();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOGIN ENTER
 ========================================================= */
 
 document
@@ -3268,11 +4681,17 @@ supabaseClient
 
                 allFiles = [];
 
+                allNotes = [];
+
                 thumbnailCache.clear();
 
                 destroyThumbnailObserver();
 
                 cardMap.clear();
+
+                notesGrid.innerHTML = "";
+
+                closeNoteModalWindow();
 
                 storagePage
                     .classList
@@ -3296,14 +4715,6 @@ supabaseClient
 ========================================================= */
 
 async function init() {
-
-    /*
-       Jangan memanggil loadFiles()
-       dua kali.
-
-       Auth listener menjadi sumber
-       utama session.
-    */
 
     const {
         data
