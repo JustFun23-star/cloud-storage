@@ -4,30 +4,99 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>My Cloud Storage</title>
+  <title>Ju𝟱tFun Cloud</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* =====================================================
+       ANIMATIONS
+    ===================================================== */
+
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-float {
+      animation: float 3s infinite ease-in-out;
+    }
+
+    .fade-in {
+      animation: fadeIn .3s ease;
+    }
+
+    .file-card {
+      transition: all .25s ease;
+    }
+
+    .file-card:hover {
+      transform: translateY(-4px);
+    }
+
+    button {
+      transition: all .2s ease;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 min-h-screen">
 
-  <!-- ================= LOGIN / REGISTER ================= -->
 
-  <div id="authPage" class="min-h-screen flex items-center justify-center p-4">
+  <!-- =====================================================
+       LOGIN / REGISTER
+  ===================================================== -->
 
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-lg p-7">
+  <div
+    id="authPage"
+    class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 via-white to-indigo-100"
+  >
 
-      <div class="text-center mb-6">
-        <div class="text-5xl mb-3">☁️</div>
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-7">
 
-        <h1 class="text-2xl font-bold text-gray-800">
-          My Cloud Storage
+      <!-- LOGO -->
+
+      <div class="text-center mb-7">
+
+        <div class="text-5xl mb-3 logo-float">
+          🚀
+        </div>
+
+        <h1 class="text-3xl font-extrabold text-gray-800">
+          Ju𝟱tFun Cloud
         </h1>
 
-        <p class="text-gray-500 mt-1">
+        <p class="text-gray-500 mt-2">
           Simpan file kamu dengan aman
         </p>
+
       </div>
 
 
@@ -35,7 +104,7 @@
 
       <div id="loginForm">
 
-        <h2 class="text-xl font-semibold mb-4">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">
           Login
         </h2>
 
@@ -43,31 +112,36 @@
           id="loginEmail"
           type="email"
           placeholder="Email"
-          class="w-full border rounded-lg px-4 py-3 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          autocomplete="email"
+          class="w-full border border-gray-200 rounded-xl px-4 py-3 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <input
           id="loginPassword"
           type="password"
           placeholder="Password"
-          class="w-full border rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          autocomplete="current-password"
+          class="w-full border border-gray-200 rounded-xl px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <button
           id="loginButton"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-200"
         >
           Login
         </button>
 
         <p class="text-center text-sm text-gray-500 mt-5">
+
           Belum punya akun?
+
           <button
             id="showRegister"
-            class="text-blue-600 font-semibold"
+            class="text-blue-600 font-semibold hover:underline"
           >
             Daftar
           </button>
+
         </p>
 
       </div>
@@ -77,7 +151,7 @@
 
       <div id="registerForm" class="hidden">
 
-        <h2 class="text-xl font-semibold mb-4">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">
           Buat Akun
         </h2>
 
@@ -85,31 +159,36 @@
           id="registerEmail"
           type="email"
           placeholder="Email"
-          class="w-full border rounded-lg px-4 py-3 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          autocomplete="email"
+          class="w-full border border-gray-200 rounded-xl px-4 py-3 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <input
           id="registerPassword"
           type="password"
           placeholder="Password minimal 6 karakter"
-          class="w-full border rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          autocomplete="new-password"
+          class="w-full border border-gray-200 rounded-xl px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <button
           id="registerButton"
-          class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg"
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-green-200"
         >
           Daftar
         </button>
 
         <p class="text-center text-sm text-gray-500 mt-5">
+
           Sudah punya akun?
+
           <button
             id="showLogin"
-            class="text-blue-600 font-semibold"
+            class="text-blue-600 font-semibold hover:underline"
           >
             Login
           </button>
+
         </p>
 
       </div>
@@ -119,42 +198,91 @@
 
       <div
         id="authMessage"
-        class="hidden mt-4 p-3 rounded-lg text-sm"
+        class="hidden mt-4 p-3 rounded-xl text-sm"
       ></div>
 
     </div>
+
   </div>
 
 
-  <!-- ================= STORAGE PAGE ================= -->
+  <!-- =====================================================
+       STORAGE PAGE
+  ===================================================== -->
 
-  <div id="storagePage" class="hidden min-h-screen">
+  <div
+    id="storagePage"
+    class="hidden min-h-screen"
+  >
 
-    <!-- HEADER -->
+    <!-- ===================================================
+         HEADER
+    =================================================== -->
 
     <header class="bg-white shadow-sm">
 
       <div class="max-w-5xl mx-auto px-4 py-4">
 
-        <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center justify-between gap-4">
 
-          <div>
-            <h1 class="text-xl md:text-2xl font-bold text-gray-800">
-              ☁️ My Cloud Storage
+          <div class="min-w-0">
+
+            <h1 class="text-xl md:text-2xl font-extrabold text-gray-800">
+              🚀 Ju𝟱tFun Cloud
             </h1>
 
             <p
-              id="userEmail"
-              class="text-sm text-gray-500 break-all"
-            ></p>
+              id="headerStorageText"
+              class="text-xs text-gray-500 mt-1"
+            >
+              10 GB Storage
+            </p>
+
+            <div class="w-40 sm:w-56 bg-gray-200 rounded-full h-2 mt-2">
+
+              <div
+                id="headerStorageBar"
+                class="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full transition-all duration-500"
+                style="width:0%"
+              ></div>
+
+            </div>
+
+            <p
+              id="headerStorageUsage"
+              class="text-xs text-gray-400 mt-1"
+            >
+              0 Bytes / 10 GB
+            </p>
+
           </div>
 
-          <button
-            id="logoutButton"
-            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold"
-          >
-            Logout
-          </button>
+
+          <div class="flex items-center gap-3 flex-shrink-0">
+
+            <div class="hidden sm:block text-right">
+
+              <p
+                id="userEmail"
+                class="text-sm text-gray-600 break-all"
+              ></p>
+
+            </div>
+
+            <div
+              class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center"
+            >
+              👤
+            </div>
+
+            <button
+              id="logoutButton"
+              class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-sm font-semibold"
+            >
+              Logout
+            </button>
+
+          </div>
 
         </div>
 
@@ -163,31 +291,103 @@
     </header>
 
 
-    <!-- MAIN -->
+    <!-- ===================================================
+         MAIN
+    =================================================== -->
 
     <main class="max-w-5xl mx-auto px-4 py-6">
 
 
-      <!-- UPLOAD AREA -->
+      <!-- =================================================
+           STORAGE CARD
+      ================================================= -->
 
-      <div class="bg-white rounded-2xl shadow-sm p-5 mb-6">
+      <div
+        class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-6 text-white mb-6 shadow-xl"
+      >
 
-        <h2 class="text-lg font-bold text-gray-800 mb-2">
-          Upload File
-        </h2>
+        <div class="flex items-center justify-between">
 
-        <p class="text-sm text-gray-500 mb-4">
-          Maksimal ukuran satu file: <b>100 MB</b>
-        </p>
+          <div>
+
+            <div class="text-sm opacity-80">
+              Storage Used
+            </div>
+
+            <div
+              id="storageUsage"
+              class="text-3xl font-bold mt-2"
+            >
+              0 Bytes / 10 GB
+            </div>
+
+          </div>
+
+          <div class="text-4xl logo-float">
+            ☁️
+          </div>
+
+        </div>
+
+
+        <div class="w-full bg-white/20 rounded-full h-3 mt-5">
+
+          <div
+            id="storageBar"
+            class="bg-white h-3 rounded-full transition-all duration-500"
+            style="width:0%"
+          ></div>
+
+        </div>
+
+
+        <div class="flex justify-between text-xs opacity-80 mt-2">
+
+          <span id="storageRemaining">
+            10 GB tersisa
+          </span>
+
+          <span id="storagePercentage">
+            0%
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           UPLOAD AREA
+      ================================================= -->
+
+      <div
+        class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 mb-6"
+      >
+
+        <div class="text-center mb-5">
+
+          <div class="text-5xl mb-3 logo-float">
+            📤
+          </div>
+
+          <h2 class="text-xl font-bold text-gray-800">
+            Upload File
+          </h2>
+
+          <p class="text-sm text-gray-500 mt-1">
+            Maksimal ukuran satu file: <b>100 MB</b>
+          </p>
+
+        </div>
 
 
         <label
           for="fileInput"
-          class="block border-2 border-dashed border-gray-300 hover:border-blue-500 rounded-xl p-8 text-center cursor-pointer transition"
+          class="block border-2 border-dashed border-gray-300 hover:border-blue-500 hover:bg-blue-50 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300"
         >
 
           <div class="text-4xl mb-2">
-            📤
+            📁
           </div>
 
           <div class="font-semibold text-gray-700">
@@ -211,15 +411,19 @@
 
         <div
           id="uploadStatus"
-          class="hidden mt-4 p-3 rounded-lg text-sm"
+          class="hidden mt-4 p-4 rounded-xl text-sm"
         ></div>
 
       </div>
 
 
-      <!-- SEARCH -->
+      <!-- =================================================
+           SEARCH
+      ================================================= -->
 
-      <div class="bg-white rounded-2xl shadow-sm p-4 mb-5">
+      <div
+        class="bg-white rounded-2xl shadow-sm p-4 mb-5"
+      >
 
         <div class="flex gap-2">
 
@@ -227,12 +431,13 @@
             id="searchInput"
             type="text"
             placeholder="🔎 Cari file..."
-            class="flex-1 border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="flex-1 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <button
             id="refreshButton"
-            class="bg-gray-700 hover:bg-gray-800 text-white px-4 rounded-lg"
+            class="bg-gray-700 hover:bg-gray-800 text-white px-4 rounded-xl"
+            title="Refresh"
           >
             ↻
           </button>
@@ -242,7 +447,9 @@
       </div>
 
 
-      <!-- FILE INFO -->
+      <!-- =================================================
+           FILE INFO
+      ================================================= -->
 
       <div class="flex justify-between items-center mb-3">
 
@@ -260,7 +467,9 @@
       </div>
 
 
-      <!-- FILE LIST -->
+      <!-- =================================================
+           FILE LIST
+      ================================================= -->
 
       <div
         id="fileList"
@@ -268,11 +477,13 @@
       ></div>
 
 
-      <!-- EMPTY -->
+      <!-- =================================================
+           EMPTY
+      ================================================= -->
 
       <div
         id="emptyState"
-        class="hidden bg-white rounded-2xl p-10 text-center"
+        class="hidden bg-white rounded-2xl p-10 text-center shadow-sm"
       >
 
         <div class="text-5xl mb-3">
@@ -324,6 +535,9 @@
   const MAX_FILE_SIZE =
     100 * 1024 * 1024;
 
+  const STORAGE_QUOTA =
+    10 * 1024 * 1024 * 1024;
+
 
   let currentUser = null;
   let allFiles = [];
@@ -366,389 +580,42 @@
   const uploadStatus =
     document.getElementById("uploadStatus");
 
+  const storageUsage =
+    document.getElementById("storageUsage");
 
-  /* =====================================================
-     AUTH MESSAGE
-  ===================================================== */
+  const storageBar =
+    document.getElementById("storageBar");
 
-  function showAuthMessage(message, type = "error") {
+  const storageRemaining =
+    document.getElementById("storageRemaining");
 
-    authMessage.textContent = message;
+  const storagePercentage =
+    document.getElementById("storagePercentage");
 
-    authMessage.classList.remove(
-      "hidden",
-      "bg-red-100",
-      "text-red-700",
-      "bg-green-100",
-      "text-green-700"
-    );
+  const headerStorageBar =
+    document.getElementById("headerStorageBar");
 
-    if (type === "success") {
-
-      authMessage.classList.add(
-        "bg-green-100",
-        "text-green-700"
-      );
-
-    } else {
-
-      authMessage.classList.add(
-        "bg-red-100",
-        "text-red-700"
-      );
-
-    }
-
-  }
+  const headerStorageUsage =
+    document.getElementById("headerStorageUsage");
 
 
   /* =====================================================
-     UPLOAD MESSAGE
-  ===================================================== */
-
-  function showUploadMessage(message, type = "error") {
-
-    uploadStatus.textContent = message;
-
-    uploadStatus.classList.remove(
-      "hidden",
-      "bg-red-100",
-      "text-red-700",
-      "bg-green-100",
-      "text-green-700",
-      "bg-blue-100",
-      "text-blue-700"
-    );
-
-
-    if (type === "success") {
-
-      uploadStatus.classList.add(
-        "bg-green-100",
-        "text-green-700"
-      );
-
-    } else if (type === "loading") {
-
-      uploadStatus.classList.add(
-        "bg-blue-100",
-        "text-blue-700"
-      );
-
-    } else {
-
-      uploadStatus.classList.add(
-        "bg-red-100",
-        "text-red-700"
-      );
-
-    }
-
-  }
-
-
-  /* =====================================================
-     SWITCH LOGIN / REGISTER
-  ===================================================== */
-
-  document
-    .getElementById("showRegister")
-    .addEventListener("click", () => {
-
-      loginForm.classList.add("hidden");
-      registerForm.classList.remove("hidden");
-
-      authMessage.classList.add("hidden");
-
-    });
-
-
-  document
-    .getElementById("showLogin")
-    .addEventListener("click", () => {
-
-      registerForm.classList.add("hidden");
-      loginForm.classList.remove("hidden");
-
-      authMessage.classList.add("hidden");
-
-    });
-
-
-  /* =====================================================
-     REGISTER
-  ===================================================== */
-
-  document
-    .getElementById("registerButton")
-    .addEventListener("click", async () => {
-
-      const email =
-        document.getElementById("registerEmail").value.trim();
-
-      const password =
-        document.getElementById("registerPassword").value;
-
-
-      if (!email || !password) {
-
-        showAuthMessage(
-          "Email dan password harus diisi."
-        );
-
-        return;
-
-      }
-
-
-      if (password.length < 6) {
-
-        showAuthMessage(
-          "Password minimal 6 karakter."
-        );
-
-        return;
-
-      }
-
-
-      const button =
-        document.getElementById("registerButton");
-
-      button.disabled = true;
-      button.textContent = "Mendaftarkan...";
-
-
-      try {
-
-        const { data, error } =
-          await supabaseClient.auth.signUp({
-            email: email,
-            password: password
-          });
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        if (data.session) {
-
-          showAuthMessage(
-            "Akun berhasil dibuat!",
-            "success"
-          );
-
-          await loadUser();
-
-        } else {
-
-          showAuthMessage(
-            "Akun berhasil dibuat. Silakan cek email untuk verifikasi.",
-            "success"
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(error);
-
-        showAuthMessage(
-          error.message || "Gagal membuat akun."
-        );
-
-      } finally {
-
-        button.disabled = false;
-        button.textContent = "Daftar";
-
-      }
-
-    });
-
-
-  /* =====================================================
-     LOGIN
-  ===================================================== */
-
-  document
-    .getElementById("loginButton")
-    .addEventListener("click", async () => {
-
-      const email =
-        document.getElementById("loginEmail").value.trim();
-
-      const password =
-        document.getElementById("loginPassword").value;
-
-
-      if (!email || !password) {
-
-        showAuthMessage(
-          "Email dan password harus diisi."
-        );
-
-        return;
-
-      }
-
-
-      const button =
-        document.getElementById("loginButton");
-
-      button.disabled = true;
-      button.textContent = "Login...";
-
-
-      try {
-
-        const { data, error } =
-          await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        currentUser = data.user;
-
-        await showStoragePage();
-
-      } catch (error) {
-
-        console.error(error);
-
-        showAuthMessage(
-          error.message || "Email atau password salah."
-        );
-
-      } finally {
-
-        button.disabled = false;
-        button.textContent = "Login";
-
-      }
-
-    });
-
-
-  /* =====================================================
-     LOGOUT
-  ===================================================== */
-
-  document
-    .getElementById("logoutButton")
-    .addEventListener("click", async () => {
-
-      await supabaseClient.auth.signOut();
-
-      currentUser = null;
-
-      storagePage.classList.add("hidden");
-      authPage.classList.remove("hidden");
-
-      fileList.innerHTML = "";
-
-    });
-
-
-  /* =====================================================
-     LOAD CURRENT USER
-  ===================================================== */
-
-  async function loadUser() {
-
-    const { data, error } =
-      await supabaseClient.auth.getUser();
-
-
-    if (error || !data.user) {
-
-      authPage.classList.remove("hidden");
-      storagePage.classList.add("hidden");
-
-      return;
-
-    }
-
-
-    currentUser = data.user;
-
-    await showStoragePage();
-
-  }
-
-
-  /* =====================================================
-     SHOW STORAGE
-  ===================================================== */
-
-  async function showStoragePage() {
-
-    authPage.classList.add("hidden");
-    storagePage.classList.remove("hidden");
-
-    document.getElementById("userEmail").textContent =
-      currentUser.email;
-
-    await loadFiles();
-
-  }
-
-
-  /* =====================================================
-     FILE ICON
-  ===================================================== */
-
-  function getFileIcon(fileName) {
-
-    const ext =
-      fileName.split(".").pop().toLowerCase();
-
-
-    const images =
-      ["jpg", "jpeg", "png", "gif", "webp", "svg"];
-
-    const videos =
-      ["mp4", "mov", "avi", "mkv", "webm"];
-
-    const audio =
-      ["mp3", "wav", "ogg", "m4a"];
-
-    const documents =
-      ["pdf", "doc", "docx", "txt"];
-
-    const archives =
-      ["zip", "rar", "7z"];
-
-
-    if (images.includes(ext)) return "🖼️";
-    if (videos.includes(ext)) return "🎬";
-    if (audio.includes(ext)) return "🎵";
-    if (documents.includes(ext)) return "📄";
-    if (archives.includes(ext)) return "📦";
-
-    return "📁";
-
-  }
-
-
-  /* =====================================================
-     FILE SIZE
+     FORMAT SIZE
   ===================================================== */
 
   function formatSize(bytes) {
 
-    if (bytes === 0) return "0 Bytes";
+    if (!bytes || bytes <= 0) {
+      return "0 Bytes";
+    }
 
-    const units =
-      ["Bytes", "KB", "MB", "GB"];
+    const units = [
+      "Bytes",
+      "KB",
+      "MB",
+      "GB",
+      "TB"
+    ];
 
     const i =
       Math.floor(
@@ -758,19 +625,23 @@
     return (
       parseFloat(
         (bytes / Math.pow(1024, i)).toFixed(2)
-      ) +
-      " " +
-      units[i]
+      )
+      + " "
+      + units[i]
     );
 
   }
 
 
   /* =====================================================
-     FILE DATE
+     FORMAT DATE
   ===================================================== */
 
   function formatDate(date) {
+
+    if (!date) {
+      return "-";
+    }
 
     return new Date(date).toLocaleString(
       "id-ID",
@@ -800,12 +671,644 @@
 
 
   /* =====================================================
+     AUTH MESSAGE
+  ===================================================== */
+
+  function showAuthMessage(
+    message,
+    type = "error"
+  ) {
+
+    authMessage.textContent =
+      message;
+
+    authMessage.classList.remove(
+      "hidden",
+      "bg-red-100",
+      "text-red-700",
+      "bg-green-100",
+      "text-green-700"
+    );
+
+
+    if (type === "success") {
+
+      authMessage.classList.add(
+        "bg-green-100",
+        "text-green-700"
+      );
+
+    } else {
+
+      authMessage.classList.add(
+        "bg-red-100",
+        "text-red-700"
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     UPLOAD MESSAGE
+  ===================================================== */
+
+  function showUploadMessage(
+    message,
+    type = "error"
+  ) {
+
+    uploadStatus.textContent =
+      message;
+
+    uploadStatus.classList.remove(
+      "hidden",
+      "bg-red-100",
+      "text-red-700",
+      "bg-green-100",
+      "text-green-700",
+      "bg-blue-100",
+      "text-blue-700"
+    );
+
+
+    if (type === "success") {
+
+      uploadStatus.classList.add(
+        "bg-green-100",
+        "text-green-700"
+      );
+
+    }
+
+    else if (type === "loading") {
+
+      uploadStatus.classList.add(
+        "bg-blue-100",
+        "text-blue-700"
+      );
+
+    }
+
+    else {
+
+      uploadStatus.classList.add(
+        "bg-red-100",
+        "text-red-700"
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     SWITCH LOGIN / REGISTER
+  ===================================================== */
+
+  document
+    .getElementById("showRegister")
+    .addEventListener(
+      "click",
+      () => {
+
+        loginForm.classList.add(
+          "hidden"
+        );
+
+        registerForm.classList.remove(
+          "hidden"
+        );
+
+        authMessage.classList.add(
+          "hidden"
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById("showLogin")
+    .addEventListener(
+      "click",
+      () => {
+
+        registerForm.classList.add(
+          "hidden"
+        );
+
+        loginForm.classList.remove(
+          "hidden"
+        );
+
+        authMessage.classList.add(
+          "hidden"
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     REGISTER
+  ===================================================== */
+
+  document
+    .getElementById("registerButton")
+    .addEventListener(
+      "click",
+      async () => {
+
+        const email =
+          document
+            .getElementById("registerEmail")
+            .value
+            .trim();
+
+        const password =
+          document
+            .getElementById("registerPassword")
+            .value;
+
+
+        if (!email || !password) {
+
+          showAuthMessage(
+            "Email dan password harus diisi."
+          );
+
+          return;
+
+        }
+
+
+        if (password.length < 6) {
+
+          showAuthMessage(
+            "Password minimal 6 karakter."
+          );
+
+          return;
+
+        }
+
+
+        const button =
+          document.getElementById(
+            "registerButton"
+          );
+
+
+        button.disabled = true;
+
+        button.textContent =
+          "Mendaftarkan...";
+
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth.signUp({
+              email,
+              password
+            });
+
+
+          if (error) {
+            throw error;
+          }
+
+
+          if (data.session) {
+
+            showAuthMessage(
+              "Akun berhasil dibuat!",
+              "success"
+            );
+
+            await loadUser();
+
+          } else {
+
+            showAuthMessage(
+              "Akun berhasil dibuat. Silakan cek email untuk verifikasi.",
+              "success"
+            );
+
+          }
+
+
+        } catch (error) {
+
+          console.error(error);
+
+          showAuthMessage(
+            error.message ||
+            "Gagal membuat akun."
+          );
+
+        } finally {
+
+          button.disabled = false;
+
+          button.textContent =
+            "Daftar";
+
+        }
+
+      }
+    );
+
+
+  /* =====================================================
+     LOGIN
+  ===================================================== */
+
+  document
+    .getElementById("loginButton")
+    .addEventListener(
+      "click",
+      async () => {
+
+        const email =
+          document
+            .getElementById("loginEmail")
+            .value
+            .trim();
+
+        const password =
+          document
+            .getElementById("loginPassword")
+            .value;
+
+
+        if (!email || !password) {
+
+          showAuthMessage(
+            "Email dan password harus diisi."
+          );
+
+          return;
+
+        }
+
+
+        const button =
+          document.getElementById(
+            "loginButton"
+          );
+
+
+        button.disabled = true;
+
+        button.textContent =
+          "Login...";
+
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth
+              .signInWithPassword({
+                email,
+                password
+              });
+
+
+          if (error) {
+            throw error;
+          }
+
+
+          currentUser =
+            data.user;
+
+
+          await showStoragePage();
+
+
+        } catch (error) {
+
+          console.error(error);
+
+          showAuthMessage(
+            error.message ||
+            "Email atau password salah."
+          );
+
+        } finally {
+
+          button.disabled = false;
+
+          button.textContent =
+            "Login";
+
+        }
+
+      }
+    );
+
+
+  /* =====================================================
+     LOGOUT
+  ===================================================== */
+
+  document
+    .getElementById("logoutButton")
+    .addEventListener(
+      "click",
+      async () => {
+
+        await supabaseClient.auth.signOut();
+
+        currentUser = null;
+
+        allFiles = [];
+
+        fileList.innerHTML = "";
+
+        storagePage.classList.add(
+          "hidden"
+        );
+
+        authPage.classList.remove(
+          "hidden"
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     LOAD CURRENT USER
+  ===================================================== */
+
+  async function loadUser() {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if (
+      error ||
+      !data.user
+    ) {
+
+      authPage.classList.remove(
+        "hidden"
+      );
+
+      storagePage.classList.add(
+        "hidden"
+      );
+
+      return;
+
+    }
+
+
+    currentUser =
+      data.user;
+
+
+    await showStoragePage();
+
+  }
+
+
+  /* =====================================================
+     SHOW STORAGE PAGE
+  ===================================================== */
+
+  async function showStoragePage() {
+
+    authPage.classList.add(
+      "hidden"
+    );
+
+    storagePage.classList.remove(
+      "hidden"
+    );
+
+
+    document.getElementById(
+      "userEmail"
+    ).textContent =
+      currentUser.email;
+
+
+    await loadFiles();
+
+  }
+
+
+  /* =====================================================
+     FILE ICON
+  ===================================================== */
+
+  function getFileIcon(fileName) {
+
+    const ext =
+      fileName
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+
+    const images = [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "webp",
+      "svg"
+    ];
+
+    const videos = [
+      "mp4",
+      "mov",
+      "avi",
+      "mkv",
+      "webm"
+    ];
+
+    const audio = [
+      "mp3",
+      "wav",
+      "ogg",
+      "m4a"
+    ];
+
+    const documents = [
+      "pdf",
+      "doc",
+      "docx",
+      "txt",
+      "xls",
+      "xlsx",
+      "ppt",
+      "pptx"
+    ];
+
+    const archives = [
+      "zip",
+      "rar",
+      "7z"
+    ];
+
+
+    if (
+      images.includes(ext)
+    ) {
+      return "🖼️";
+    }
+
+
+    if (
+      videos.includes(ext)
+    ) {
+      return "🎬";
+    }
+
+
+    if (
+      audio.includes(ext)
+    ) {
+      return "🎵";
+    }
+
+
+    if (
+      documents.includes(ext)
+    ) {
+      return "📄";
+    }
+
+
+    if (
+      archives.includes(ext)
+    ) {
+      return "📦";
+    }
+
+
+    return "📁";
+
+  }
+
+
+  /* =====================================================
+     LOAD STORAGE INFO
+  ===================================================== */
+
+  async function loadStorageInfo() {
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .rpc("get_storage_info");
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      const used =
+        Number(
+          data?.used_bytes || 0
+        );
+
+      const quota =
+        Number(
+          data?.quota_bytes ||
+          STORAGE_QUOTA
+        );
+
+      const remaining =
+        Math.max(
+          quota - used,
+          0
+        );
+
+
+      const percentage =
+        Math.min(
+          (used / quota) * 100,
+          100
+        );
+
+
+      const roundedPercentage =
+        Number(
+          percentage.toFixed(2)
+        );
+
+
+      storageUsage.textContent =
+        `${formatSize(used)} / ${formatSize(quota)}`;
+
+
+      storageRemaining.textContent =
+        `${formatSize(remaining)} tersisa`;
+
+
+      storagePercentage.textContent =
+        `${roundedPercentage}%`;
+
+
+      storageBar.style.width =
+        `${roundedPercentage}%`;
+
+
+      headerStorageBar.style.width =
+        `${roundedPercentage}%`;
+
+
+      headerStorageUsage.textContent =
+        `${formatSize(used)} / ${formatSize(quota)}`;
+
+    } catch (error) {
+
+      console.error(
+        "Storage info error:",
+        error
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
      LOAD FILES
   ===================================================== */
 
   async function loadFiles() {
 
-    if (!currentUser) return;
+    if (!currentUser) {
+      return;
+    }
 
 
     fileList.innerHTML = `
@@ -817,21 +1320,23 @@
 
     try {
 
-      const folder =
-        currentUser.id;
-
-
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await supabaseClient
-          .storage
-          .from(BUCKET)
-          .list(folder, {
-            limit: 1000,
-            sortBy: {
-              column: "created_at",
-              order: "desc"
+          .from("files")
+          .select("*")
+          .eq(
+            "user_id",
+            currentUser.id
+          )
+          .order(
+            "created_at",
+            {
+              ascending: false
             }
-          });
+          );
 
 
       if (error) {
@@ -839,12 +1344,17 @@
       }
 
 
-      allFiles = (data || []).filter(
-        file => file.name !== ".emptyFolderPlaceholder"
+      allFiles =
+        data || [];
+
+
+      renderFiles(
+        allFiles
       );
 
 
-      renderFiles(allFiles);
+      await loadStorageInfo();
+
 
     } catch (error) {
 
@@ -852,7 +1362,8 @@
 
       fileList.innerHTML = `
         <div class="bg-red-100 text-red-700 rounded-xl p-4">
-          Gagal memuat file: ${escapeHtml(error.message)}
+          Gagal memuat file:
+          ${escapeHtml(error.message)}
         </div>
       `;
 
@@ -869,103 +1380,153 @@
 
     fileList.innerHTML = "";
 
+
     fileCount.textContent =
       `${files.length} file${files.length !== 1 ? "s" : ""}`;
 
 
-    if (files.length === 0) {
+    if (
+      files.length === 0
+    ) {
 
-      emptyState.classList.remove("hidden");
+      emptyState.classList.remove(
+        "hidden"
+      );
 
       return;
 
     }
 
 
-    emptyState.classList.add("hidden");
+    emptyState.classList.add(
+      "hidden"
+    );
 
 
-    files.forEach(file => {
+    files.forEach(
+      file => {
 
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "bg-white rounded-xl shadow-sm p-4 flex items-center gap-3";
-
-
-      const name =
-        escapeHtml(file.name);
+        const card =
+          document.createElement(
+            "div"
+          );
 
 
-      const size =
-        formatSize(file.metadata?.size || 0);
+        card.className =
+          "file-card fade-in bg-white rounded-2xl shadow-sm p-4 flex items-center gap-3";
 
 
-      const created =
-        formatDate(
-          file.created_at || new Date()
-        );
+        const safeName =
+          escapeHtml(
+            file.file_name
+          );
 
 
-      card.innerHTML = `
+        const size =
+          formatSize(
+            Number(
+              file.file_size || 0
+            )
+          );
 
-        <div class="text-3xl flex-shrink-0">
-          ${getFileIcon(file.name)}
-        </div>
 
-        <div class="flex-1 min-w-0">
+        const created =
+          formatDate(
+            file.created_at
+          );
 
-          <div
-            class="font-semibold text-gray-800 truncate"
-            title="${name}"
-          >
-            ${name}
+
+        card.innerHTML = `
+
+          <div class="text-3xl flex-shrink-0">
+            ${getFileIcon(file.file_name)}
           </div>
 
-          <div class="text-xs text-gray-400 mt-1">
-            ${size} • ${created}
+
+          <div class="flex-1 min-w-0">
+
+            <div
+              class="font-semibold text-gray-800 truncate"
+              title="${safeName}"
+            >
+              ${safeName}
+            </div>
+
+            <div class="text-xs text-gray-400 mt-1">
+              ${size} • ${created}
+            </div>
+
           </div>
 
-        </div>
 
-        <div class="flex gap-2 flex-shrink-0">
+          <div class="flex gap-2 flex-shrink-0">
 
-          <button
-            class="downloadButton bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm"
-          >
-            Download
-          </button>
-
-          <button
-            class="deleteButton bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
-          >
-            Hapus
-          </button>
-
-        </div>
-      `;
+            <button
+              class="renameButton bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-sm"
+            >
+              ✏️ <span class="hidden sm:inline">Rename</span>
+            </button>
 
 
-      card
-        .querySelector(".downloadButton")
-        .addEventListener(
-          "click",
-          () => downloadFile(file.name)
+            <button
+              class="downloadButton bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm"
+            >
+              ⬇️ <span class="hidden sm:inline">Download</span>
+            </button>
+
+
+            <button
+              class="deleteButton bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
+            >
+              🗑️ <span class="hidden sm:inline">Hapus</span>
+            </button>
+
+          </div>
+        `;
+
+
+        card
+          .querySelector(
+            ".renameButton"
+          )
+          .addEventListener(
+            "click",
+            () => renameFile(file)
+          );
+
+
+        card
+          .querySelector(
+            ".downloadButton"
+          )
+          .addEventListener(
+            "click",
+            () =>
+              downloadFile(
+                file
+              )
+          );
+
+
+        card
+          .querySelector(
+            ".deleteButton"
+          )
+          .addEventListener(
+            "click",
+            () =>
+              deleteFile(
+                file
+              )
+          );
+
+
+        fileList.appendChild(
+          card
         );
 
-
-      card
-        .querySelector(".deleteButton")
-        .addEventListener(
-          "click",
-          () => deleteFile(file.name)
-        );
-
-
-      fileList.appendChild(card);
-
-    });
+      }
+    );
 
   }
 
@@ -982,7 +1543,9 @@
         this.files[0];
 
 
-      if (!file) return;
+      if (!file) {
+        return;
+      }
 
 
       if (!currentUser) {
@@ -996,7 +1559,12 @@
       }
 
 
-      if (file.size > MAX_FILE_SIZE) {
+      /* FILE SIZE */
+
+      if (
+        file.size >
+        MAX_FILE_SIZE
+      ) {
 
         showUploadMessage(
           `File terlalu besar. Maksimal 100 MB. Ukuran file kamu: ${formatSize(file.size)}`
@@ -1009,13 +1577,73 @@
       }
 
 
-      showUploadMessage(
-        `Sedang mengupload ${file.name}...`,
-        "loading"
-      );
-
-
       try {
+
+        /* =================================================
+           CHECK QUOTA
+        ================================================= */
+
+        const {
+          data: storageInfo,
+          error: storageError
+        } =
+          await supabaseClient
+            .rpc(
+              "get_storage_info"
+            );
+
+
+        if (storageError) {
+          throw storageError;
+        }
+
+
+        const used =
+          Number(
+            storageInfo?.used_bytes || 0
+          );
+
+
+        const quota =
+          Number(
+            storageInfo?.quota_bytes ||
+            STORAGE_QUOTA
+          );
+
+
+        const remaining =
+          quota - used;
+
+
+        if (
+          file.size >
+          remaining
+        ) {
+
+          showUploadMessage(
+            `Upload dibatalkan. Storage tersisa ${formatSize(remaining)}, sedangkan file ini berukuran ${formatSize(file.size)}.`
+          );
+
+          this.value = "";
+
+          return;
+
+        }
+
+
+        /* =================================================
+           UPLOAD MESSAGE
+        ================================================= */
+
+        showUploadMessage(
+          `Sedang mengupload ${file.name}...`,
+          "loading"
+        );
+
+
+        /* =================================================
+           SAFE NAME
+        ================================================= */
 
         const safeName =
           file.name.replace(
@@ -1032,7 +1660,13 @@
           `${currentUser.id}/${fileName}`;
 
 
-        const { error } =
+        /* =================================================
+           UPLOAD STORAGE
+        ================================================= */
+
+        const {
+          error: uploadError
+        } =
           await supabaseClient
             .storage
             .from(BUCKET)
@@ -1041,15 +1675,81 @@
               file,
               {
                 cacheControl: "3600",
-                upsert: false
+                upsert: false,
+                contentType:
+                  file.type ||
+                  "application/octet-stream"
               }
             );
 
 
-        if (error) {
-          throw error;
+        if (uploadError) {
+          throw uploadError;
         }
 
+
+        /* =================================================
+           SAVE DATABASE RECORD
+        ================================================= */
+
+        const {
+          error: databaseError
+        } =
+          await supabaseClient
+            .from("files")
+            .insert({
+              user_id:
+                currentUser.id,
+
+              storage_path:
+                filePath,
+
+              file_name:
+                file.name,
+
+              file_size:
+                file.size,
+
+              mime_type:
+                file.type ||
+                "application/octet-stream"
+            });
+
+
+        /* =================================================
+           DATABASE FAILED
+        ================================================= */
+
+        if (databaseError) {
+
+          console.error(
+            "Database error:",
+            databaseError
+          );
+
+
+          /*
+           * Jika upload Storage berhasil tetapi
+           * insert database gagal, hapus kembali
+           * file Storage agar tidak menjadi orphan.
+           */
+
+          await supabaseClient
+            .storage
+            .from(BUCKET)
+            .remove([
+              filePath
+            ]);
+
+
+          throw databaseError;
+
+        }
+
+
+        /* =================================================
+           SUCCESS
+        ================================================= */
 
         showUploadMessage(
           "File berhasil diupload! ✅",
@@ -1069,7 +1769,10 @@
 
         showUploadMessage(
           "Upload gagal: " +
-          (error.message || "Terjadi kesalahan.")
+          (
+            error.message ||
+            "Terjadi kesalahan."
+          )
         );
 
       }
@@ -1082,20 +1785,19 @@
      DOWNLOAD
   ===================================================== */
 
-  async function downloadFile(fileName) {
+  async function downloadFile(file) {
 
     try {
 
-      const filePath =
-        `${currentUser.id}/${fileName}`;
-
-
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await supabaseClient
           .storage
           .from(BUCKET)
           .createSignedUrl(
-            filePath,
+            file.storage_path,
             60 * 60
           );
 
@@ -1126,14 +1828,106 @@
 
 
   /* =====================================================
+     RENAME
+  ===================================================== */
+
+  async function renameFile(file) {
+
+    const oldName =
+      file.file_name;
+
+
+    const newName =
+      prompt(
+        "Masukkan nama file baru:",
+        oldName
+      );
+
+
+    if (
+      newName === null
+    ) {
+      return;
+    }
+
+
+    const trimmedName =
+      newName.trim();
+
+
+    if (!trimmedName) {
+
+      alert(
+        "Nama file tidak boleh kosong."
+      );
+
+      return;
+
+    }
+
+
+    if (
+      trimmedName === oldName
+    ) {
+      return;
+    }
+
+
+    try {
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("files")
+          .update({
+            file_name:
+              trimmedName,
+
+            updated_at:
+              new Date().toISOString()
+          })
+          .eq(
+            "id",
+            file.id
+          )
+          .eq(
+            "user_id",
+            currentUser.id
+          );
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      await loadFiles();
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Rename gagal: " +
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
      DELETE
   ===================================================== */
 
-  async function deleteFile(fileName) {
+  async function deleteFile(file) {
 
     if (
       !confirm(
-        `Hapus file "${fileName}"?`
+        `Hapus file "${file.file_name}"?`
       )
     ) {
       return;
@@ -1142,21 +1936,48 @@
 
     try {
 
-      const filePath =
-        `${currentUser.id}/${fileName}`;
+      /* =================================================
+         DELETE STORAGE
+      ================================================= */
 
-
-      const { error } =
+      const {
+        error: storageError
+      } =
         await supabaseClient
           .storage
           .from(BUCKET)
           .remove([
-            filePath
+            file.storage_path
           ]);
 
 
-      if (error) {
-        throw error;
+      if (storageError) {
+        throw storageError;
+      }
+
+
+      /* =================================================
+         DELETE DATABASE RECORD
+      ================================================= */
+
+      const {
+        error: databaseError
+      } =
+        await supabaseClient
+          .from("files")
+          .delete()
+          .eq(
+            "id",
+            file.id
+          )
+          .eq(
+            "user_id",
+            currentUser.id
+          );
+
+
+      if (databaseError) {
+        throw databaseError;
       }
 
 
@@ -1193,7 +2014,9 @@
 
       if (!keyword) {
 
-        renderFiles(allFiles);
+        renderFiles(
+          allFiles
+        );
 
         return;
 
@@ -1201,14 +2024,17 @@
 
 
       const filtered =
-        allFiles.filter(file =>
-          file.name
-            .toLowerCase()
-            .includes(keyword)
+        allFiles.filter(
+          file =>
+            file.file_name
+              .toLowerCase()
+              .includes(keyword)
         );
 
 
-      renderFiles(filtered);
+      renderFiles(
+        filtered
+      );
 
     }
   );
@@ -1222,7 +2048,79 @@
     .getElementById("refreshButton")
     .addEventListener(
       "click",
-      loadFiles
+      async () => {
+
+        const button =
+          document.getElementById(
+            "refreshButton"
+          );
+
+
+        button.disabled = true;
+
+        button.textContent = "⟳";
+
+
+        await loadFiles();
+
+
+        button.disabled = false;
+
+        button.textContent = "↻";
+
+      }
+    );
+
+
+  /* =====================================================
+     ENTER LOGIN
+  ===================================================== */
+
+  document
+    .getElementById("loginPassword")
+    .addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          document
+            .getElementById(
+              "loginButton"
+            )
+            .click();
+
+        }
+
+      }
+    );
+
+
+  /* =====================================================
+     ENTER REGISTER
+  ===================================================== */
+
+  document
+    .getElementById("registerPassword")
+    .addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          document
+            .getElementById(
+              "registerButton"
+            )
+            .click();
+
+        }
+
+      }
     );
 
 
@@ -1231,7 +2129,10 @@
   ===================================================== */
 
   supabaseClient.auth.onAuthStateChange(
-    async (event, session) => {
+    async (
+      event,
+      session
+    ) => {
 
       if (
         session &&
@@ -1241,14 +2142,23 @@
         currentUser =
           session.user;
 
+
         await showStoragePage();
 
       } else {
 
         currentUser = null;
 
-        storagePage.classList.add("hidden");
-        authPage.classList.remove("hidden");
+        allFiles = [];
+
+
+        storagePage.classList.add(
+          "hidden"
+        );
+
+        authPage.classList.remove(
+          "hidden"
+        );
 
       }
 
